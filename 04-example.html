@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EgoVux Video System Rebuild Verification Page</title>
+
+    <style>
+        /* Baseline page styles */
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #fbfbfb;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 50px;
+            text-align: center;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 20px;
+        }
+
+        header h1 {
+            margin: 0 0 10px 0;
+            font-size: 28px;
+            color: #111;
+        }
+
+        header p {
+            margin: 0;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .section-wrapper {
+            margin-bottom: 60px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        .section-wrapper h2 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 20px;
+            color: #222;
+        }
+
+        .section-wrapper p.desc {
+            margin-top: 0;
+            margin-bottom: 24px;
+            color: #777;
+            font-size: 14px;
+        }
+
+/* =========================================
+       GLOBAL RESET / BOX-SIZING FOR VIDEO WRAPPERS
+    ========================================= */
+    .custom-video-wrapper,
+    .ruffrascal-pv-wrapper,
+    .product-video-unique,
+    .dog-video-slider-unique,
+    .custom-video-wrapper *,
+    .ruffrascal-pv-wrapper *,
+    .product-video-unique *,
+    .dog-video-slider-unique * {
+        box-sizing: border-box;
+    }
+
+    /* =========================================
+       1. SINGLE VIDEO PLAYER: CORE CONTAINERS
+    ========================================= */
+    .custom-video-wrapper,
+    .ruffrascal-pv-wrapper,
+    .product-video-unique {
+        position: relative;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        overflow: hidden;
+        border-radius: 12px;
+        background: transparent;
+        line-height: 0;
+        isolation: isolate;
+    }
+
+    /* Ratio configurations */
+    .ruffrascal-pv-wrapper,
+    .product-video-unique {
+        aspect-ratio: 1 / 1;
+    }
+
+    /* =========================================
+       2. SINGLE VIDEO PLAYER: VIDEO ELEMENT
+    ========================================= */
+    .custom-video-wrapper video,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-video,
+    .product-video-unique video {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 12px;
+        background: transparent;
+        object-fit: cover;
+        cursor: pointer;
+    }
+
+    .custom-video-wrapper video {
+        height: auto;
+        aspect-ratio: 16 / 9;
+    }
+
+    .ruffrascal-pv-wrapper .ruffrascal-pv-video,
+    .product-video-unique video {
+        height: 100%;
+        aspect-ratio: 1 / 1;
+    }
+
+    /* =========================================
+       3. SINGLE VIDEO PLAYER: CONTROLS & OVERLAYS
+    ========================================= */
+    .custom-video-wrapper .video-controls,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-controls,
+    .product-video-unique .video-controls {
+        position: static;
+    }
+
+    /* =========================================
+       4. SINGLE VIDEO PLAYER: BUTTON STYLES (100% IDENTICAL TO ARR/PREVIEW)
+    ========================================= */
+    /* Center Play / Pause Button */
+    .custom-video-wrapper .video-button,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-button,
+    .product-video-unique .video-button,
+    #playPauseButton,
+    #ruffrascalPvPlayPause,
+    #productVideoPlayPauseUnique {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 56px !important;
+        height: 56px !important;
+        min-width: 56px !important;
+        min-height: 56px !important;
+        max-width: 56px !important;
+        max-height: 56px !important;
+        aspect-ratio: 1 / 1 !important;
+        border-radius: 50% !important;
+        background: rgba(245, 130, 32, 0.9) !important;
+        border: 2px solid #ffffff !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.25s ease !important;
+        box-shadow: 0 4px 16px rgba(245, 130, 32, 0.45) !important;
+        z-index: 2 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        line-height: 1 !important;
+        outline: none !important;
+        flex-shrink: 0 !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+    }
+
+    /* Vector SVGs inside Play/Pause Button */
+    .custom-video-wrapper .video-button svg,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-button svg,
+    .product-video-unique .video-button svg,
+    #playPauseButton svg,
+    #ruffrascalPvPlayPause svg,
+    #productVideoPlayPauseUnique svg {
+        width: 24px !important;
+        height: 24px !important;
+        min-width: 24px !important;
+        min-height: 24px !important;
+        max-width: 24px !important;
+        max-height: 24px !important;
+        fill: #ffffff !important;
+        color: #ffffff !important;
+        pointer-events: none !important;
+        flex-shrink: 0 !important;
+    }
+
+    .custom-video-wrapper .video-button svg path,
+    .custom-video-wrapper .video-button svg rect,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-button svg path,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-button svg rect,
+    .product-video-unique .video-button svg path,
+    .product-video-unique .video-button svg rect,
+    #playPauseButton svg path,
+    #playPauseButton svg rect,
+    #ruffrascalPvPlayPause svg path,
+    #ruffrascalPvPlayPause svg rect,
+    #productVideoPlayPauseUnique svg path,
+    #productVideoPlayPauseUnique svg rect {
+        fill: #ffffff !important;
+    }
+
+    /* Play triangle: 100% IDENTICAL TO ARR VIDEO (.dog-video-play::after) */
+    .custom-video-wrapper:not(.is-playing) .video-button::after,
+    .ruffrascal-pv-wrapper:not(.is-playing) .ruffrascal-pv-button::after,
+    .product-video-unique:not(.is-playing) .video-button::after,
+    .custom-video-wrapper:not(.is-playing) #playPauseButton::after,
+    .ruffrascal-pv-wrapper:not(.is-playing) #ruffrascalPvPlayPause::after,
+    .product-video-unique:not(.is-playing) #productVideoPlayPauseUnique::after {
+        content: '' !important;
+        display: block !important;
+        width: 0 !important;
+        height: 0 !important;
+        border-top: 10px solid transparent !important;
+        border-bottom: 10px solid transparent !important;
+        border-left: 17px solid #ffffff !important;
+        margin-left: 4px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* While playing: hide the CSS play triangle */
+    .custom-video-wrapper.is-playing .video-button::after,
+    .ruffrascal-pv-wrapper.is-playing .ruffrascal-pv-button::after,
+    .product-video-unique.is-playing .video-button::after,
+    .custom-video-wrapper.is-playing #playPauseButton::after,
+    .ruffrascal-pv-wrapper.is-playing #ruffrascalPvPlayPause::after,
+    .product-video-unique.is-playing #productVideoPlayPauseUnique::after {
+        display: none !important;
+    }
+
+    /* While playing: Pause SVG (||) is visible inside button on hover */
+    .custom-video-wrapper.is-playing .pause-icon,
+    .ruffrascal-pv-wrapper.is-playing .ruffrascal-pv-pause-icon,
+    .ruffrascal-pv-wrapper.is-playing .pause-icon,
+    .product-video-unique.is-playing .pause-icon {
+        display: block !important;
+    }
+
+    /* While paused: Pause SVG (||) is hidden */
+    .custom-video-wrapper:not(.is-playing) .pause-icon,
+    .ruffrascal-pv-wrapper:not(.is-playing) .ruffrascal-pv-pause-icon,
+    .ruffrascal-pv-wrapper:not(.is-playing) .pause-icon,
+    .product-video-unique:not(.is-playing) .pause-icon {
+        display: none !important;
+    }
+
+    /* SVG play icon is hidden since triangle is rendered pixel-perfect by ::after */
+    .custom-video-wrapper .play-icon,
+    .ruffrascal-pv-wrapper .play-icon,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-play-icon,
+    .product-video-unique .play-icon {
+        display: none !important;
+    }
+
+    /* Visibility logic:
+       When paused: Button is ALWAYS VISIBLE in the center (showing Play icon)
+       When playing: Button is hidden by default, and REVEALS ON HOVER (showing Pause icon)
+    */
+    .custom-video-wrapper:not(.is-playing) .video-button,
+    .ruffrascal-pv-wrapper:not(.is-playing) .ruffrascal-pv-button,
+    .product-video-unique:not(.is-playing) .video-button,
+    .custom-video-wrapper:not(.is-playing) #playPauseButton,
+    .ruffrascal-pv-wrapper:not(.is-playing) #ruffrascalPvPlayPause,
+    .product-video-unique:not(.is-playing) #productVideoPlayPauseUnique {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+
+    .custom-video-wrapper.is-playing .video-button,
+    .ruffrascal-pv-wrapper.is-playing .ruffrascal-pv-button,
+    .product-video-unique.is-playing .video-button,
+    .custom-video-wrapper.is-playing #playPauseButton,
+    .ruffrascal-pv-wrapper.is-playing #ruffrascalPvPlayPause,
+    .product-video-unique.is-playing #productVideoPlayPauseUnique {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.2s ease, background-color 0.2s ease !important;
+    }
+
+    .custom-video-wrapper.is-playing:hover .video-button,
+    .ruffrascal-pv-wrapper.is-playing:hover .ruffrascal-pv-button,
+    .product-video-unique.is-playing:hover .video-button,
+    .custom-video-wrapper.is-playing:hover #playPauseButton,
+    .ruffrascal-pv-wrapper.is-playing:hover #ruffrascalPvPlayPause,
+    .product-video-unique.is-playing:hover #productVideoPlayPauseUnique {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+
+    /* Buffering spinner for Single Players */
+    .custom-video-wrapper.is-buffering .video-button,
+    .ruffrascal-pv-wrapper.is-buffering .ruffrascal-pv-button,
+    .product-video-unique.is-buffering .video-button,
+    .custom-video-wrapper.is-buffering #playPauseButton,
+    .ruffrascal-pv-wrapper.is-buffering #ruffrascalPvPlayPause,
+    .product-video-unique.is-buffering #productVideoPlayPauseUnique {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: none !important;
+        background: rgba(0, 0, 0, 0.7) !important;
+        border: 3px solid rgba(255, 255, 255, 0.3) !important;
+        border-top-color: #f58220 !important;
+        animation: dogVideoSpin 0.75s linear infinite !important;
+    }
+
+    .custom-video-wrapper.is-buffering .video-button svg,
+    .ruffrascal-pv-wrapper.is-buffering .ruffrascal-pv-button svg,
+    .product-video-unique.is-buffering .video-button svg,
+    .custom-video-wrapper.is-buffering #playPauseButton svg,
+    .ruffrascal-pv-wrapper.is-buffering #ruffrascalPvPlayPause svg,
+    .product-video-unique.is-buffering #productVideoPlayPauseUnique svg {
+        display: none !important;
+    }
+
+    .custom-video-wrapper .video-button:hover,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-button:hover,
+    .product-video-unique .video-button:hover,
+    #playPauseButton:hover,
+    #ruffrascalPvPlayPause:hover,
+    #productVideoPlayPauseUnique:hover {
+        transform: translate(-50%, -50%) scale(1.1) !important;
+        background: #e07016 !important;
+    }
+
+    /* Bottom-Right Mute Button - Hidden for single players since audio is removed */
+    #muteButton,
+    #ruffrascalPvMute,
+    #productVideoMuteUnique,
+    .custom-video-wrapper .mute-icon,
+    .custom-video-wrapper .sound-icon,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-mute-icon,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-sound-icon {
+        display: none !important;
+    }
+
+    /* =========================================
+       5. SLIDER CAROUSEL: WRAPPER & TRACK
+    ========================================= */
+    .dog-video-slider-unique {
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+        --dog-orange: #F58220;
+    }
+
+    .dog-video-slider-unique .dog-video-track {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        padding: 4px;
+    }
+
+    .dog-video-slider-unique .dog-video-track::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* =========================================
+       6. SLIDER CAROUSEL: VIDEO CARDS
+    ========================================= */
+    .dog-video-slider-unique .dog-video-card {
+        position: relative;
+        flex: 0 0 calc((100% - 60px) / 4.7);
+        aspect-ratio: 9 / 16;
+        overflow: hidden;
+        border-radius: 12px;
+        background: transparent;
+        cursor: pointer;
+        box-sizing: border-box;
+        box-shadow: none;
+        transition: transform 0.25s ease;
+    }
+
+    .dog-video-slider-unique .dog-video-card:hover {
+        transform: translateY(-4px);
+        box-shadow: none;
+    }
+
+    .dog-video-slider-unique .dog-video-card video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        aspect-ratio: 9 / 16;
+        object-fit: cover;
+        background: transparent;
+        border-radius: 12px;
+        pointer-events: none;
+    }
+
+    /* =========================================
+       7. SLIDER CAROUSEL: CARD CONTROLS
+    ========================================= */
+    /* Card Play Button */
+    /* Card Play Button */
+    .dog-video-slider-unique .dog-video-play {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 56px !important;
+        height: 56px !important;
+        min-width: 56px !important;
+        min-height: 56px !important;
+        max-width: 56px !important;
+        max-height: 56px !important;
+        aspect-ratio: 1 / 1 !important;
+        border-radius: 50% !important;
+        background: rgba(245, 130, 32, 0.9) !important;
+        border: 2px solid #ffffff !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.25s ease !important;
+        box-shadow: 0 4px 16px rgba(245, 130, 32, 0.45) !important;
+        z-index: 2 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        line-height: 1 !important;
+        outline: none !important;
+        flex-shrink: 0 !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+    }
+
+    .dog-video-slider-unique .dog-video-play::after {
+        content: '' !important;
+        display: block !important;
+        width: 0 !important;
+        height: 0 !important;
+        border-top: 10px solid transparent !important;
+        border-bottom: 10px solid transparent !important;
+        border-left: 17px solid #ffffff !important;
+        margin-left: 4px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Hide play when card is playing */
+    .dog-video-slider-unique .dog-video-card.is-playing .dog-video-play {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+
+    /* Buffering spinner when video is loading */
+    .dog-video-slider-unique .dog-video-card.is-buffering .dog-video-play {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: none !important;
+        background: rgba(0, 0, 0, 0.7) !important;
+        border: 3px solid rgba(255, 255, 255, 0.3) !important;
+        border-top-color: var(--dog-orange) !important;
+        animation: dogVideoSpin 0.75s linear infinite !important;
+    }
+
+    .dog-video-slider-unique .dog-video-card.is-buffering .dog-video-play::after {
+        display: none !important;
+    }
+
+    @keyframes dogVideoSpin {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .dog-video-slider-unique .dog-video-card:not(.is-playing):not(.is-buffering) .dog-video-play:hover {
+        transform: translate(-50%, -50%) scale(1.1) !important;
+        background: #e07016 !important;
+    }
+
+    /* Card Mute Button */
+    .dog-video-slider-unique .dog-video-mute {
+        position: absolute !important;
+        bottom: 12px !important;
+        right: 12px !important;
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        min-height: 36px !important;
+        max-width: 36px !important;
+        max-height: 36px !important;
+        aspect-ratio: 1 / 1 !important;
+        border-radius: 50% !important;
+        background: rgba(0, 0, 0, 0.6) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transition: opacity 0.25s ease, background-color 0.25s ease, transform 0.2s ease !important;
+        z-index: 2 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        line-height: 1 !important;
+        outline: none !important;
+        box-shadow: none !important;
+        flex-shrink: 0 !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+    }
+
+    .dog-video-slider-unique .dog-video-card:hover .dog-video-mute {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+
+    .dog-video-slider-unique .dog-video-card:hover .dog-video-mute:hover {
+        background: rgba(245, 130, 32, 0.9) !important;
+        border-color: #f58220 !important;
+        transform: scale(1.08) !important;
+    }
+
+    .dog-video-slider-unique .dog-video-mute svg {
+        display: block !important;
+        width: 18px !important;
+        height: 18px !important;
+        min-width: 18px !important;
+        min-height: 18px !important;
+        max-width: 18px !important;
+        max-height: 18px !important;
+        stroke: #ffffff !important;
+        stroke-width: 2 !important;
+        stroke-linecap: round !important;
+        stroke-linejoin: round !important;
+        fill: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        pointer-events: none !important;
+        flex-shrink: 0 !important;
+    }
+
+    .dog-video-slider-unique .dog-video-mute svg path,
+    .dog-video-slider-unique .dog-video-mute svg line {
+        stroke: #ffffff !important;
+        stroke-width: 2 !important;
+        stroke-linecap: round !important;
+        stroke-linejoin: round !important;
+        fill: none !important;
+    }
+
+    /* =========================================
+       8. SLIDER CAROUSEL: NAVIGATION ARROWS
+    ========================================= */
+
+    /* Arrow Base Style */
+    .dog-video-slider-unique .dog-video-arrow {
+        position: absolute !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
+        max-width: 44px !important;
+        max-height: 44px !important;
+        aspect-ratio: 1 / 1 !important;
+        border-radius: 50% !important;
+        background: #ffffff !important;
+        border: 1px solid #e5e7eb !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        z-index: 3 !important;
+        opacity: 0;
+        transition: opacity 0.25s ease, background-color 0.25s ease, transform 0.2s ease !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        line-height: 1 !important;
+        outline: none !important;
+        flex-shrink: 0 !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+    }
+
+    .dog-video-slider-unique .dog-video-arrow-left {
+        left: 8px !important;
+    }
+
+    .dog-video-slider-unique .dog-video-arrow-right {
+        right: 8px !important;
+    }
+
+    /* Show arrows when hovering over slider container */
+    .dog-video-slider-unique:hover .dog-video-arrow {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+
+    .dog-video-slider-unique .dog-video-arrow:hover {
+        background: #f58220 !important;
+        border-color: #f58220 !important;
+        transform: translateY(-50%) scale(1.08) !important;
+    }
+
+    .dog-video-slider-unique .dog-video-arrow:hover svg {
+        stroke: #ffffff;
+    }
+
+    .dog-video-slider-unique .dog-video-arrow svg {
+        width: 20px !important;
+        height: 20px !important;
+        stroke: #1f2937;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+        transition: stroke 0.2s ease;
+    }
+
+    /* =========================================
+       9. RESPONSIVE MEDIA QUERIES (BREAKPOINTS)
+    ========================================= */
+    /* Tablet Breakpoint (Slider Adjustment: 3 cards) */
+    @media (max-width: 1024px) {
+        .dog-video-slider-unique .dog-video-card {
+            flex: 0 0 calc((100% - 32px) / 3);
+        }
+    }
+
+    /* Mobile Breakpoint (under 640px) */
+    @media (max-width: 640px) {
+
+        /* Single Players Wrapper Adjustment */
+        .custom-video-wrapper,
+        .ruffrascal-pv-wrapper,
+        .product-video-unique {
+            border-radius: 12px;
+        }
+
+        .custom-video-wrapper video,
+        .ruffrascal-pv-wrapper .ruffrascal-pv-video,
+        .product-video-unique video {
+            border-radius: 12px;
+        }
+
+        /* Single Players Controls (Keep layout static so buttons stay properly placed) */
+        .custom-video-wrapper .video-controls,
+        .ruffrascal-pv-wrapper .ruffrascal-pv-controls,
+        .product-video-unique .video-controls {
+            position: static !important;
+        }
+
+        /* Single Player Center Play / Pause Button (Mobile) */
+        .custom-video-wrapper .video-button,
+        .ruffrascal-pv-wrapper .ruffrascal-pv-button,
+        .product-video-unique .video-button,
+        #playPauseButton,
+        #ruffrascalPvPlayPause,
+        #productVideoPlayPauseUnique {
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: 44px !important;
+            height: 44px !important;
+            min-width: 44px !important;
+            min-height: 44px !important;
+            max-width: 44px !important;
+            max-height: 44px !important;
+        }
+
+        .custom-video-wrapper:not(.is-playing) .video-button::after,
+        .ruffrascal-pv-wrapper:not(.is-playing) .ruffrascal-pv-button::after,
+        .product-video-unique:not(.is-playing) .video-button::after,
+        .custom-video-wrapper:not(.is-playing) #playPauseButton::after,
+        .ruffrascal-pv-wrapper:not(.is-playing) #ruffrascalPvPlayPause::after,
+        .product-video-unique:not(.is-playing) #productVideoPlayPauseUnique::after {
+            border-top-width: 8px !important;
+            border-bottom-width: 8px !important;
+            border-left-width: 14px !important;
+            margin-left: 3px !important;
+        }
+
+        .custom-video-wrapper .video-button svg,
+        .ruffrascal-pv-wrapper .ruffrascal-pv-button svg,
+        .product-video-unique .video-button svg,
+        #playPauseButton svg,
+        #ruffrascalPvPlayPause svg,
+        #productVideoPlayPauseUnique svg {
+            width: 18px !important;
+            height: 18px !important;
+            min-width: 18px !important;
+            min-height: 18px !important;
+        }
+
+        /* Slider Adjustments */
+        .dog-video-slider-unique .dog-video-track {
+            gap: 12px;
+            padding: 0;
+        }
+
+        .dog-video-slider-unique .dog-video-card {
+            flex: 0 0 calc((100% - 24px) / 2.15);
+            border-radius: 10px;
+        }
+
+        /* Always show Play button when paused on mobile */
+        .dog-video-slider-unique .dog-video-play {
+            width: 44px !important;
+            height: 44px !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
+        }
+
+        .dog-video-slider-unique .dog-video-card.is-playing .dog-video-play {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        /* Always show Mute button on mobile */
+        .dog-video-slider-unique .dog-video-mute {
+            width: 32px !important;
+            height: 32px !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
+        }
+
+        /* Hide Arrow buttons on mobile */
+        .dog-video-slider-unique .dog-video-arrow {
+            display: none !important;
+        }
+    }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>EgoVux Video System Rebuild Verification</h1>
+            <p>Testing single players and slider carousel sharing consolidated head CSS and body JS.</p>
+        </header>
+
+        <!-- SECTION 1 -->
+        <div class="section-wrapper">
+            <h2>1. Single Player 16:9 (custom-video-wrapper)</h2>
+            <p class="desc">Aspect ratio 16:9. Preloads on viewport intersection, playsinline, loop, custom hover-controls.</p>
+            <div class="custom-video-wrapper">
+    <video id="productVideo" muted loop playsinline preload="auto"
+        poster="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQC_Ro-C6nQHC4cDYWLm_J6vXfiPyxchcYZvodv3miXe7iGkN-_txMIxGg&s=10">
+        <source src="https://stream.vidhosting.in/videos/b5ff7f85.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+
+    <div class="video-controls">
+        <button id="playPauseButton" class="video-button" type="button" aria-label="Play video">
+            <!-- PAUSE ICON (Visible on Hover while Playing) -->
+            <svg class="pause-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="7" y="5" width="4" height="14" rx="1" fill="currentColor"></rect>
+                <rect x="13" y="5" width="4" height="14" rx="1" fill="currentColor"></rect>
+            </svg>
+        </button>
+    </div>
+</div>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="section-wrapper">
+            <h2>2. RuffRascal Player 1:1 (ruffrascal-pv-wrapper)</h2>
+            <p class="desc">Aspect ratio 1:1. Specifically styled with RuffRascal class hooks.</p>
+            <div class="ruffrascal-pv-wrapper" id="ruffrascalProductVideo">
+    <video id="ruffrascalPvVideo" class="ruffrascal-pv-video" muted loop playsinline preload="auto"
+        poster="https://res.cloudinary.com/x9bj9p2l/video/upload/so_0/v1788606222/RuffRover_2.0_-_Hard_Bottom_Dog_Car_Seat_Protector_1.jpg">
+        <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/v1788606222/RuffRover_2.0_-_Hard_Bottom_Dog_Car_Seat_Protector_1.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+
+    <div class="ruffrascal-pv-controls">
+        <button id="ruffrascalPvPlayPause" class="ruffrascal-pv-button" type="button" aria-label="Play video">
+            <!-- PAUSE ICON (Visible on Hover while Playing) -->
+            <svg class="ruffrascal-pv-pause-icon pause-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="7" y="5" width="4" height="14" rx="1" fill="currentColor"></rect>
+                <rect x="13" y="5" width="4" height="14" rx="1" fill="currentColor"></rect>
+            </svg>
+        </button>
+    </div>
+</div>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="section-wrapper">
+            <h2>3. Unique Product Player 1:1 (product-video-unique)</h2>
+            <p class="desc">Aspect ratio 1:1. Uses shared children control naming conventions.</p>
+            <div class="product-video-unique">
+    <video id="productVideoUnique" muted loop playsinline preload="auto"
+        poster="https://res.cloudinary.com/x9bj9p2l/video/upload/so_0/v1788606197/AllFurFun_on_TikTok.jpg">
+        <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/v1788606197/AllFurFun_on_TikTok.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+
+    <div class="video-controls">
+        <button id="productVideoPlayPauseUnique" class="video-button" type="button" aria-label="Play video">
+            <!-- PAUSE ICON (Visible on Hover while Playing) -->
+            <svg class="pause-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="7" y="5" width="4" height="14" rx="1" fill="currentColor"></rect>
+                <rect x="13" y="5" width="4" height="14" rx="1" fill="currentColor"></rect>
+            </svg>
+        </button>
+    </div>
+</div>
+        </div>
+
+        <!-- SECTION 4 -->
+        <div class="section-wrapper">
+            <h2>4. Dog Video Slider (dog-video-slider-unique)</h2>
+            <p class="desc">Horizontal track with 8 vertical (9:16) video cards. Drag/Scroll + Arrow controls.</p>
+            <div class="dog-video-slider-unique">
+
+    <!-- PREVIOUS -->
+    <button class="dog-video-arrow dog-video-arrow-left" type="button" aria-label="Previous videos">
+        <svg viewBox="0 0 24 24">
+            <path d="M15 18L9 12L15 6"></path>
+        </svg>
+    </button>
+
+    <!-- VIDEO TRACK -->
+    <div class="dog-video-track">
+        <!-- CARD 1 -->
+        <div class="dog-video-card">
+            <video playsinline muted loop preload="none"
+                poster="https://res.cloudinary.com/x9bj9p2l/video/upload/f_auto,q_auto,w_400/v1787588124/RascalRoverVd1.jpg">
+                <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1787588124/RascalRoverVd1.mp4" type="video/mp4">
+            </video>
+            <button class="dog-video-play" type="button" aria-label="Play video"></button>
+            <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                    <line x1="17" y1="9" x2="21" y2="15"></line>
+                    <line x1="21" y1="9" x2="17" y2="15"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="dog-video-card">
+            <video playsinline muted loop preload="none"
+                poster="https://res.cloudinary.com/x9bj9p2l/video/upload/f_auto,q_auto,w_400/v1787588706/RascalRoverVd2.jpg">
+                <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1787588706/RascalRoverVd2.mp4" type="video/mp4">
+            </video>
+            <button class="dog-video-play" type="button" aria-label="Play video"></button>
+            <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                    <line x1="17" y1="9" x2="21" y2="15"></line>
+                    <line x1="21" y1="9" x2="17" y2="15"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="dog-video-card">
+            <video playsinline muted loop preload="none"
+                poster="https://res.cloudinary.com/x9bj9p2l/video/upload/f_auto,q_auto,w_400/v1787590596/RascalRoverVd3.jpg">
+                <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1787590596/RascalRoverVd3.mp4" type="video/mp4">
+            </video>
+            <button class="dog-video-play" type="button" aria-label="Play video"></button>
+            <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                    <line x1="17" y1="9" x2="21" y2="15"></line>
+                    <line x1="21" y1="9" x2="17" y2="15"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- CARD 4 -->
+        <div class="dog-video-card">
+            <video playsinline muted loop preload="none"
+                poster="https://res.cloudinary.com/x9bj9p2l/video/upload/f_auto,q_auto,w_400/v1787591753/Amazon.com_YJGF_Hard_Bottom_Dog_Car_Seat_Cover_for_Back_Seat_Seat_Extender_for_Dogs_Strong_Support_More_Rest_Space_Waterproof_Scratch_Resistant_Car_Seat_Protector_Dog_Hammock_for_Car_SUV_Small_Truck_Pet_Supplie_2.jpg">
+                <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1787591753/Amazon.com_YJGF_Hard_Bottom_Dog_Car_Seat_Cover_for_Back_Seat_Seat_Extender_for_Dogs_Strong_Support_More_Rest_Space_Waterproof_Scratch_Resistant_Car_Seat_Protector_Dog_Hammock_for_Car_SUV_Small_Truck_Pet_Supplie_2.mp4" type="video/mp4">
+            </video>
+            <button class="dog-video-play" type="button" aria-label="Play video"></button>
+            <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                    <line x1="17" y1="9" x2="21" y2="15"></line>
+                    <line x1="21" y1="9" x2="17" y2="15"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- CARD 5 -->
+        <div class="dog-video-card">
+            <video playsinline muted loop preload="none"
+                poster="https://res.cloudinary.com/x9bj9p2l/video/upload/f_auto,q_auto,w_400/v1788585048/RascalRoverVd6.jpg">
+                <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1788585048/RascalRoverVd6.mp4" type="video/mp4">
+            </video>
+            <button class="dog-video-play" type="button" aria-label="Play video"></button>
+            <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                    <line x1="17" y1="9" x2="21" y2="15"></line>
+                    <line x1="21" y1="9" x2="17" y2="15"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- CARD 6 -->
+        <div class="dog-video-card">
+            <video playsinline muted loop preload="none"
+                poster="https://res.cloudinary.com/x9bj9p2l/video/upload/f_auto,q_auto,w_400/v1788585091/RascalRoverVd7.jpg">
+                <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1788585091/RascalRoverVd7.mp4" type="video/mp4">
+            </video>
+            <button class="dog-video-play" type="button" aria-label="Play video"></button>
+            <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                    <line x1="17" y1="9" x2="21" y2="15"></line>
+                    <line x1="21" y1="9" x2="17" y2="15"></line>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- NEXT -->
+    <button class="dog-video-arrow dog-video-arrow-right" type="button" aria-label="Next videos">
+        <svg viewBox="0 0 24 24">
+            <path d="M9 18L15 12L9 6"></path>
+        </svg>
+    </button>
+</div>
+        </div>
+    </div>
+
+    <!-- INLINE COPY OF 02-GLOBAL-BODY.HTML -->
+    <!-- GLOBAL VIDEO SYSTEM ENGINE -->
+<script>
+    (function () {
+        "use strict";
+
+        // Shared Global Intersection Observer: Lazy thumbnail loader for slider cards
+        if (!window.FlusbaseVideoObserver && "IntersectionObserver" in window) {
+            window.FlusbaseVideoObserver = new IntersectionObserver(
+                function (entries) {
+                    entries.forEach(function (entry) {
+                        const targetEl = entry.target;
+                        const loadFn = targetEl._flusbaseLoadVideo;
+
+                        if (entry.isIntersecting) {
+                            if (!targetEl._flusbaseLoadTimeout) {
+                                targetEl._flusbaseLoadTimeout = setTimeout(function () {
+                                    if (typeof loadFn === "function") {
+                                        loadFn();
+                                    }
+                                    window.FlusbaseVideoObserver.unobserve(targetEl);
+                                }, 150);
+                            }
+                        } else {
+                            if (targetEl._flusbaseLoadTimeout) {
+                                clearTimeout(targetEl._flusbaseLoadTimeout);
+                                targetEl._flusbaseLoadTimeout = null;
+                            }
+                        }
+                    });
+                },
+                {
+                    root: null,
+                    rootMargin: "200px 300px 200px 300px",
+                    threshold: 0
+                }
+            );
+        }
+
+        // Shared Thumbnail Loader for Slider Cards
+        function loadThumbnail(video, card) {
+            if (video.dataset.thumbLoaded) return;
+            video.dataset.thumbLoaded = "1";
+
+            if (video.hasAttribute("poster")) {
+                card.classList.add("thumb-ready");
+                return;
+            }
+
+            video.preload = "auto";
+            video.load();
+
+            function doSeek() {
+                if (video.paused && video.currentTime === 0) {
+                    video.currentTime = 0.01;
+                } else {
+                    card.classList.add("thumb-ready");
+                }
+            }
+
+            video.addEventListener("seeked", function () {
+                card.classList.add("thumb-ready");
+            }, { once: true });
+
+            if (video.readyState >= 1) {
+                doSeek();
+            } else {
+                video.addEventListener("loadedmetadata", function () {
+                    doSeek();
+                    setTimeout(function () {
+                        if (!card.classList.contains("thumb-ready")) {
+                            card.classList.add("thumb-ready");
+                        }
+                    }, 1500);
+                }, { once: true });
+            }
+        }
+
+        // Shared Visibility Change: Tối ưu CPU/Pin khi chuyển tab, tự động phát lại khi quay về tab
+        document.addEventListener("visibilitychange", function () {
+            const videos = document.querySelectorAll(
+                ".custom-video-wrapper video, .ruffrascal-pv-wrapper video, .product-video-unique video, .dog-video-slider-unique video"
+            );
+            if (document.hidden) {
+                videos.forEach(function (video) {
+                    if (!video.paused) {
+                        video._wasPlayingBeforeHide = true;
+                        video.pause();
+                    }
+                });
+            } else {
+                videos.forEach(function (video) {
+                    if (video._wasPlayingBeforeHide) {
+                        video._wasPlayingBeforeHide = false;
+                        video.play().catch(function () {});
+                    }
+                });
+            }
+        });
+
+        // Shared Auto-Pause Observer for Slider Cards: Pauses any playing slider video when leaving viewport
+        if (!window.FlusbaseAutoPauseObserver && "IntersectionObserver" in window) {
+            window.FlusbaseAutoPauseObserver = new IntersectionObserver(
+                function (entries) {
+                    entries.forEach(function (entry) {
+                        if (!entry.isIntersecting) {
+                            const target = entry.target;
+                            const video = target.querySelector ? target.querySelector("video") : target;
+                            if (video && !video.paused) {
+                                video.pause();
+                            }
+                        }
+                    });
+                },
+                { threshold: 0 }
+            );
+        }
+
+        // Shared Auto-Play Observer for Single Players (Video 1, 2, 3):
+        // Tự động phát muted khi cuộn vào màn hình, tự giải phóng unobserve ngay sau đó để tối ưu cuộn mượt
+        if (!window.FlusbaseSingleVideoObserver && "IntersectionObserver" in window) {
+            window.FlusbaseSingleVideoObserver = new IntersectionObserver(
+                function (entries) {
+                    entries.forEach(function (entry) {
+                        const wrapper = entry.target;
+                        const video = wrapper.querySelector ? wrapper.querySelector("video") : wrapper;
+                        if (!video) return;
+
+                        if (entry.isIntersecting) {
+                            if (video.paused && !video.dataset.userPaused) {
+                                video.preload = "auto";
+                                video.muted = true;
+
+                                const playPromise = video.play();
+                                if (playPromise !== undefined) {
+                                    playPromise
+                                        .then(function () {
+                                            wrapper.classList.remove("is-buffering");
+                                            wrapper.classList.add("is-playing");
+                                            if (window.FlusbaseSingleVideoObserver) {
+                                                window.FlusbaseSingleVideoObserver.unobserve(wrapper);
+                                            }
+                                        })
+                                        .catch(function () {});
+                                }
+                            }
+                        }
+                    });
+                },
+                { threshold: 0 }
+            );
+        }
+
+
+        // Helper dùng chung: Đăng ký các sự kiện playback (playing, waiting, pause, ended, error)
+        function bindVideoPlaybackEvents(video, container, onStateChange) {
+            video.addEventListener("playing", function () {
+                container.classList.remove("is-buffering");
+                container.classList.add("is-playing");
+                if (typeof onStateChange === "function") onStateChange(true);
+            });
+
+            video.addEventListener("waiting", function () {
+                if (!video.paused) {
+                    container.classList.add("is-buffering");
+                }
+            });
+
+            video.addEventListener("pause", function () {
+                container.classList.remove("is-buffering");
+                container.classList.remove("is-playing");
+                if (typeof onStateChange === "function") onStateChange(false);
+            });
+
+            video.addEventListener("ended", function () {
+                container.classList.remove("is-buffering");
+                container.classList.remove("is-playing");
+                if (typeof onStateChange === "function") onStateChange(false);
+            });
+
+            video.addEventListener("error", function () {
+                container.classList.remove("is-buffering");
+                container.classList.remove("is-playing");
+                if (typeof onStateChange === "function") onStateChange(false);
+            });
+        }
+
+        // Global Video Engine Namespace
+        window.FlusbaseVideoEngine = {
+            initSinglePlayer: function (wrapper) {
+                const video = wrapper.querySelector("video");
+                if (!video || video.dataset.initialized) return;
+                video.dataset.initialized = "1";
+
+                const isRuffRascal = wrapper.classList.contains("ruffrascal-pv-wrapper");
+
+                const playPauseButton = wrapper.querySelector(
+                    "#playPauseButton, #ruffrascalPvPlayPause, #productVideoPlayPauseUnique, .video-button, .ruffrascal-pv-button"
+                );
+                const muteButton = wrapper.querySelector(
+                    "#muteButton, #ruffrascalPvMute, #productVideoMuteUnique"
+                );
+
+                if (!playPauseButton) return;
+
+                const pauseIcon = playPauseButton.querySelector(".pause-icon, .ruffrascal-pv-pause-icon");
+                const playIcon = playPauseButton.querySelector(".play-icon, .ruffrascal-pv-play-icon");
+                const muteIcon = muteButton ? muteButton.querySelector(".mute-icon, .ruffrascal-pv-mute-icon") : null;
+                const soundIcon = muteButton ? muteButton.querySelector(".sound-icon, .ruffrascal-pv-sound-icon") : null;
+
+                function updateMuteIcon() {
+                    if (!muteButton) return;
+                    if (video.muted) {
+                        if (muteIcon) muteIcon.style.setProperty("display", "block", "important");
+                        if (soundIcon) soundIcon.style.setProperty("display", "none", "important");
+                        muteButton.setAttribute("aria-label", "Unmute video");
+                    } else {
+                        if (muteIcon) muteIcon.style.setProperty("display", "none", "important");
+                        if (soundIcon) soundIcon.style.setProperty("display", "block", "important");
+                        muteButton.setAttribute("aria-label", "Mute video");
+                    }
+                }
+
+                function setPlayIcon(isPlaying) {
+                    if (isPlaying) {
+                        if (pauseIcon) pauseIcon.style.setProperty("display", "block", "important");
+                        if (playIcon) playIcon.style.setProperty("display", "none", "important");
+                        playPauseButton.setAttribute("aria-label", "Pause video");
+                    } else {
+                        if (pauseIcon) pauseIcon.style.setProperty("display", "none", "important");
+                        if (playIcon) playIcon.style.setProperty("display", "block", "important");
+                        playPauseButton.setAttribute("aria-label", "Play video");
+                    }
+                }
+
+                // Gán sự kiện playback chung
+                bindVideoPlaybackEvents(video, wrapper, setPlayIcon);
+
+                function togglePlay() {
+                    if (video.paused) {
+                        delete video.dataset.userPaused;
+                        // Khong pause video khac: Cac video 1, 2, 3 co the chay dong thoi
+                        if (video.preload !== "auto") video.preload = "auto";
+                        video.muted = true;
+                        updateMuteIcon();
+
+                        wrapper.classList.add("is-buffering");
+                        const playPromise = video.play();
+                        if (playPromise !== undefined) {
+                            playPromise
+                                .then(function () {
+                                    wrapper.classList.remove("is-buffering");
+                                    wrapper.classList.add("is-playing");
+                                    setPlayIcon(true);
+                                })
+                                .catch(function (error) {
+                                    wrapper.classList.remove("is-buffering");
+                                    console.warn("Play interrupted or blocked:", error);
+                                });
+                        }
+                    } else {
+                        video.dataset.userPaused = "1";
+                        video.pause();
+                        wrapper.classList.remove("is-playing");
+                        wrapper.classList.remove("is-buffering");
+                        setPlayIcon(false);
+                    }
+                }
+
+                // Thao tác click toàn bộ container để phát / dừng
+                wrapper.addEventListener("click", function (event) {
+                    if (event.target.closest("#muteButton, #ruffrascalPvMute, #productVideoMuteUnique")) return;
+                    togglePlay();
+                });
+
+                playPauseButton.addEventListener("click", function (event) {
+                    event.stopPropagation();
+                    togglePlay();
+                });
+
+                if (muteButton) {
+                    muteButton.addEventListener("click", function (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        video.muted = true;
+                        updateMuteIcon();
+                    });
+                }
+
+                updateMuteIcon();
+                setPlayIcon(!video.paused);
+
+                if (window.FlusbaseSingleVideoObserver) {
+                    window.FlusbaseSingleVideoObserver.observe(wrapper);
+                }
+            },
+
+            initSlider: function (slider) {
+                if (!slider || slider.dataset.dogSliderInit) return;
+                slider.dataset.dogSliderInit = "1";
+
+                const track = slider.querySelector(".dog-video-track");
+                const cards = slider.querySelectorAll(".dog-video-card");
+                const leftButton = slider.querySelector(".dog-video-arrow-left");
+                const rightButton = slider.querySelector(".dog-video-arrow-right");
+
+                if (!track || !cards.length) return;
+
+                cards.forEach(function (card) {
+                    if (card.dataset.dogCardInit) return;
+                    card.dataset.dogCardInit = "1";
+
+                    const video = card.querySelector("video");
+                    const playButton = card.querySelector(".dog-video-play");
+                    const muteButton = card.querySelector(".dog-video-mute");
+
+                    if (!video) return;
+
+                    card._flusbaseLoadVideo = function () {
+                        loadThumbnail(video, card);
+                    };
+                    if (window.FlusbaseVideoObserver) {
+                        window.FlusbaseVideoObserver.observe(card);
+                    }
+
+                    // Gán sự kiện playback chung
+                    bindVideoPlaybackEvents(video, card);
+
+                    function updateMuteButton() {
+                        if (!muteButton) return;
+                        if (video.muted) {
+                            muteButton.setAttribute("aria-label", "Unmute video");
+                            muteButton.innerHTML = '<svg viewBox="0 0 24 24"><path d="M5 9V15H9L14 19V5L9 9H5Z"></path><line x1="17" y1="9" x2="21" y2="15"></line><line x1="21" y1="9" x2="17" y2="15"></line></svg>';
+                        } else {
+                            muteButton.setAttribute("aria-label", "Mute video");
+                            muteButton.innerHTML = '<svg viewBox="0 0 24 24"><path d="M5 9V15H9L14 19V5L9 9H5Z"></path><path d="M17 8.5C18.3 9.5 19 10.7 19 12C19 13.3 18.3 14.5 17 15.5"></path><path d="M19.5 6.5C21.1 8 22 9.8 22 12C22 14.2 21.1 16 19.5 17.5"></path></svg>';
+                        }
+                    }
+
+                    function togglePlay() {
+                        if (video.paused) {
+                            // Chi pause cac card khac trong cung slider de tranh trung lap am thanh, khong anh huong video 1, 2, 3
+                            slider.querySelectorAll("video").forEach(function (other) {
+                                if (other !== video && !other.paused) {
+                                    other.pause();
+                                    const otherCard = other.closest(".dog-video-card");
+                                    if (otherCard) {
+                                        otherCard.classList.remove("is-playing");
+                                        otherCard.classList.remove("is-buffering");
+                                    }
+                                }
+                            });
+                            video.muted = false;
+                            updateMuteButton();
+
+                            card.classList.add("is-buffering");
+                            const playPromise = video.play();
+                            if (playPromise !== undefined) {
+                                playPromise
+                                    .then(function () {
+                                        card.classList.remove("is-buffering");
+                                        card.classList.add("is-playing");
+                                    })
+                                    .catch(function (error) {
+                                        if (error.name === "NotAllowedError") {
+                                            video.muted = true;
+                                            updateMuteButton();
+                                            video.play().then(function () {
+                                                card.classList.remove("is-buffering");
+                                                card.classList.add("is-playing");
+                                            });
+                                        } else {
+                                            card.classList.remove("is-buffering");
+                                            console.warn("Play interrupted or blocked:", error);
+                                        }
+                                    });
+                            }
+                        } else {
+                            video.pause();
+                            card.classList.remove("is-playing");
+                            card.classList.remove("is-buffering");
+                        }
+                    }
+
+                    card.addEventListener("click", function (event) {
+                        if (event.target.closest(".dog-video-mute")) return;
+                        togglePlay();
+                    });
+
+                    if (playButton) {
+                        playButton.addEventListener("click", function (event) {
+                            event.stopPropagation();
+                            togglePlay();
+                        });
+                    }
+
+                    if (muteButton) {
+                        muteButton.addEventListener("click", function (event) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            video.muted = !video.muted;
+                            updateMuteButton();
+                        });
+
+                        updateMuteButton();
+                    }
+
+                    if (window.FlusbaseAutoPauseObserver) {
+                        window.FlusbaseAutoPauseObserver.observe(card);
+                    }
+                });
+
+                function getScrollAmount() {
+                    const firstCard = track.querySelector(".dog-video-card");
+                    if (!firstCard) return 0;
+                    const styles = window.getComputedStyle(track);
+                    const gap = parseFloat(styles.columnGap) || parseFloat(styles.gap) || 16;
+                    return firstCard.getBoundingClientRect().width + gap;
+                }
+
+                if (leftButton) {
+                    leftButton.addEventListener("click", function (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        track.scrollBy({ left: -getScrollAmount(), behavior: "smooth" });
+                    });
+                }
+
+                if (rightButton) {
+                    rightButton.addEventListener("click", function (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        track.scrollBy({ left: getScrollAmount(), behavior: "smooth" });
+                    });
+                }
+            },
+
+            initAll: function () {
+                // Find and initialize single video players
+                const singleWrappers = document.querySelectorAll(
+                    ".custom-video-wrapper, .ruffrascal-pv-wrapper, .product-video-unique"
+                );
+                singleWrappers.forEach(function (wrapper) {
+                    window.FlusbaseVideoEngine.initSinglePlayer(wrapper);
+                });
+
+                // Find and initialize sliders
+                const sliders = document.querySelectorAll(".dog-video-slider-unique");
+                sliders.forEach(function (slider) {
+                    window.FlusbaseVideoEngine.initSlider(slider);
+                });
+            }
+        };
+
+        // Auto-init on page ready
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", window.FlusbaseVideoEngine.initAll);
+        } else {
+            window.FlusbaseVideoEngine.initAll();
+        }
+    })();
+</script>
+</body>
+
+</html>

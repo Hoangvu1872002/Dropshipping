@@ -1,0 +1,696 @@
+<!-- GLOBAL VIDEO SYSTEM STYLE SHEET -->
+<style>
+    /* =========================================
+       GLOBAL RESET / BOX-SIZING FOR VIDEO WRAPPERS
+    ========================================= */
+    .custom-video-wrapper,
+    .ruffrascal-pv-wrapper,
+    .product-video-unique,
+    .dog-video-slider-unique,
+    .custom-video-wrapper *,
+    .ruffrascal-pv-wrapper *,
+    .product-video-unique *,
+    .dog-video-slider-unique * {
+        box-sizing: border-box;
+    }
+
+    /* =========================================
+       1. SINGLE VIDEO PLAYER: CORE CONTAINERS
+    ========================================= */
+    .custom-video-wrapper,
+    .ruffrascal-pv-wrapper,
+    .product-video-unique {
+        position: relative;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        overflow: hidden;
+        border-radius: 12px;
+        background: transparent;
+        line-height: 0;
+        isolation: isolate;
+    }
+
+    /* Ratio configurations */
+    .ruffrascal-pv-wrapper,
+    .product-video-unique {
+        aspect-ratio: 1 / 1;
+    }
+
+    /* =========================================
+       2. SINGLE VIDEO PLAYER: VIDEO ELEMENT
+    ========================================= */
+    .custom-video-wrapper video,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-video,
+    .product-video-unique video {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 12px;
+        background: transparent;
+        object-fit: cover;
+        cursor: pointer;
+    }
+
+    .custom-video-wrapper video {
+        height: auto;
+        aspect-ratio: 16 / 9;
+    }
+
+    .ruffrascal-pv-wrapper .ruffrascal-pv-video,
+    .product-video-unique video {
+        height: 100%;
+        aspect-ratio: 1 / 1;
+    }
+
+    /* =========================================
+       3. SINGLE VIDEO PLAYER: CONTROLS & OVERLAYS
+    ========================================= */
+    .custom-video-wrapper .video-controls,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-controls,
+    .product-video-unique .video-controls {
+        position: static;
+    }
+
+    /* =========================================
+       4. SINGLE VIDEO PLAYER: BUTTON STYLES (100% IDENTICAL TO ARR/PREVIEW)
+    ========================================= */
+    /* Center Play / Pause Button */
+    .custom-video-wrapper .video-button,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-button,
+    .product-video-unique .video-button,
+    #playPauseButton,
+    #ruffrascalPvPlayPause,
+    #productVideoPlayPauseUnique {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 56px !important;
+        height: 56px !important;
+        min-width: 56px !important;
+        min-height: 56px !important;
+        max-width: 56px !important;
+        max-height: 56px !important;
+        aspect-ratio: 1 / 1 !important;
+        border-radius: 50% !important;
+        background: rgba(245, 130, 32, 0.9) !important;
+        border: 2px solid #ffffff !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.25s ease !important;
+        box-shadow: 0 4px 16px rgba(245, 130, 32, 0.45) !important;
+        z-index: 2 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        line-height: 1 !important;
+        outline: none !important;
+        flex-shrink: 0 !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+    }
+
+    /* Vector SVGs inside Play/Pause Button */
+    .custom-video-wrapper .video-button svg,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-button svg,
+    .product-video-unique .video-button svg,
+    #playPauseButton svg,
+    #ruffrascalPvPlayPause svg,
+    #productVideoPlayPauseUnique svg {
+        width: 24px !important;
+        height: 24px !important;
+        min-width: 24px !important;
+        min-height: 24px !important;
+        max-width: 24px !important;
+        max-height: 24px !important;
+        fill: #ffffff !important;
+        color: #ffffff !important;
+        pointer-events: none !important;
+        flex-shrink: 0 !important;
+    }
+
+    .custom-video-wrapper .video-button svg path,
+    .custom-video-wrapper .video-button svg rect,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-button svg path,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-button svg rect,
+    .product-video-unique .video-button svg path,
+    .product-video-unique .video-button svg rect,
+    #playPauseButton svg path,
+    #playPauseButton svg rect,
+    #ruffrascalPvPlayPause svg path,
+    #ruffrascalPvPlayPause svg rect,
+    #productVideoPlayPauseUnique svg path,
+    #productVideoPlayPauseUnique svg rect {
+        fill: #ffffff !important;
+    }
+
+    /* Play triangle: 100% IDENTICAL TO ARR VIDEO (.dog-video-play::after) */
+    .custom-video-wrapper:not(.is-playing) .video-button::after,
+    .ruffrascal-pv-wrapper:not(.is-playing) .ruffrascal-pv-button::after,
+    .product-video-unique:not(.is-playing) .video-button::after,
+    .custom-video-wrapper:not(.is-playing) #playPauseButton::after,
+    .ruffrascal-pv-wrapper:not(.is-playing) #ruffrascalPvPlayPause::after,
+    .product-video-unique:not(.is-playing) #productVideoPlayPauseUnique::after {
+        content: '' !important;
+        display: block !important;
+        width: 0 !important;
+        height: 0 !important;
+        border-top: 10px solid transparent !important;
+        border-bottom: 10px solid transparent !important;
+        border-left: 17px solid #ffffff !important;
+        margin-left: 4px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* While playing: hide the CSS play triangle */
+    .custom-video-wrapper.is-playing .video-button::after,
+    .ruffrascal-pv-wrapper.is-playing .ruffrascal-pv-button::after,
+    .product-video-unique.is-playing .video-button::after,
+    .custom-video-wrapper.is-playing #playPauseButton::after,
+    .ruffrascal-pv-wrapper.is-playing #ruffrascalPvPlayPause::after,
+    .product-video-unique.is-playing #productVideoPlayPauseUnique::after {
+        display: none !important;
+    }
+
+    /* While playing: Pause SVG (||) is visible inside button on hover */
+    .custom-video-wrapper.is-playing .pause-icon,
+    .ruffrascal-pv-wrapper.is-playing .ruffrascal-pv-pause-icon,
+    .ruffrascal-pv-wrapper.is-playing .pause-icon,
+    .product-video-unique.is-playing .pause-icon {
+        display: block !important;
+    }
+
+    /* While paused: Pause SVG (||) is hidden */
+    .custom-video-wrapper:not(.is-playing) .pause-icon,
+    .ruffrascal-pv-wrapper:not(.is-playing) .ruffrascal-pv-pause-icon,
+    .ruffrascal-pv-wrapper:not(.is-playing) .pause-icon,
+    .product-video-unique:not(.is-playing) .pause-icon {
+        display: none !important;
+    }
+
+    /* SVG play icon is hidden since triangle is rendered pixel-perfect by ::after */
+    .custom-video-wrapper .play-icon,
+    .ruffrascal-pv-wrapper .play-icon,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-play-icon,
+    .product-video-unique .play-icon {
+        display: none !important;
+    }
+
+    /* Visibility logic:
+       When paused: Button is ALWAYS VISIBLE in the center (showing Play icon)
+       When playing: Button is hidden by default, and REVEALS ON HOVER (showing Pause icon)
+    */
+    .custom-video-wrapper:not(.is-playing) .video-button,
+    .ruffrascal-pv-wrapper:not(.is-playing) .ruffrascal-pv-button,
+    .product-video-unique:not(.is-playing) .video-button,
+    .custom-video-wrapper:not(.is-playing) #playPauseButton,
+    .ruffrascal-pv-wrapper:not(.is-playing) #ruffrascalPvPlayPause,
+    .product-video-unique:not(.is-playing) #productVideoPlayPauseUnique {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+
+    .custom-video-wrapper.is-playing .video-button,
+    .ruffrascal-pv-wrapper.is-playing .ruffrascal-pv-button,
+    .product-video-unique.is-playing .video-button,
+    .custom-video-wrapper.is-playing #playPauseButton,
+    .ruffrascal-pv-wrapper.is-playing #ruffrascalPvPlayPause,
+    .product-video-unique.is-playing #productVideoPlayPauseUnique {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.2s ease, background-color 0.2s ease !important;
+    }
+
+    .custom-video-wrapper.is-playing:hover .video-button,
+    .ruffrascal-pv-wrapper.is-playing:hover .ruffrascal-pv-button,
+    .product-video-unique.is-playing:hover .video-button,
+    .custom-video-wrapper.is-playing:hover #playPauseButton,
+    .ruffrascal-pv-wrapper.is-playing:hover #ruffrascalPvPlayPause,
+    .product-video-unique.is-playing:hover #productVideoPlayPauseUnique {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+
+    /* Buffering spinner for Single Players */
+    .custom-video-wrapper.is-buffering .video-button,
+    .ruffrascal-pv-wrapper.is-buffering .ruffrascal-pv-button,
+    .product-video-unique.is-buffering .video-button,
+    .custom-video-wrapper.is-buffering #playPauseButton,
+    .ruffrascal-pv-wrapper.is-buffering #ruffrascalPvPlayPause,
+    .product-video-unique.is-buffering #productVideoPlayPauseUnique {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: none !important;
+        background: rgba(0, 0, 0, 0.7) !important;
+        border: 3px solid rgba(255, 255, 255, 0.3) !important;
+        border-top-color: #f58220 !important;
+        animation: dogVideoSpin 0.75s linear infinite !important;
+    }
+
+    .custom-video-wrapper.is-buffering .video-button svg,
+    .ruffrascal-pv-wrapper.is-buffering .ruffrascal-pv-button svg,
+    .product-video-unique.is-buffering .video-button svg,
+    .custom-video-wrapper.is-buffering #playPauseButton svg,
+    .ruffrascal-pv-wrapper.is-buffering #ruffrascalPvPlayPause svg,
+    .product-video-unique.is-buffering #productVideoPlayPauseUnique svg {
+        display: none !important;
+    }
+
+    .custom-video-wrapper .video-button:hover,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-button:hover,
+    .product-video-unique .video-button:hover,
+    #playPauseButton:hover,
+    #ruffrascalPvPlayPause:hover,
+    #productVideoPlayPauseUnique:hover {
+        transform: translate(-50%, -50%) scale(1.1) !important;
+        background: #e07016 !important;
+    }
+
+    /* Bottom-Right Mute Button - Hidden for single players since audio is removed */
+    #muteButton,
+    #ruffrascalPvMute,
+    #productVideoMuteUnique,
+    .custom-video-wrapper .mute-icon,
+    .custom-video-wrapper .sound-icon,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-mute-icon,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-sound-icon {
+        display: none !important;
+    }
+
+    /* =========================================
+       5. SLIDER CAROUSEL: WRAPPER & TRACK
+    ========================================= */
+    .dog-video-slider-unique {
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+        --dog-orange: #F58220;
+    }
+
+    .dog-video-slider-unique .dog-video-track {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        padding: 4px;
+    }
+
+    .dog-video-slider-unique .dog-video-track::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* =========================================
+       6. SLIDER CAROUSEL: VIDEO CARDS
+    ========================================= */
+    .dog-video-slider-unique .dog-video-card {
+        position: relative;
+        flex: 0 0 calc((100% - 60px) / 4.7);
+        aspect-ratio: 9 / 16;
+        overflow: hidden;
+        border-radius: 12px;
+        background: transparent;
+        cursor: pointer;
+        box-sizing: border-box;
+        box-shadow: none;
+        transition: transform 0.25s ease;
+    }
+
+    .dog-video-slider-unique .dog-video-card:hover {
+        transform: translateY(-4px);
+        box-shadow: none;
+    }
+
+    .dog-video-slider-unique .dog-video-card video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        aspect-ratio: 9 / 16;
+        object-fit: cover;
+        background: transparent;
+        border-radius: 12px;
+        pointer-events: none;
+    }
+
+    /* =========================================
+       7. SLIDER CAROUSEL: CARD CONTROLS
+    ========================================= */
+    /* Card Play Button */
+    /* Card Play Button */
+    .dog-video-slider-unique .dog-video-play {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 56px !important;
+        height: 56px !important;
+        min-width: 56px !important;
+        min-height: 56px !important;
+        max-width: 56px !important;
+        max-height: 56px !important;
+        aspect-ratio: 1 / 1 !important;
+        border-radius: 50% !important;
+        background: rgba(245, 130, 32, 0.9) !important;
+        border: 2px solid #ffffff !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.25s ease !important;
+        box-shadow: 0 4px 16px rgba(245, 130, 32, 0.45) !important;
+        z-index: 2 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        line-height: 1 !important;
+        outline: none !important;
+        flex-shrink: 0 !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+    }
+
+    .dog-video-slider-unique .dog-video-play::after {
+        content: '' !important;
+        display: block !important;
+        width: 0 !important;
+        height: 0 !important;
+        border-top: 10px solid transparent !important;
+        border-bottom: 10px solid transparent !important;
+        border-left: 17px solid #ffffff !important;
+        margin-left: 4px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Hide play when card is playing */
+    .dog-video-slider-unique .dog-video-card.is-playing .dog-video-play {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+
+    /* Buffering spinner when video is loading */
+    .dog-video-slider-unique .dog-video-card.is-buffering .dog-video-play {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: none !important;
+        background: rgba(0, 0, 0, 0.7) !important;
+        border: 3px solid rgba(255, 255, 255, 0.3) !important;
+        border-top-color: var(--dog-orange) !important;
+        animation: dogVideoSpin 0.75s linear infinite !important;
+    }
+
+    .dog-video-slider-unique .dog-video-card.is-buffering .dog-video-play::after {
+        display: none !important;
+    }
+
+    @keyframes dogVideoSpin {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .dog-video-slider-unique .dog-video-card:not(.is-playing):not(.is-buffering) .dog-video-play:hover {
+        transform: translate(-50%, -50%) scale(1.1) !important;
+        background: #e07016 !important;
+    }
+
+    /* Card Mute Button */
+    .dog-video-slider-unique .dog-video-mute {
+        position: absolute !important;
+        bottom: 12px !important;
+        right: 12px !important;
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        min-height: 36px !important;
+        max-width: 36px !important;
+        max-height: 36px !important;
+        aspect-ratio: 1 / 1 !important;
+        border-radius: 50% !important;
+        background: rgba(0, 0, 0, 0.6) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transition: opacity 0.25s ease, background-color 0.25s ease, transform 0.2s ease !important;
+        z-index: 2 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        line-height: 1 !important;
+        outline: none !important;
+        box-shadow: none !important;
+        flex-shrink: 0 !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+    }
+
+    .dog-video-slider-unique .dog-video-card:hover .dog-video-mute {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+
+    .dog-video-slider-unique .dog-video-card:hover .dog-video-mute:hover {
+        background: rgba(245, 130, 32, 0.9) !important;
+        border-color: #f58220 !important;
+        transform: scale(1.08) !important;
+    }
+
+    .dog-video-slider-unique .dog-video-mute svg {
+        display: block !important;
+        width: 18px !important;
+        height: 18px !important;
+        min-width: 18px !important;
+        min-height: 18px !important;
+        max-width: 18px !important;
+        max-height: 18px !important;
+        stroke: #ffffff !important;
+        stroke-width: 2 !important;
+        stroke-linecap: round !important;
+        stroke-linejoin: round !important;
+        fill: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        pointer-events: none !important;
+        flex-shrink: 0 !important;
+    }
+
+    .dog-video-slider-unique .dog-video-mute svg path,
+    .dog-video-slider-unique .dog-video-mute svg line {
+        stroke: #ffffff !important;
+        stroke-width: 2 !important;
+        stroke-linecap: round !important;
+        stroke-linejoin: round !important;
+        fill: none !important;
+    }
+
+    /* =========================================
+       8. SLIDER CAROUSEL: NAVIGATION ARROWS
+    ========================================= */
+
+    /* Arrow Base Style */
+    .dog-video-slider-unique .dog-video-arrow {
+        position: absolute !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
+        max-width: 44px !important;
+        max-height: 44px !important;
+        aspect-ratio: 1 / 1 !important;
+        border-radius: 50% !important;
+        background: #ffffff !important;
+        border: 1px solid #e5e7eb !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        z-index: 3 !important;
+        opacity: 0;
+        transition: opacity 0.25s ease, background-color 0.25s ease, transform 0.2s ease !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        line-height: 1 !important;
+        outline: none !important;
+        flex-shrink: 0 !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+    }
+
+    .dog-video-slider-unique .dog-video-arrow-left {
+        left: 8px !important;
+    }
+
+    .dog-video-slider-unique .dog-video-arrow-right {
+        right: 8px !important;
+    }
+
+    /* Show arrows when hovering over slider container */
+    .dog-video-slider-unique:hover .dog-video-arrow {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+
+    .dog-video-slider-unique .dog-video-arrow:hover {
+        background: #f58220 !important;
+        border-color: #f58220 !important;
+        transform: translateY(-50%) scale(1.08) !important;
+    }
+
+    .dog-video-slider-unique .dog-video-arrow:hover svg {
+        stroke: #ffffff;
+    }
+
+    .dog-video-slider-unique .dog-video-arrow svg {
+        width: 20px !important;
+        height: 20px !important;
+        stroke: #1f2937;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+        transition: stroke 0.2s ease;
+    }
+
+    /* =========================================
+       9. RESPONSIVE MEDIA QUERIES (BREAKPOINTS)
+    ========================================= */
+    /* Tablet Breakpoint (Slider Adjustment: 3 cards) */
+    @media (max-width: 1024px) {
+        .dog-video-slider-unique .dog-video-card {
+            flex: 0 0 calc((100% - 32px) / 3);
+        }
+    }
+
+    /* Mobile Breakpoint (under 640px) */
+    @media (max-width: 640px) {
+
+        /* Single Players Wrapper Adjustment */
+        .custom-video-wrapper,
+        .ruffrascal-pv-wrapper,
+        .product-video-unique {
+            border-radius: 12px;
+        }
+
+        .custom-video-wrapper video,
+        .ruffrascal-pv-wrapper .ruffrascal-pv-video,
+        .product-video-unique video {
+            border-radius: 12px;
+        }
+
+        /* Single Players Controls (Keep layout static so buttons stay properly placed) */
+        .custom-video-wrapper .video-controls,
+        .ruffrascal-pv-wrapper .ruffrascal-pv-controls,
+        .product-video-unique .video-controls {
+            position: static !important;
+        }
+
+        /* Single Player Center Play / Pause Button (Mobile) */
+        .custom-video-wrapper .video-button,
+        .ruffrascal-pv-wrapper .ruffrascal-pv-button,
+        .product-video-unique .video-button,
+        #playPauseButton,
+        #ruffrascalPvPlayPause,
+        #productVideoPlayPauseUnique {
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: 44px !important;
+            height: 44px !important;
+            min-width: 44px !important;
+            min-height: 44px !important;
+            max-width: 44px !important;
+            max-height: 44px !important;
+        }
+
+        .custom-video-wrapper:not(.is-playing) .video-button::after,
+        .ruffrascal-pv-wrapper:not(.is-playing) .ruffrascal-pv-button::after,
+        .product-video-unique:not(.is-playing) .video-button::after,
+        .custom-video-wrapper:not(.is-playing) #playPauseButton::after,
+        .ruffrascal-pv-wrapper:not(.is-playing) #ruffrascalPvPlayPause::after,
+        .product-video-unique:not(.is-playing) #productVideoPlayPauseUnique::after {
+            border-top-width: 8px !important;
+            border-bottom-width: 8px !important;
+            border-left-width: 14px !important;
+            margin-left: 3px !important;
+        }
+
+        .custom-video-wrapper .video-button svg,
+        .ruffrascal-pv-wrapper .ruffrascal-pv-button svg,
+        .product-video-unique .video-button svg,
+        #playPauseButton svg,
+        #ruffrascalPvPlayPause svg,
+        #productVideoPlayPauseUnique svg {
+            width: 18px !important;
+            height: 18px !important;
+            min-width: 18px !important;
+            min-height: 18px !important;
+        }
+
+        /* Slider Adjustments */
+        .dog-video-slider-unique .dog-video-track {
+            gap: 12px;
+            padding: 0;
+        }
+
+        .dog-video-slider-unique .dog-video-card {
+            flex: 0 0 calc((100% - 24px) / 2.15);
+            border-radius: 10px;
+        }
+
+        /* Always show Play button when paused on mobile */
+        .dog-video-slider-unique .dog-video-play {
+            width: 44px !important;
+            height: 44px !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
+        }
+
+        .dog-video-slider-unique .dog-video-card.is-playing .dog-video-play {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        /* Always show Mute button on mobile */
+        .dog-video-slider-unique .dog-video-mute {
+            width: 32px !important;
+            height: 32px !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
+        }
+
+        /* Hide Arrow buttons on mobile */
+        .dog-video-slider-unique .dog-video-arrow {
+            display: none !important;
+        }
+    }
+</style>

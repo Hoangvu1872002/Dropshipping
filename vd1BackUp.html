@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Product Video</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        body {
+            background: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+
+        /* =========================================
+       VIDEO CONTAINER
+    ========================================= */
+
+        .custom-video-wrapper {
+            position: relative;
+
+            width: 100%;
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+            overflow: hidden;
+
+            border-radius: 16px;
+
+            background: #ffffff;
+
+            line-height: 0;
+
+            /* Tạo stacking context riêng biệt → z-index bên trong
+         (video-controls: 999) không thoát ra ảnh hưởng trang */
+            isolation: isolate;
+        }
+
+
+        /* Skeleton loading has been removed to display video layout directly */
+
+
+        /* =========================================
+       VIDEO
+    ========================================= */
+
+        .custom-video-wrapper video {
+            display: block;
+
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            aspect-ratio: 16 / 9;
+
+            object-fit: cover;
+
+            border-radius: 16px;
+
+            background: transparent;
+        }
+
+
+        /* =========================================
+       CONTROLS
+    ========================================= */
+
+        .custom-video-wrapper .video-controls {
+            position: absolute;
+
+            left: 18px;
+            bottom: 18px;
+
+            display: flex !important;
+
+            align-items: center;
+
+            gap: 8px;
+
+            z-index: 999;
+
+            opacity: 0 !important;
+
+            visibility: hidden !important;
+
+            pointer-events: none;
+
+            transform: translateY(6px);
+
+            transition:
+                opacity 0.25s ease,
+                visibility 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        /* =========================================
+       SHOW CONTROLS ON HOVER
+    ========================================= */
+
+        .custom-video-wrapper:hover .video-controls {
+            opacity: 1 !important;
+
+            visibility: visible !important;
+
+            pointer-events: auto;
+
+            transform: translateY(0);
+        }
+
+
+        /* =========================================
+       BUTTON
+    ========================================= */
+
+        .custom-video-wrapper .video-button {
+
+            width: 44px !important;
+            height: 44px !important;
+
+            min-width: 44px !important;
+            min-height: 44px !important;
+
+            padding: 0 !important;
+            margin: 0 !important;
+
+            border: 2px solid #F97316 !important;
+
+            border-radius: 50% !important;
+
+            background: #F97316 !important;
+
+            color: #ffffff !important;
+
+            display: flex !important;
+
+            align-items: center !important;
+            justify-content: center !important;
+
+            cursor: pointer;
+
+            position: relative;
+
+            overflow: hidden;
+
+            -webkit-appearance: none;
+            appearance: none;
+
+            transition:
+                transform 0.15s ease,
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        /* =========================================
+       SVG ICON
+    ========================================= */
+
+        .custom-video-wrapper .video-button svg {
+
+            width: 22px !important;
+            height: 22px !important;
+
+            min-width: 22px !important;
+            min-height: 22px !important;
+
+            display: none !important;
+
+            fill: none !important;
+
+            stroke: currentColor !important;
+
+            stroke-width: 2.2 !important;
+
+            stroke-linecap: round !important;
+
+            stroke-linejoin: round !important;
+
+            color: #ffffff !important;
+
+            pointer-events: none;
+        }
+
+
+        /* =========================================
+       PLAY / PAUSE
+    ========================================= */
+
+        .custom-video-wrapper .video-button .pause-icon {
+
+            display: block !important;
+        }
+
+        .custom-video-wrapper .video-button .play-icon {
+
+            display: none !important;
+        }
+
+
+        /* =========================================
+       MUTE / SOUND
+    ========================================= */
+
+        .custom-video-wrapper .video-button .mute-icon {
+
+            display: block !important;
+        }
+
+        .custom-video-wrapper .video-button .sound-icon {
+
+            display: none !important;
+        }
+
+
+        /* =========================================
+       HOVER BUTTON
+    ========================================= */
+
+        .custom-video-wrapper .video-button:hover {
+
+            background: #EA580C !important;
+
+            border-color: #EA580C !important;
+
+            color: #ffffff !important;
+        }
+
+
+        .custom-video-wrapper .video-button:hover svg {
+
+            color: #ffffff !important;
+
+            stroke: #ffffff !important;
+        }
+
+
+        /* =========================================
+       CLICK
+    ========================================= */
+
+        .custom-video-wrapper .video-button:active {
+
+            transform: scale(0.92);
+        }
+
+
+        /* =========================================
+       FOCUS
+    ========================================= */
+
+        .custom-video-wrapper .video-button:focus {
+
+            outline: none !important;
+        }
+
+
+        /* =========================================
+       MOBILE
+    ========================================= */
+
+        @media (max-width: 749px) {
+
+            .custom-video-wrapper {
+
+                border-radius: 12px;
+            }
+
+
+            .custom-video-wrapper video {
+
+                border-radius: 12px;
+            }
+
+
+            .custom-video-wrapper .video-controls {
+
+                left: 12px;
+                bottom: 12px;
+
+                gap: 6px;
+
+                opacity: 1 !important;
+
+                visibility: visible !important;
+
+                pointer-events: auto;
+
+                transform: translateY(0);
+            }
+
+
+            .custom-video-wrapper .video-button {
+
+                width: 40px !important;
+                height: 40px !important;
+
+                min-width: 40px !important;
+                min-height: 40px !important;
+            }
+
+
+            .custom-video-wrapper .video-button svg {
+
+                width: 20px !important;
+                height: 20px !important;
+
+                min-width: 20px !important;
+                min-height: 20px !important;
+            }
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="custom-video-wrapper">
+
+
+        <!-- =====================================
+         VIDEO
+    ====================================== -->
+
+        <video id="productVideo" muted loop playsinline preload="none"
+            poster="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQC_Ro-C6nQHC4cDYWLm_J6vXfiPyxchcYZvodv3miXe7iGkN-_txMIxGg&s=10">
+
+            <source src="https://stream.vidhosting.in/videos/b5ff7f85.mp4" type="video/mp4">
+
+            Your browser does not support HTML5 video.
+
+        </video>
+
+
+        <!-- =====================================
+         CONTROLS
+    ====================================== -->
+
+        <div class="video-controls">
+
+
+            <!-- ===================================
+           PLAY / PAUSE
+      ==================================== -->
+
+            <button id="playPauseButton" class="video-button" type="button" aria-label="Play video">
+
+                <!-- PAUSE ICON -->
+
+                <svg class="pause-icon" viewBox="0 0 24 24" aria-hidden="true">
+
+                    <rect x="7" y="5" width="4" height="14" rx="1" fill="currentColor"></rect>
+
+                    <rect x="13" y="5" width="4" height="14" rx="1" fill="currentColor"></rect>
+
+                </svg>
+
+
+                <!-- PLAY ICON -->
+
+                <svg class="play-icon" viewBox="0 0 24 24" aria-hidden="true">
+
+                    <path d="M8 5.5V18.5L18 12L8 5.5Z" fill="currentColor"></path>
+
+                </svg>
+
+            </button>
+
+
+            <!-- ===================================
+           MUTE / UNMUTE
+      ==================================== -->
+
+            <button id="muteButton" class="video-button" type="button" aria-label="Unmute video">
+
+                <!-- MUTED ICON -->
+
+                <svg class="mute-icon" viewBox="0 0 24 24" aria-hidden="true">
+
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+
+                    <line x1="17" y1="9" x2="21" y2="15"></line>
+
+                    <line x1="21" y1="9" x2="17" y2="15"></line>
+
+                </svg>
+
+
+                <!-- SOUND ICON -->
+
+                <svg class="sound-icon" viewBox="0 0 24 24" aria-hidden="true">
+
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+
+                    <path d="M17 8.5C18.3 9.5 19 10.7 19 12C19 13.3 18.3 14.5 17 15.5"></path>
+
+                    <path d="M19.5 6.5C21.1 8 22 9.8 22 12C22 14.2 21.1 16 19.5 17.5"></path>
+
+                </svg>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+       JAVASCRIPT
+  ========================================= -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                const video =
+                    document.getElementById(
+                        "productVideo"
+                    );
+
+
+                const playPauseButton =
+                    document.getElementById(
+                        "playPauseButton"
+                    );
+
+
+                const muteButton =
+                    document.getElementById(
+                        "muteButton"
+                    );
+
+
+                if (
+                    !video ||
+                    !playPauseButton ||
+                    !muteButton
+                ) {
+
+                    return;
+
+                }
+
+
+                const pauseIcon =
+                    playPauseButton.querySelector(
+                        ".pause-icon"
+                    );
+
+
+                const playIcon =
+                    playPauseButton.querySelector(
+                        ".play-icon"
+                    );
+
+
+                const muteIcon =
+                    muteButton.querySelector(
+                        ".mute-icon"
+                    );
+
+
+                const soundIcon =
+                    muteButton.querySelector(
+                        ".sound-icon"
+                    );
+
+
+                /* =====================================
+                   LAZY LOAD + AUTOPLAY
+                   - preload="none" khi chưa vào viewport
+                   - Khi vào viewport: load metadata → seek 0.01s
+                   - Thumbnail hiện native, sau đó autoplay
+                ====================================== */
+
+                const wrapper =
+                    video.closest(".custom-video-wrapper");
+
+
+                function loadAndAutoplay() {
+
+                    if (video.dataset.thumbLoaded) return;
+                    video.dataset.thumbLoaded = "1";
+
+                    if (video.hasAttribute("poster")) {
+                        if (wrapper) wrapper.classList.add("thumb-ready");
+                    }
+
+                    video.preload = "auto";
+                    video.load();
+
+                    function doSeek() {
+                        if (video.paused && video.currentTime === 0) {
+                            video.currentTime = 0.01;
+                        } else {
+                            if (wrapper) wrapper.classList.add("thumb-ready");
+                        }
+                    }
+
+                    /* Sau khi seek xong: tắt skeleton, autoplay */
+                    video.addEventListener(
+                        "seeked",
+                        function () {
+
+                            if (wrapper) wrapper.classList.add("thumb-ready");
+
+                            /* Thử autoplay sau khi có thumbnail */
+                            video.play().catch(function (error) {
+                                console.log("Autoplay blocked by browser:", error);
+                                video.dispatchEvent(new Event("pause"));
+                            });
+
+                        },
+                        { once: true }
+                    );
+
+                    if (video.readyState >= 1) {
+                        doSeek();
+                    } else {
+                        video.addEventListener(
+                            "loadedmetadata",
+                            function () {
+                                doSeek();
+                                // Fallback: add class after 1.5s if seeked event fails or gets delayed
+                                setTimeout(function () {
+                                    if (wrapper && !wrapper.classList.contains("thumb-ready")) {
+                                        wrapper.classList.add("thumb-ready");
+                                    }
+                                }, 1500);
+                            },
+                            { once: true }
+                        );
+                    }
+
+                }
+
+
+                // Shared Global Intersection Observer implementation to optimize network & rendering
+                if (!window.FlusbaseVideoObserver) {
+                    window.FlusbaseVideoObserver = new IntersectionObserver(
+                        function (entries) {
+                            entries.forEach(function (entry) {
+                                const targetEl = entry.target;
+                                const loadFn = targetEl._flusbaseLoadVideo;
+
+                                if (entry.isIntersecting) {
+                                    // Debounce loading by 150ms to prevent loading resources when fast scrolling
+                                    if (!targetEl._flusbaseLoadTimeout) {
+                                        targetEl._flusbaseLoadTimeout = setTimeout(function () {
+                                            if (typeof loadFn === "function") {
+                                                loadFn();
+                                            }
+                                            window.FlusbaseVideoObserver.unobserve(targetEl);
+                                        }, 150);
+                                    }
+                                } else {
+                                    // Cancel loading if user scrolls away quickly
+                                    if (targetEl._flusbaseLoadTimeout) {
+                                        clearTimeout(targetEl._flusbaseLoadTimeout);
+                                        targetEl._flusbaseLoadTimeout = null;
+                                    }
+                                }
+                            });
+                        },
+                        {
+                            root: null,
+                            rootMargin: "0px 0px 150px 0px",
+                            threshold: 0.1
+                        }
+                    );
+                }
+
+                const observerTarget = wrapper || video;
+                observerTarget._flusbaseLoadVideo = loadAndAutoplay;
+                window.FlusbaseVideoObserver.observe(observerTarget);
+
+
+                // Sync video play state on tab visibility change (lock screen, tab switches on mobile)
+                document.addEventListener("visibilitychange", function () {
+                    if (document.hidden) {
+                        if (!video.paused) {
+                            video.pause();
+                        }
+                    } else {
+                        if (video.paused) {
+                            video.dispatchEvent(new Event("pause"));
+                        } else {
+                            video.dispatchEvent(new Event("play"));
+                        }
+                    }
+                });
+
+
+                /* =====================================
+                   PLAY / PAUSE
+                ====================================== */
+
+                playPauseButton.addEventListener(
+                    "click",
+                    function (event) {
+
+                        event.preventDefault();
+
+                        event.stopPropagation();
+
+                        // Ensure video source is loaded before playing
+                        if (!video.dataset.thumbLoaded) {
+                            loadAndAutoplay();
+                        }
+
+                        if (video.paused) {
+
+                            video.play().catch(
+                                function (error) {
+                                    console.log("Play failed / blocked:", error);
+                                    video.dispatchEvent(new Event("pause"));
+                                }
+                            );
+
+                        } else {
+
+                            video.pause();
+
+                        }
+
+                    }
+                );
+
+
+                /* =====================================
+                   PLAY EVENT
+                ====================================== */
+
+                video.addEventListener(
+                    "play",
+                    function () {
+
+                        pauseIcon.style.setProperty(
+                            "display",
+                            "block",
+                            "important"
+                        );
+
+
+                        playIcon.style.setProperty(
+                            "display",
+                            "none",
+                            "important"
+                        );
+
+
+                        playPauseButton.setAttribute(
+                            "aria-label",
+                            "Pause video"
+                        );
+
+                    }
+                );
+
+
+                /* =====================================
+                   PAUSE EVENT
+                ====================================== */
+
+                video.addEventListener(
+                    "pause",
+                    function () {
+
+                        pauseIcon.style.setProperty(
+                            "display",
+                            "none",
+                            "important"
+                        );
+
+
+                        playIcon.style.setProperty(
+                            "display",
+                            "block",
+                            "important"
+                        );
+
+
+                        playPauseButton.setAttribute(
+                            "aria-label",
+                            "Play video"
+                        );
+
+                    }
+                );
+
+
+                /* =====================================
+                   MUTE / UNMUTE
+                ====================================== */
+
+                muteButton.addEventListener(
+                    "click",
+                    function (event) {
+
+                        event.preventDefault();
+
+                        event.stopPropagation();
+
+
+                        video.muted =
+                            !video.muted;
+
+
+                        updateMuteIcon();
+
+                    }
+                );
+
+
+                /* =====================================
+                   UPDATE MUTE ICON
+                ====================================== */
+
+                function updateMuteIcon() {
+
+                    if (video.muted) {
+
+                        muteIcon.style.setProperty(
+                            "display",
+                            "block",
+                            "important"
+                        );
+
+
+                        soundIcon.style.setProperty(
+                            "display",
+                            "none",
+                            "important"
+                        );
+
+
+                        muteButton.setAttribute(
+                            "aria-label",
+                            "Unmute video"
+                        );
+
+                    } else {
+
+                        muteIcon.style.setProperty(
+                            "display",
+                            "none",
+                            "important"
+                        );
+
+
+                        soundIcon.style.setProperty(
+                            "display",
+                            "block",
+                            "important"
+                        );
+
+
+                        muteButton.setAttribute(
+                            "aria-label",
+                            "Mute video"
+                        );
+
+                    }
+
+                }
+
+
+                /* =====================================
+                   INITIAL STATE
+                ====================================== */
+
+                updateMuteIcon();
+
+
+                if (video.paused) {
+
+                    pauseIcon.style.setProperty(
+                        "display",
+                        "none",
+                        "important"
+                    );
+
+
+                    playIcon.style.setProperty(
+                        "display",
+                        "block",
+                        "important"
+                    );
+
+                } else {
+
+                    pauseIcon.style.setProperty(
+                        "display",
+                        "block",
+                        "important"
+                    );
+
+
+                    playIcon.style.setProperty(
+                        "display",
+                        "none",
+                        "important"
+                    );
+
+                }
+
+
+                // Autoplay handled safely by IntersectionObserver and click listeners
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

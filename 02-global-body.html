@@ -1,0 +1,461 @@
+<!-- GLOBAL VIDEO SYSTEM ENGINE -->
+<script>
+    (function () {
+        "use strict";
+
+        // Shared Global Intersection Observer: Lazy thumbnail loader for slider cards
+        if (!window.FlusbaseVideoObserver && "IntersectionObserver" in window) {
+            window.FlusbaseVideoObserver = new IntersectionObserver(
+                function (entries) {
+                    entries.forEach(function (entry) {
+                        const targetEl = entry.target;
+                        const loadFn = targetEl._flusbaseLoadVideo;
+
+                        if (entry.isIntersecting) {
+                            if (!targetEl._flusbaseLoadTimeout) {
+                                targetEl._flusbaseLoadTimeout = setTimeout(function () {
+                                    if (typeof loadFn === "function") {
+                                        loadFn();
+                                    }
+                                    window.FlusbaseVideoObserver.unobserve(targetEl);
+                                }, 150);
+                            }
+                        } else {
+                            if (targetEl._flusbaseLoadTimeout) {
+                                clearTimeout(targetEl._flusbaseLoadTimeout);
+                                targetEl._flusbaseLoadTimeout = null;
+                            }
+                        }
+                    });
+                },
+                {
+                    root: null,
+                    rootMargin: "200px 300px 200px 300px",
+                    threshold: 0
+                }
+            );
+        }
+
+        // Shared Thumbnail Loader for Slider Cards
+        function loadThumbnail(video, card) {
+            if (video.dataset.thumbLoaded) return;
+            video.dataset.thumbLoaded = "1";
+
+            if (video.hasAttribute("poster")) {
+                card.classList.add("thumb-ready");
+                return;
+            }
+
+            video.preload = "auto";
+            video.load();
+
+            function doSeek() {
+                if (video.paused && video.currentTime === 0) {
+                    video.currentTime = 0.01;
+                } else {
+                    card.classList.add("thumb-ready");
+                }
+            }
+
+            video.addEventListener("seeked", function () {
+                card.classList.add("thumb-ready");
+            }, { once: true });
+
+            if (video.readyState >= 1) {
+                doSeek();
+            } else {
+                video.addEventListener("loadedmetadata", function () {
+                    doSeek();
+                    setTimeout(function () {
+                        if (!card.classList.contains("thumb-ready")) {
+                            card.classList.add("thumb-ready");
+                        }
+                    }, 1500);
+                }, { once: true });
+            }
+        }
+
+        // Shared Visibility Change: Tối ưu CPU/Pin khi chuyển tab, tự động phát lại khi quay về tab
+        document.addEventListener("visibilitychange", function () {
+            const videos = document.querySelectorAll(
+                ".custom-video-wrapper video, .ruffrascal-pv-wrapper video, .product-video-unique video, .dog-video-slider-unique video"
+            );
+            if (document.hidden) {
+                videos.forEach(function (video) {
+                    if (!video.paused) {
+                        video._wasPlayingBeforeHide = true;
+                        video.pause();
+                    }
+                });
+            } else {
+                videos.forEach(function (video) {
+                    if (video._wasPlayingBeforeHide) {
+                        video._wasPlayingBeforeHide = false;
+                        video.play().catch(function () {});
+                    }
+                });
+            }
+        });
+
+        // Shared Auto-Pause Observer for Slider Cards: Pauses any playing slider video when leaving viewport
+        if (!window.FlusbaseAutoPauseObserver && "IntersectionObserver" in window) {
+            window.FlusbaseAutoPauseObserver = new IntersectionObserver(
+                function (entries) {
+                    entries.forEach(function (entry) {
+                        if (!entry.isIntersecting) {
+                            const target = entry.target;
+                            const video = target.querySelector ? target.querySelector("video") : target;
+                            if (video && !video.paused) {
+                                video.pause();
+                            }
+                        }
+                    });
+                },
+                { threshold: 0 }
+            );
+        }
+
+        // Shared Auto-Play Observer for Single Players (Video 1, 2, 3):
+        // Tự động phát muted khi cuộn vào màn hình, tự giải phóng unobserve ngay sau đó để tối ưu cuộn mượt
+        if (!window.FlusbaseSingleVideoObserver && "IntersectionObserver" in window) {
+            window.FlusbaseSingleVideoObserver = new IntersectionObserver(
+                function (entries) {
+                    entries.forEach(function (entry) {
+                        const wrapper = entry.target;
+                        const video = wrapper.querySelector ? wrapper.querySelector("video") : wrapper;
+                        if (!video) return;
+
+                        if (entry.isIntersecting) {
+                            if (video.paused && !video.dataset.userPaused) {
+                                video.preload = "auto";
+                                video.muted = true;
+
+                                const playPromise = video.play();
+                                if (playPromise !== undefined) {
+                                    playPromise
+                                        .then(function () {
+                                            wrapper.classList.remove("is-buffering");
+                                            wrapper.classList.add("is-playing");
+                                            if (window.FlusbaseSingleVideoObserver) {
+                                                window.FlusbaseSingleVideoObserver.unobserve(wrapper);
+                                            }
+                                        })
+                                        .catch(function () {});
+                                }
+                            }
+                        }
+                    });
+                },
+                { threshold: 0 }
+            );
+        }
+
+
+        // Helper dùng chung: Đăng ký các sự kiện playback (playing, waiting, pause, ended, error)
+        function bindVideoPlaybackEvents(video, container, onStateChange) {
+            video.addEventListener("playing", function () {
+                container.classList.remove("is-buffering");
+                container.classList.add("is-playing");
+                if (typeof onStateChange === "function") onStateChange(true);
+            });
+
+            video.addEventListener("waiting", function () {
+                if (!video.paused) {
+                    container.classList.add("is-buffering");
+                }
+            });
+
+            video.addEventListener("pause", function () {
+                container.classList.remove("is-buffering");
+                container.classList.remove("is-playing");
+                if (typeof onStateChange === "function") onStateChange(false);
+            });
+
+            video.addEventListener("ended", function () {
+                container.classList.remove("is-buffering");
+                container.classList.remove("is-playing");
+                if (typeof onStateChange === "function") onStateChange(false);
+            });
+
+            video.addEventListener("error", function () {
+                container.classList.remove("is-buffering");
+                container.classList.remove("is-playing");
+                if (typeof onStateChange === "function") onStateChange(false);
+            });
+        }
+
+        // Global Video Engine Namespace
+        window.FlusbaseVideoEngine = {
+            initSinglePlayer: function (wrapper) {
+                const video = wrapper.querySelector("video");
+                if (!video || video.dataset.initialized) return;
+                video.dataset.initialized = "1";
+
+                const isRuffRascal = wrapper.classList.contains("ruffrascal-pv-wrapper");
+
+                const playPauseButton = wrapper.querySelector(
+                    "#playPauseButton, #ruffrascalPvPlayPause, #productVideoPlayPauseUnique, .video-button, .ruffrascal-pv-button"
+                );
+                const muteButton = wrapper.querySelector(
+                    "#muteButton, #ruffrascalPvMute, #productVideoMuteUnique"
+                );
+
+                if (!playPauseButton) return;
+
+                const pauseIcon = playPauseButton.querySelector(".pause-icon, .ruffrascal-pv-pause-icon");
+                const playIcon = playPauseButton.querySelector(".play-icon, .ruffrascal-pv-play-icon");
+                const muteIcon = muteButton ? muteButton.querySelector(".mute-icon, .ruffrascal-pv-mute-icon") : null;
+                const soundIcon = muteButton ? muteButton.querySelector(".sound-icon, .ruffrascal-pv-sound-icon") : null;
+
+                function updateMuteIcon() {
+                    if (!muteButton) return;
+                    if (video.muted) {
+                        if (muteIcon) muteIcon.style.setProperty("display", "block", "important");
+                        if (soundIcon) soundIcon.style.setProperty("display", "none", "important");
+                        muteButton.setAttribute("aria-label", "Unmute video");
+                    } else {
+                        if (muteIcon) muteIcon.style.setProperty("display", "none", "important");
+                        if (soundIcon) soundIcon.style.setProperty("display", "block", "important");
+                        muteButton.setAttribute("aria-label", "Mute video");
+                    }
+                }
+
+                function setPlayIcon(isPlaying) {
+                    if (isPlaying) {
+                        if (pauseIcon) pauseIcon.style.setProperty("display", "block", "important");
+                        if (playIcon) playIcon.style.setProperty("display", "none", "important");
+                        playPauseButton.setAttribute("aria-label", "Pause video");
+                    } else {
+                        if (pauseIcon) pauseIcon.style.setProperty("display", "none", "important");
+                        if (playIcon) playIcon.style.setProperty("display", "block", "important");
+                        playPauseButton.setAttribute("aria-label", "Play video");
+                    }
+                }
+
+                // Gán sự kiện playback chung
+                bindVideoPlaybackEvents(video, wrapper, setPlayIcon);
+
+                function togglePlay() {
+                    if (video.paused) {
+                        delete video.dataset.userPaused;
+                        // Khong pause video khac: Cac video 1, 2, 3 co the chay dong thoi
+                        if (video.preload !== "auto") video.preload = "auto";
+                        video.muted = true;
+                        updateMuteIcon();
+
+                        wrapper.classList.add("is-buffering");
+                        const playPromise = video.play();
+                        if (playPromise !== undefined) {
+                            playPromise
+                                .then(function () {
+                                    wrapper.classList.remove("is-buffering");
+                                    wrapper.classList.add("is-playing");
+                                    setPlayIcon(true);
+                                })
+                                .catch(function (error) {
+                                    wrapper.classList.remove("is-buffering");
+                                    console.warn("Play interrupted or blocked:", error);
+                                });
+                        }
+                    } else {
+                        video.dataset.userPaused = "1";
+                        video.pause();
+                        wrapper.classList.remove("is-playing");
+                        wrapper.classList.remove("is-buffering");
+                        setPlayIcon(false);
+                    }
+                }
+
+                // Thao tác click toàn bộ container để phát / dừng
+                wrapper.addEventListener("click", function (event) {
+                    if (event.target.closest("#muteButton, #ruffrascalPvMute, #productVideoMuteUnique")) return;
+                    togglePlay();
+                });
+
+                playPauseButton.addEventListener("click", function (event) {
+                    event.stopPropagation();
+                    togglePlay();
+                });
+
+                if (muteButton) {
+                    muteButton.addEventListener("click", function (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        video.muted = true;
+                        updateMuteIcon();
+                    });
+                }
+
+                updateMuteIcon();
+                setPlayIcon(!video.paused);
+
+                if (window.FlusbaseSingleVideoObserver) {
+                    window.FlusbaseSingleVideoObserver.observe(wrapper);
+                }
+            },
+
+            initSlider: function (slider) {
+                if (!slider || slider.dataset.dogSliderInit) return;
+                slider.dataset.dogSliderInit = "1";
+
+                const track = slider.querySelector(".dog-video-track");
+                const cards = slider.querySelectorAll(".dog-video-card");
+                const leftButton = slider.querySelector(".dog-video-arrow-left");
+                const rightButton = slider.querySelector(".dog-video-arrow-right");
+
+                if (!track || !cards.length) return;
+
+                cards.forEach(function (card) {
+                    if (card.dataset.dogCardInit) return;
+                    card.dataset.dogCardInit = "1";
+
+                    const video = card.querySelector("video");
+                    const playButton = card.querySelector(".dog-video-play");
+                    const muteButton = card.querySelector(".dog-video-mute");
+
+                    if (!video) return;
+
+                    card._flusbaseLoadVideo = function () {
+                        loadThumbnail(video, card);
+                    };
+                    if (window.FlusbaseVideoObserver) {
+                        window.FlusbaseVideoObserver.observe(card);
+                    }
+
+                    // Gán sự kiện playback chung
+                    bindVideoPlaybackEvents(video, card);
+
+                    function updateMuteButton() {
+                        if (!muteButton) return;
+                        if (video.muted) {
+                            muteButton.setAttribute("aria-label", "Unmute video");
+                            muteButton.innerHTML = '<svg viewBox="0 0 24 24"><path d="M5 9V15H9L14 19V5L9 9H5Z"></path><line x1="17" y1="9" x2="21" y2="15"></line><line x1="21" y1="9" x2="17" y2="15"></line></svg>';
+                        } else {
+                            muteButton.setAttribute("aria-label", "Mute video");
+                            muteButton.innerHTML = '<svg viewBox="0 0 24 24"><path d="M5 9V15H9L14 19V5L9 9H5Z"></path><path d="M17 8.5C18.3 9.5 19 10.7 19 12C19 13.3 18.3 14.5 17 15.5"></path><path d="M19.5 6.5C21.1 8 22 9.8 22 12C22 14.2 21.1 16 19.5 17.5"></path></svg>';
+                        }
+                    }
+
+                    function togglePlay() {
+                        if (video.paused) {
+                            // Chi pause cac card khac trong cung slider de tranh trung lap am thanh, khong anh huong video 1, 2, 3
+                            slider.querySelectorAll("video").forEach(function (other) {
+                                if (other !== video && !other.paused) {
+                                    other.pause();
+                                    const otherCard = other.closest(".dog-video-card");
+                                    if (otherCard) {
+                                        otherCard.classList.remove("is-playing");
+                                        otherCard.classList.remove("is-buffering");
+                                    }
+                                }
+                            });
+                            video.muted = false;
+                            updateMuteButton();
+
+                            card.classList.add("is-buffering");
+                            const playPromise = video.play();
+                            if (playPromise !== undefined) {
+                                playPromise
+                                    .then(function () {
+                                        card.classList.remove("is-buffering");
+                                        card.classList.add("is-playing");
+                                    })
+                                    .catch(function (error) {
+                                        if (error.name === "NotAllowedError") {
+                                            video.muted = true;
+                                            updateMuteButton();
+                                            video.play().then(function () {
+                                                card.classList.remove("is-buffering");
+                                                card.classList.add("is-playing");
+                                            });
+                                        } else {
+                                            card.classList.remove("is-buffering");
+                                            console.warn("Play interrupted or blocked:", error);
+                                        }
+                                    });
+                            }
+                        } else {
+                            video.pause();
+                            card.classList.remove("is-playing");
+                            card.classList.remove("is-buffering");
+                        }
+                    }
+
+                    card.addEventListener("click", function (event) {
+                        if (event.target.closest(".dog-video-mute")) return;
+                        togglePlay();
+                    });
+
+                    if (playButton) {
+                        playButton.addEventListener("click", function (event) {
+                            event.stopPropagation();
+                            togglePlay();
+                        });
+                    }
+
+                    if (muteButton) {
+                        muteButton.addEventListener("click", function (event) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            video.muted = !video.muted;
+                            updateMuteButton();
+                        });
+
+                        updateMuteButton();
+                    }
+
+                    if (window.FlusbaseAutoPauseObserver) {
+                        window.FlusbaseAutoPauseObserver.observe(card);
+                    }
+                });
+
+                function getScrollAmount() {
+                    const firstCard = track.querySelector(".dog-video-card");
+                    if (!firstCard) return 0;
+                    const styles = window.getComputedStyle(track);
+                    const gap = parseFloat(styles.columnGap) || parseFloat(styles.gap) || 16;
+                    return firstCard.getBoundingClientRect().width + gap;
+                }
+
+                if (leftButton) {
+                    leftButton.addEventListener("click", function (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        track.scrollBy({ left: -getScrollAmount(), behavior: "smooth" });
+                    });
+                }
+
+                if (rightButton) {
+                    rightButton.addEventListener("click", function (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        track.scrollBy({ left: getScrollAmount(), behavior: "smooth" });
+                    });
+                }
+            },
+
+            initAll: function () {
+                // Find and initialize single video players
+                const singleWrappers = document.querySelectorAll(
+                    ".custom-video-wrapper, .ruffrascal-pv-wrapper, .product-video-unique"
+                );
+                singleWrappers.forEach(function (wrapper) {
+                    window.FlusbaseVideoEngine.initSinglePlayer(wrapper);
+                });
+
+                // Find and initialize sliders
+                const sliders = document.querySelectorAll(".dog-video-slider-unique");
+                sliders.forEach(function (slider) {
+                    window.FlusbaseVideoEngine.initSlider(slider);
+                });
+            }
+        };
+
+        // Auto-init on page ready
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", window.FlusbaseVideoEngine.initAll);
+        } else {
+            window.FlusbaseVideoEngine.initAll();
+        }
+    })();
+</script>

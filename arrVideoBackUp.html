@@ -1,0 +1,1320 @@
+<style>
+    /* =========================================================
+   DOG VIDEO SLIDER
+   ========================================================= */
+
+    .dog-video-slider-unique {
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+        position: relative;
+        overflow: hidden;
+
+        /* Tạo stacking context riêng biệt → các z-index bên trong
+       (nút play, mute, arrow) không thoát ra ảnh hưởng trang */
+        isolation: isolate;
+
+        --dog-orange: #F58220;
+    }
+
+
+    /* =========================================================
+   VIDEO TRACK
+   ========================================================= */
+
+    .dog-video-slider-unique .dog-video-track {
+        display: flex;
+        gap: 16px;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+
+        -webkit-overflow-scrolling: touch;
+
+        padding: 0 4px;
+    }
+
+    .dog-video-slider-unique .dog-video-track::-webkit-scrollbar {
+        display: none;
+    }
+
+
+    /* =========================================================
+   VIDEO CARD
+   ========================================================= */
+
+    .dog-video-slider-unique .dog-video-card {
+        position: relative;
+
+        flex: 0 0 calc((100% - 60px) / 4.7);
+
+        aspect-ratio: 9 / 16;
+
+        overflow: hidden;
+
+        border-radius: 12px;
+
+        background: #f5f0eb;
+
+        cursor: pointer;
+
+        box-sizing: border-box;
+    }
+
+
+    /* Skeleton loading has been removed to display video layout directly */
+
+
+    /* =========================================================
+   VIDEO
+   ========================================================= */
+
+    .dog-video-slider-unique .dog-video-card video {
+        display: block;
+
+        width: 100%;
+        height: 100%;
+
+        max-width: none;
+        aspect-ratio: 9 / 16;
+
+        object-fit: cover;
+
+        background: transparent;
+    }
+
+
+    /* =========================================================
+   PLAY BUTTON
+   PAUSED  = ALWAYS VISIBLE
+   PLAYING = HIDDEN
+   ========================================================= */
+
+    .dog-video-slider-unique .dog-video-play {
+        position: absolute;
+
+        top: 50%;
+        left: 50%;
+
+        width: 52px !important;
+        height: 52px !important;
+
+        min-width: 52px !important;
+        min-height: 52px !important;
+
+        max-width: 52px !important;
+        max-height: 52px !important;
+
+        padding: 0 !important;
+        margin: 0 !important;
+
+        transform: translate(-50%, -50%);
+
+        border: none !important;
+        border-radius: 50% !important;
+
+        background: var(--dog-orange) !important;
+
+        color: #fff !important;
+
+        display: flex !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        box-sizing: border-box !important;
+
+        cursor: pointer;
+
+        z-index: 10;
+
+        line-height: 0 !important;
+
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+
+        appearance: none !important;
+        -webkit-appearance: none !important;
+
+        transition:
+            opacity .2s ease,
+            visibility .2s ease,
+            transform .2s ease,
+            background .2s ease;
+    }
+
+
+    /* =========================================================
+   PLAY ICON
+   ========================================================= */
+
+    .dog-video-slider-unique .dog-video-play::after {
+        content: "";
+
+        display: block;
+
+        width: 0;
+        height: 0;
+
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+
+        border-left: 15px solid #fff;
+
+        margin-left: 4px;
+    }
+
+
+    /* =========================================================
+   VIDEO ĐANG PLAY
+   → ẨN NÚT PLAY
+   ========================================================= */
+
+    .dog-video-slider-unique .dog-video-card.is-playing .dog-video-play {
+
+        opacity: 0 !important;
+
+        visibility: hidden !important;
+
+        pointer-events: none !important;
+    }
+
+
+    /* =========================================================
+   PLAY BUTTON HOVER
+   ========================================================= */
+
+    .dog-video-slider-unique .dog-video-card:not(.is-playing) .dog-video-play:hover {
+
+        transform: translate(-50%, -50%) scale(1.08);
+
+        background: #EA580C !important;
+    }
+
+
+    /* =========================================================
+   MUTE BUTTON
+   Hidden mặc định
+   ========================================================= */
+
+    .dog-video-slider-unique .dog-video-mute {
+
+        position: absolute;
+
+        right: 10px;
+        bottom: 10px;
+
+        width: 34px !important;
+        height: 34px !important;
+
+        min-width: 34px !important;
+        min-height: 34px !important;
+
+        max-width: 34px !important;
+        max-height: 34px !important;
+
+        padding: 0 !important;
+        margin: 0 !important;
+
+        border: none !important;
+
+        border-radius: 50% !important;
+
+        background: var(--dog-orange) !important;
+
+        color: #fff !important;
+
+        display: flex !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        box-sizing: border-box !important;
+
+        cursor: pointer;
+
+        z-index: 10;
+
+        line-height: 0 !important;
+
+        opacity: 0 !important;
+        visibility: hidden !important;
+
+        pointer-events: none !important;
+
+        appearance: none !important;
+        -webkit-appearance: none !important;
+
+        transition:
+            opacity .2s ease,
+            visibility .2s ease,
+            transform .2s ease,
+            background .2s ease;
+    }
+
+
+    /* =========================================================
+   MUTE ONLY WHEN HOVER CARD
+   ========================================================= */
+
+    .dog-video-slider-unique .dog-video-card:hover .dog-video-mute {
+
+        opacity: 1 !important;
+
+        visibility: visible !important;
+
+        pointer-events: auto !important;
+    }
+
+
+    /* =========================================================
+   MUTE HOVER
+   ========================================================= */
+
+    .dog-video-slider-unique .dog-video-card:hover .dog-video-mute:hover {
+
+        transform: scale(1.08);
+
+        background: #EA580C !important;
+    }
+
+
+    /* =========================================================
+   MUTE SVG
+   ========================================================= */
+
+    .dog-video-slider-unique .dog-video-mute svg {
+
+        display: block !important;
+
+        width: 17px !important;
+        height: 17px !important;
+
+        min-width: 17px !important;
+        min-height: 17px !important;
+
+        max-width: 17px !important;
+        max-height: 17px !important;
+
+        padding: 0 !important;
+        margin: 0 !important;
+
+        fill: none;
+
+        stroke: #fff;
+
+        stroke-width: 2;
+
+        stroke-linecap: round;
+
+        stroke-linejoin: round;
+
+        pointer-events: none;
+    }
+
+    /* =========================================================
+   LEFT / RIGHT HOVER ZONES
+   ========================================================= */
+
+    .dog-video-slider-unique .dog-video-hover-left,
+    .dog-video-slider-unique .dog-video-hover-right {
+
+        position: absolute;
+
+        top: 0;
+        bottom: 0;
+
+        width: 90px;
+
+        z-index: 40;
+
+        cursor: pointer;
+    }
+
+
+    .dog-video-slider-unique .dog-video-hover-left {
+        left: 0;
+    }
+
+
+    .dog-video-slider-unique .dog-video-hover-right {
+        right: 0;
+    }
+
+
+    /* =========================================================
+   ARROWS
+   ========================================================= */
+
+    .dog-video-slider-unique .dog-video-arrow {
+
+        position: absolute;
+
+        top: 50%;
+
+        width: 42px !important;
+        height: 42px !important;
+
+        min-width: 42px !important;
+        min-height: 42px !important;
+
+        max-width: 42px !important;
+        max-height: 42px !important;
+
+        padding: 0 !important;
+        margin: 0 !important;
+
+        transform: translateY(-50%);
+
+        border: none !important;
+
+        border-radius: 50% !important;
+
+        background: var(--dog-orange) !important;
+
+        color: #fff !important;
+
+        display: flex !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        box-sizing: border-box !important;
+
+        cursor: pointer;
+
+        z-index: 50;
+
+        line-height: 0 !important;
+
+        appearance: none !important;
+        -webkit-appearance: none !important;
+
+        opacity: 0;
+
+        visibility: hidden;
+
+        pointer-events: none;
+
+        transition:
+            opacity .2s ease,
+            visibility .2s ease,
+            transform .2s ease,
+            background .2s ease;
+    }
+
+
+    /* =========================================================
+   ARROW POSITION
+   ========================================================= */
+
+    .dog-video-slider-unique .dog-video-arrow-left {
+        left: 10px;
+    }
+
+
+    .dog-video-slider-unique .dog-video-arrow-right {
+        right: 10px;
+    }
+
+
+    /* =========================================================
+   SHOW PREVIOUS WHEN HOVER LEFT
+   ========================================================= */
+
+    .dog-video-slider-unique .dog-video-hover-left:hover~.dog-video-arrow-left {
+
+        opacity: 1;
+
+        visibility: visible;
+
+        pointer-events: auto;
+    }
+
+
+    /* =========================================================
+   SHOW NEXT WHEN HOVER RIGHT
+   ========================================================= */
+
+    .dog-video-slider-unique .dog-video-hover-right:hover~.dog-video-arrow-right {
+
+        opacity: 1;
+
+        visibility: visible;
+
+        pointer-events: auto;
+    }
+
+
+    /* =========================================================
+   KEEP ARROW VISIBLE WHEN HOVER BUTTON
+   ========================================================= */
+
+    .dog-video-slider-unique .dog-video-arrow:hover {
+
+        opacity: 1 !important;
+
+        visibility: visible !important;
+
+        pointer-events: auto !important;
+
+        transform: translateY(-50%) scale(1.08);
+
+        background: #EA580C !important;
+    }
+
+
+    /* =========================================================
+   ARROW SVG
+   ========================================================= */
+
+    .dog-video-slider-unique .dog-video-arrow svg {
+
+        display: block;
+
+        width: 20px !important;
+        height: 20px !important;
+
+        fill: none;
+
+        stroke: #fff;
+
+        stroke-width: 2.5;
+
+        stroke-linecap: round;
+
+        stroke-linejoin: round;
+
+        pointer-events: none;
+    }
+
+
+    /* =========================================================
+   TABLET
+   ========================================================= */
+
+    @media (min-width: 750px) and (max-width: 1099px) {
+
+        .dog-video-slider-unique .dog-video-card {
+
+            flex: 0 0 calc((100% - 32px) / 3.2);
+
+        }
+
+    }
+
+
+    /* =========================================================
+   MOBILE
+   ========================================================= */
+
+    @media (max-width: 749px) {
+
+        .dog-video-slider-unique .dog-video-track {
+
+            gap: 10px;
+
+            padding: 0;
+
+        }
+
+
+        .dog-video-slider-unique .dog-video-card {
+
+            flex: 0 0 68vw;
+
+            border-radius: 10px;
+
+        }
+
+
+        /*
+   * Mobile:
+   * Play luôn hiện khi pause
+   */
+
+        .dog-video-slider-unique .dog-video-play {
+
+            opacity: 1 !important;
+
+            visibility: visible !important;
+
+            pointer-events: auto !important;
+
+        }
+
+
+        /*
+   * Đang play thì ẩn Play
+   */
+
+        .dog-video-slider-unique .dog-video-card.is-playing .dog-video-play {
+
+            opacity: 0 !important;
+
+            visibility: hidden !important;
+
+            pointer-events: none !important;
+
+        }
+
+
+        /*
+   * Mute luôn hiện trên mobile
+   */
+
+        .dog-video-slider-unique .dog-video-mute {
+
+            opacity: 1 !important;
+
+            visibility: visible !important;
+
+            pointer-events: auto !important;
+
+        }
+
+
+        /*
+   * Arrow + hover zones ẩn trên mobile
+   */
+
+        .dog-video-slider-unique .dog-video-arrow,
+
+        .dog-video-slider-unique .dog-video-hover-left,
+
+        .dog-video-slider-unique .dog-video-hover-right {
+
+            display: none !important;
+
+        }
+
+    }
+</style>
+
+
+<!-- =========================================================
+     DOG VIDEO SLIDER
+     ========================================================= -->
+
+<div class="dog-video-slider-unique">
+
+
+    <!-- LEFT HOVER ZONE -->
+
+    <div class="dog-video-hover-left" aria-hidden="true"></div>
+
+
+    <!-- RIGHT HOVER ZONE -->
+
+    <div class="dog-video-hover-right" aria-hidden="true"></div>
+
+
+    <!-- PREVIOUS -->
+
+    <button class="dog-video-arrow dog-video-arrow-left" type="button" aria-label="Previous videos">
+
+        <svg viewBox="0 0 24 24">
+
+            <path d="M15 18L9 12L15 6"></path>
+
+        </svg>
+
+    </button>
+
+
+    <!-- =======================================================
+       VIDEO TRACK
+       ======================================================= -->
+
+    <div class="dog-video-track">
+
+
+        <!-- =====================================================
+         VIDEO 1
+         ===================================================== -->
+        <div class="dog-video-card">
+            <video playsinline muted loop preload="none"
+                poster="https://res.cloudinary.com/x9bj9p2l/video/upload/v1787588124/RascalRoverVd1.jpg">
+                <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/v1787588124/RascalRoverVd1.mp4" type="video/mp4">
+            </video>
+            <button class="dog-video-play" type="button" aria-label="Play video"></button>
+            <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                    <line x1="17" y1="9" x2="21" y2="15"></line>
+                    <line x1="21" y1="9" x2="17" y2="15"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- =====================================================
+         VIDEO 2
+         ===================================================== -->
+        <div class="dog-video-card">
+            <video playsinline muted loop preload="none"
+                poster="https://res.cloudinary.com/x9bj9p2l/video/upload/v1787588706/RascalRoverVd2.jpg">
+                <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/v1787588706/RascalRoverVd2.mp4" type="video/mp4">
+            </video>
+            <button class="dog-video-play" type="button" aria-label="Play video"></button>
+            <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                    <line x1="17" y1="9" x2="21" y2="15"></line>
+                    <line x1="21" y1="9" x2="17" y2="15"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- =====================================================
+         VIDEO 3
+         ===================================================== -->
+        <div class="dog-video-card">
+            <video playsinline muted loop preload="none"
+                poster="https://res.cloudinary.com/x9bj9p2l/video/upload/v1787590596/RascalRoverVd3.jpg">
+                <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/v1787590596/RascalRoverVd3.mp4" type="video/mp4">
+            </video>
+            <button class="dog-video-play" type="button" aria-label="Play video"></button>
+            <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                    <line x1="17" y1="9" x2="21" y2="15"></line>
+                    <line x1="21" y1="9" x2="17" y2="15"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- =====================================================
+         VIDEO 4
+         ===================================================== -->
+        <div class="dog-video-card">
+            <video playsinline muted loop preload="none"
+                poster="https://res.cloudinary.com/x9bj9p2l/video/upload/v1787591753/Amazon.com_YJGF_Hard_Bottom_Dog_Car_Seat_Cover_for_Back_Seat_Seat_Extender_for_Dogs_Strong_Support_More_Rest_Space_Waterproof_Scratch_Resistant_Car_Seat_Protector_Dog_Hammock_for_Car_SUV_Small_Truck_Pet_Supplie_2.jpg">
+                <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/v1787591753/Amazon.com_YJGF_Hard_Bottom_Dog_Car_Seat_Cover_for_Back_Seat_Seat_Extender_for_Dogs_Strong_Support_More_Rest_Space_Waterproof_Scratch_Resistant_Car_Seat_Protector_Dog_Hammock_for_Car_SUV_Small_Truck_Pet_Supplie_2.mp4" type="video/mp4">
+            </video>
+            <button class="dog-video-play" type="button" aria-label="Play video"></button>
+            <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                    <line x1="17" y1="9" x2="21" y2="15"></line>
+                    <line x1="21" y1="9" x2="17" y2="15"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- =====================================================
+         VIDEO 5
+         ===================================================== -->
+        <div class="dog-video-card">
+            <video playsinline muted loop preload="none"
+                poster="https://res.cloudinary.com/x9bj9p2l/video/upload/v1788585048/RascalRoverVd6.jpg">
+                <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/v1788585048/RascalRoverVd6.mp4" type="video/mp4">
+            </video>
+            <button class="dog-video-play" type="button" aria-label="Play video"></button>
+            <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                    <line x1="17" y1="9" x2="21" y2="15"></line>
+                    <line x1="21" y1="9" x2="17" y2="15"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- =====================================================
+         VIDEO 6
+         ===================================================== -->
+        <div class="dog-video-card">
+            <video playsinline muted loop preload="none"
+                poster="https://res.cloudinary.com/x9bj9p2l/video/upload/v1788585091/RascalRoverVd7.jpg">
+                <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/v1788585091/RascalRoverVd7.mp4" type="video/mp4">
+            </video>
+            <button class="dog-video-play" type="button" aria-label="Play video"></button>
+            <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                    <line x1="17" y1="9" x2="21" y2="15"></line>
+                    <line x1="21" y1="9" x2="17" y2="15"></line>
+                </svg>
+            </button>
+        </div>
+
+
+    </div>
+
+
+    <!-- NEXT -->
+
+    <button class="dog-video-arrow dog-video-arrow-right" type="button" aria-label="Next videos">
+
+        <svg viewBox="0 0 24 24">
+
+            <path d="M9 18L15 12L9 6"></path>
+
+        </svg>
+
+    </button>
+
+
+</div>
+
+
+<script>
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const slider =
+                document.querySelector(
+                    ".dog-video-slider-unique"
+                );
+
+            if (!slider) {
+                return;
+            }
+
+
+            const track =
+                slider.querySelector(
+                    ".dog-video-track"
+                );
+
+
+            const cards =
+                slider.querySelectorAll(
+                    ".dog-video-card"
+                );
+
+
+            const leftButton =
+                slider.querySelector(
+                    ".dog-video-arrow-left"
+                );
+
+
+            const rightButton =
+                slider.querySelector(
+                    ".dog-video-arrow-right"
+                );
+
+
+            /* =====================================================
+               THUMBNAIL: SEEK-TO-FRAME (không cần Canvas, không CORS)
+               Khi card vào viewport:
+                 1. set preload="metadata" → browser tải metadata
+                 2. sau loadedmetadata → seek về 0.01s
+                 3. video element tự render frame đầu tiên natively
+               ===================================================== */
+
+            function ensureVideoLoaded(video) {
+                if (!video.dataset.videoLoaded) {
+                    video.dataset.videoLoaded = "1";
+                    video.preload = "auto";
+                    video.load();
+                }
+            }
+
+            function loadThumbnail(video) {
+
+                /* Đã seek rồi thì bỏ qua */
+                if (video.dataset.thumbLoaded) return;
+                video.dataset.thumbLoaded = "1";
+
+                const card = video.closest(".dog-video-card");
+
+                /* Nếu đã có poster tĩnh thì tắt skeleton ngay lập tức mà không cần seek */
+                if (video.hasAttribute("poster")) {
+                    if (card) card.classList.add("thumb-ready");
+                    return;
+                }
+
+                video.preload = "auto";
+                video.load();
+
+                function doSeek() {
+                    if (video.paused && video.currentTime === 0) {
+                        video.currentTime = 0.01;
+                    } else {
+                        if (card) card.classList.add("thumb-ready");
+                    }
+                }
+
+                /* Tắt skeleton sau khi frame đã paint */
+                video.addEventListener(
+                    "seeked",
+                    function () {
+                        if (card) card.classList.add("thumb-ready");
+                    },
+                    { once: true }
+                );
+
+                if (video.readyState >= 1) {
+
+                    /* Metadata đã có sẵn */
+                    doSeek();
+
+                } else {
+
+                    video.addEventListener(
+                        "loadedmetadata",
+                        function () {
+                            doSeek();
+                            setTimeout(function () {
+                                if (card && !card.classList.contains("thumb-ready")) {
+                                    card.classList.add("thumb-ready");
+                                }
+                            }, 1500);
+                        },
+                        { once: true }
+                    );
+
+                }
+
+            }
+
+
+            // Shared Global Intersection Observer implementation to optimize network & rendering
+            if (!window.FlusbaseVideoObserver) {
+                window.FlusbaseVideoObserver = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            const targetEl = entry.target;
+                            const loadFn = targetEl._flusbaseLoadVideo;
+
+                            if (entry.isIntersecting) {
+                                // Debounce loading by 150ms to prevent loading resources when fast scrolling
+                                if (!targetEl._flusbaseLoadTimeout) {
+                                    targetEl._flusbaseLoadTimeout = setTimeout(function () {
+                                        if (typeof loadFn === "function") {
+                                            loadFn();
+                                        }
+                                        window.FlusbaseVideoObserver.unobserve(targetEl);
+                                    }, 150);
+                                }
+                            } else {
+                                // Cancel loading if user scrolls away quickly
+                                if (targetEl._flusbaseLoadTimeout) {
+                                    clearTimeout(targetEl._flusbaseLoadTimeout);
+                                    targetEl._flusbaseLoadTimeout = null;
+                                }
+                            }
+                        });
+                    },
+                    {
+                        root: null,
+                        rootMargin: "0px 300px 0px 300px",
+                        threshold: 0
+                    }
+                );
+            }
+
+            cards.forEach(function (card) {
+                const video = card.querySelector("video");
+                if (video) {
+                    card._flusbaseLoadVideo = function () {
+                        loadThumbnail(video);
+                    };
+                    window.FlusbaseVideoObserver.observe(card);
+                }
+            });
+
+            // Sync video play state on tab visibility change (lock screen, tab switches on mobile)
+            document.addEventListener("visibilitychange", function () {
+                if (document.hidden) {
+                    cards.forEach(function (card) {
+                        const video = card.querySelector("video");
+                        if (video && !video.paused) {
+                            video.pause();
+                        }
+                    });
+                } else {
+                    cards.forEach(function (card) {
+                        const video = card.querySelector("video");
+                        if (video) {
+                            if (video.paused) {
+                                video.dispatchEvent(new Event("pause"));
+                            } else {
+                                video.dispatchEvent(new Event("play"));
+                            }
+                        }
+                    });
+                }
+            });
+
+
+            /* =====================================================
+               VIDEO CONTROLS
+               ===================================================== */
+
+            cards.forEach(function (card) {
+
+                const video =
+                    card.querySelector("video");
+
+
+                const playButton =
+                    card.querySelector(
+                        ".dog-video-play"
+                    );
+
+
+                const muteButton =
+                    card.querySelector(
+                        ".dog-video-mute"
+                    );
+
+
+                /* ===================================================
+                   PLAY / PAUSE BUTTON
+                   =================================================== */
+
+                playButton.addEventListener(
+                    "click",
+                    function (event) {
+
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        ensureVideoLoaded(video);
+
+                        if (video.paused) {
+
+                            /*
+                             * Pause all other videos
+                             */
+
+                            cards.forEach(
+                                function (otherCard) {
+
+                                    const otherVideo =
+                                        otherCard.querySelector(
+                                            "video"
+                                        );
+
+
+                                    if (otherVideo !== video) {
+
+                                        otherVideo.pause();
+
+                                        otherCard.classList.remove(
+                                            "is-playing"
+                                        );
+
+                                    }
+
+                                }
+                            );
+
+
+                            video.play()
+                                .then(function () {
+
+                                    card.classList.add(
+                                        "is-playing"
+                                    );
+
+                                })
+                                .catch(function (error) {
+                                    console.log("Play blocked by browser:", error);
+                                    video.dispatchEvent(new Event("pause"));
+                                });
+
+
+                        } else {
+
+                            video.pause();
+
+                            card.classList.remove(
+                                "is-playing"
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                /* ===================================================
+                   CLICK VIDEO
+                   =================================================== */
+
+                video.addEventListener(
+                    "click",
+                    function () {
+
+                        ensureVideoLoaded(video);
+
+                        if (video.paused) {
+
+                            cards.forEach(
+                                function (otherCard) {
+
+                                    const otherVideo =
+                                        otherCard.querySelector(
+                                            "video"
+                                        );
+
+
+                                    if (otherVideo !== video) {
+
+                                        otherVideo.pause();
+
+                                        otherCard.classList.remove(
+                                            "is-playing"
+                                        );
+
+                                    }
+
+                                }
+                            );
+
+
+                            video.play()
+                                .then(function () {
+
+                                    card.classList.add(
+                                        "is-playing"
+                                    );
+
+                                })
+                                .catch(function (error) {
+                                    console.log("Play blocked by browser:", error);
+                                    video.dispatchEvent(new Event("pause"));
+                                });
+
+
+                        } else {
+
+                            video.pause();
+
+                            card.classList.remove(
+                                "is-playing"
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                /* ===================================================
+                   PLAY EVENT
+                   =================================================== */
+
+                video.addEventListener(
+                    "play",
+                    function () {
+
+                        card.classList.add(
+                            "is-playing"
+                        );
+
+                    }
+                );
+
+
+                /* ===================================================
+                   PAUSE EVENT
+                   =================================================== */
+
+                video.addEventListener(
+                    "pause",
+                    function () {
+
+                        card.classList.remove(
+                            "is-playing"
+                        );
+
+                    }
+                );
+
+
+                /* ===================================================
+                   MUTE
+                   =================================================== */
+
+                muteButton.addEventListener(
+                    "click",
+                    function (event) {
+
+                        event.preventDefault();
+                        event.stopPropagation();
+
+
+                        video.muted =
+                            !video.muted;
+
+
+                        updateMuteButton();
+
+                    }
+                );
+
+
+                /* ===================================================
+                   UPDATE MUTE ICON
+                   =================================================== */
+
+                function updateMuteButton() {
+
+                    if (video.muted) {
+
+                        muteButton.setAttribute(
+                            "aria-label",
+                            "Unmute video"
+                        );
+
+
+                        muteButton.innerHTML = `
+
+            <svg viewBox="0 0 24 24">
+
+              <path
+                d="M5 9V15H9L14 19V5L9 9H5Z"
+              ></path>
+
+              <line
+                x1="17"
+                y1="9"
+                x2="21"
+                y2="15"
+              ></line>
+
+              <line
+                x1="21"
+                y1="9"
+                x2="17"
+                y2="15"
+              ></line>
+
+            </svg>
+
+          `;
+
+                    } else {
+
+                        muteButton.setAttribute(
+                            "aria-label",
+                            "Mute video"
+                        );
+
+
+                        muteButton.innerHTML = `
+
+            <svg viewBox="0 0 24 24">
+
+              <path
+                d="M5 9V15H9L14 19V5L9 9H5Z"
+              ></path>
+
+              <path
+                d="M17 8.5C18.3 9.5 19 10.7 19 12C19 13.3 18.3 14.5 17 15.5"
+              ></path>
+
+              <path
+                d="M19.5 6.5C21.1 8 22 9.8 22 12C22 14.2 21.1 16 19.5 17.5"
+              ></path>
+
+            </svg>
+
+          `;
+
+                    }
+
+                }
+
+
+                updateMuteButton();
+
+            });
+
+
+            /* =====================================================
+               SCROLL DISTANCE
+               ===================================================== */
+
+            function getScrollAmount() {
+
+                const card =
+                    track.querySelector(
+                        ".dog-video-card"
+                    );
+
+
+                if (!card) {
+                    return 0;
+                }
+
+
+                const styles =
+                    window.getComputedStyle(track);
+
+
+                const gap =
+                    parseFloat(styles.columnGap) ||
+                    parseFloat(styles.gap) ||
+                    16;
+
+
+                return (
+                    card.getBoundingClientRect().width +
+                    gap
+                );
+
+            }
+
+
+            /* =====================================================
+               NEXT
+               ===================================================== */
+
+            rightButton.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+
+                    track.scrollBy({
+
+                        left: getScrollAmount(),
+
+                        behavior: "smooth"
+
+                    });
+
+                }
+            );
+
+
+            /* =====================================================
+               PREVIOUS
+               ===================================================== */
+
+            leftButton.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+
+                    track.scrollBy({
+
+                        left: -getScrollAmount(),
+
+                        behavior: "smooth"
+
+                    });
+
+                }
+            );
+
+        }
+    );
+
+</script>

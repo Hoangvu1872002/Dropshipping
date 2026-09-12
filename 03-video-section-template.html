@@ -1,0 +1,193 @@
+<!-- 
+=========================================================
+FLUSBASE VIDEO SECTION TEMPLATES
+=========================================================
+These templates contain ONLY HTML markup and classes. 
+There are no inline <style> or <script> tags.
+Place 01-global-head.html in the <head> tag and 02-global-body.html before </body>.
+-->
+
+<!-- =========================================================
+     TEMPLATE 1: SINGLE PLAYER 16:9 (Baseline from vd1BackUp.html)
+     ========================================================= -->
+<div class="custom-video-wrapper">
+    <video id="productVideo" muted loop playsinline preload="auto"
+        poster="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQC_Ro-C6nQHC4cDYWLm_J6vXfiPyxchcYZvodv3miXe7iGkN-_txMIxGg&s=10">
+        <source src="https://stream.vidhosting.in/videos/b5ff7f85.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+
+    <div class="video-controls">
+        <button id="playPauseButton" class="video-button" type="button" aria-label="Play video">
+            <!-- PAUSE ICON (Visible on Hover while Playing) -->
+            <svg class="pause-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="7" y="5" width="4" height="14" rx="1" fill="currentColor"></rect>
+                <rect x="13" y="5" width="4" height="14" rx="1" fill="currentColor"></rect>
+            </svg>
+        </button>
+    </div>
+</div>
+
+
+<!-- =========================================================
+     TEMPLATE 2: SINGLE PLAYER 1:1 RUFFRASCAL (Baseline from vd2BackUp.html)
+     ========================================================= -->
+<div class="ruffrascal-pv-wrapper" id="ruffrascalProductVideo">
+    <video id="ruffrascalPvVideo" class="ruffrascal-pv-video" muted loop playsinline preload="auto"
+        poster="https://res.cloudinary.com/x9bj9p2l/video/upload/so_0/v1788606222/RuffRover_2.0_-_Hard_Bottom_Dog_Car_Seat_Protector_1.jpg">
+        <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/v1788606222/RuffRover_2.0_-_Hard_Bottom_Dog_Car_Seat_Protector_1.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+
+    <div class="ruffrascal-pv-controls">
+        <button id="ruffrascalPvPlayPause" class="ruffrascal-pv-button" type="button" aria-label="Play video">
+            <!-- PAUSE ICON (Visible on Hover while Playing) -->
+            <svg class="ruffrascal-pv-pause-icon pause-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="7" y="5" width="4" height="14" rx="1" fill="currentColor"></rect>
+                <rect x="13" y="5" width="4" height="14" rx="1" fill="currentColor"></rect>
+            </svg>
+        </button>
+    </div>
+</div>
+
+
+<!-- =========================================================
+     TEMPLATE 3: SINGLE PLAYER 1:1 UNIQUE (Baseline from vd3BackUp.html)
+     ========================================================= -->
+<div class="product-video-unique">
+    <video id="productVideoUnique" muted loop playsinline preload="auto"
+        poster="https://res.cloudinary.com/x9bj9p2l/video/upload/so_0/v1788606197/AllFurFun_on_TikTok.jpg">
+        <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/v1788606197/AllFurFun_on_TikTok.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+
+    <div class="video-controls">
+        <button id="productVideoPlayPauseUnique" class="video-button" type="button" aria-label="Play video">
+            <!-- PAUSE ICON (Visible on Hover while Playing) -->
+            <svg class="pause-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="7" y="5" width="4" height="14" rx="1" fill="currentColor"></rect>
+                <rect x="13" y="5" width="4" height="14" rx="1" fill="currentColor"></rect>
+            </svg>
+        </button>
+    </div>
+</div>
+
+
+<!-- =========================================================
+     TEMPLATE 4: SLIDER CAROUSEL (Baseline from arrVideoBackUp.html)
+     ========================================================= -->
+<div class="dog-video-slider-unique">
+
+    <!-- PREVIOUS -->
+    <button class="dog-video-arrow dog-video-arrow-left" type="button" aria-label="Previous videos">
+        <svg viewBox="0 0 24 24">
+            <path d="M15 18L9 12L15 6"></path>
+        </svg>
+    </button>
+
+    <!-- VIDEO TRACK -->
+    <div class="dog-video-track">
+        <!-- CARD 1 -->
+        <div class="dog-video-card">
+            <video playsinline muted loop preload="none"
+                poster="https://res.cloudinary.com/x9bj9p2l/video/upload/f_auto,q_auto,w_400/v1787588124/RascalRoverVd1.jpg">
+                <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1787588124/RascalRoverVd1.mp4" type="video/mp4">
+            </video>
+            <button class="dog-video-play" type="button" aria-label="Play video"></button>
+            <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                    <line x1="17" y1="9" x2="21" y2="15"></line>
+                    <line x1="21" y1="9" x2="17" y2="15"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="dog-video-card">
+            <video playsinline muted loop preload="none"
+                poster="https://res.cloudinary.com/x9bj9p2l/video/upload/f_auto,q_auto,w_400/v1787588706/RascalRoverVd2.jpg">
+                <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1787588706/RascalRoverVd2.mp4" type="video/mp4">
+            </video>
+            <button class="dog-video-play" type="button" aria-label="Play video"></button>
+            <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                    <line x1="17" y1="9" x2="21" y2="15"></line>
+                    <line x1="21" y1="9" x2="17" y2="15"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="dog-video-card">
+            <video playsinline muted loop preload="none"
+                poster="https://res.cloudinary.com/x9bj9p2l/video/upload/f_auto,q_auto,w_400/v1787590596/RascalRoverVd3.jpg">
+                <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1787590596/RascalRoverVd3.mp4" type="video/mp4">
+            </video>
+            <button class="dog-video-play" type="button" aria-label="Play video"></button>
+            <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                    <line x1="17" y1="9" x2="21" y2="15"></line>
+                    <line x1="21" y1="9" x2="17" y2="15"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- CARD 4 -->
+        <div class="dog-video-card">
+            <video playsinline muted loop preload="none"
+                poster="https://res.cloudinary.com/x9bj9p2l/video/upload/f_auto,q_auto,w_400/v1787591753/Amazon.com_YJGF_Hard_Bottom_Dog_Car_Seat_Cover_for_Back_Seat_Seat_Extender_for_Dogs_Strong_Support_More_Rest_Space_Waterproof_Scratch_Resistant_Car_Seat_Protector_Dog_Hammock_for_Car_SUV_Small_Truck_Pet_Supplie_2.jpg">
+                <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1787591753/Amazon.com_YJGF_Hard_Bottom_Dog_Car_Seat_Cover_for_Back_Seat_Seat_Extender_for_Dogs_Strong_Support_More_Rest_Space_Waterproof_Scratch_Resistant_Car_Seat_Protector_Dog_Hammock_for_Car_SUV_Small_Truck_Pet_Supplie_2.mp4" type="video/mp4">
+            </video>
+            <button class="dog-video-play" type="button" aria-label="Play video"></button>
+            <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                    <line x1="17" y1="9" x2="21" y2="15"></line>
+                    <line x1="21" y1="9" x2="17" y2="15"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- CARD 5 -->
+        <div class="dog-video-card">
+            <video playsinline muted loop preload="none"
+                poster="https://res.cloudinary.com/x9bj9p2l/video/upload/f_auto,q_auto,w_400/v1788585048/RascalRoverVd6.jpg">
+                <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1788585048/RascalRoverVd6.mp4" type="video/mp4">
+            </video>
+            <button class="dog-video-play" type="button" aria-label="Play video"></button>
+            <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                    <line x1="17" y1="9" x2="21" y2="15"></line>
+                    <line x1="21" y1="9" x2="17" y2="15"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- CARD 6 -->
+        <div class="dog-video-card">
+            <video playsinline muted loop preload="none"
+                poster="https://res.cloudinary.com/x9bj9p2l/video/upload/f_auto,q_auto,w_400/v1788585091/RascalRoverVd7.jpg">
+                <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1788585091/RascalRoverVd7.mp4" type="video/mp4">
+            </video>
+            <button class="dog-video-play" type="button" aria-label="Play video"></button>
+            <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                <svg viewBox="0 0 24 24">
+                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                    <line x1="17" y1="9" x2="21" y2="15"></line>
+                    <line x1="21" y1="9" x2="17" y2="15"></line>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- NEXT -->
+    <button class="dog-video-arrow dog-video-arrow-right" type="button" aria-label="Next videos">
+        <svg viewBox="0 0 24 24">
+            <path d="M9 18L15 12L9 6"></path>
+        </svg>
+    </button>
+</div>

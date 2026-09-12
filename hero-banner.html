@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RASCALROVER® | Built For The Journey</title>
+    <meta name="description" content="The Rascal Rover Hard-Bottom Dog Car Seat Cover. Luxury automotive engineering, rigid platform stability, and all-weather protection.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ==========================================================================
+           RESET & ESSENTIAL DESIGN SYSTEM (EDITORIAL LUXURY AUTOMOTIVE)
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-studio-pure: #F8F7F4;
+            --bg-studio-warm: #EFECE5;
+            --text-primary: #0F1013;
+            --text-secondary: #575A63;
+            --text-muted: #888C96;
+            --brand-orange: #F0821F;
+            --brand-orange-soft: rgba(240, 130, 31, 0.2);
+            --brand-orange-glow: rgba(240, 130, 31, 0.45);
+            --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--bg-studio-pure);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        body {
+            position: relative;
+            background: radial-gradient(circle at 70% 40%, #FFFFFF 0%, var(--bg-studio-pure) 55%, var(--bg-studio-warm) 100%);
+        }
+
+        /* ==========================================================================
+           MINIMAL LUXURY HEADER
+           ========================================================================== */
+        .site-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 90px;
+            padding: 0 5vw;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        .brand-logo {
+            font-size: 13.5px;
+            font-weight: 800;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            text-decoration: none;
+            pointer-events: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .brand-logo sup {
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        /* ==========================================================================
+           CINEMATIC HERO VIEWPORT (38% TEXT / 62% OVERSIZED PRODUCT DOMINANCE)
+           ========================================================================== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 0 0 5vw;
+            overflow: hidden;
+        }
+
+        /* Ambient studio lighting reflection */
+        .studio-light-reflection {
+            position: absolute;
+            top: -10%;
+            right: 18%;
+            width: 65vw;
+            height: 65vh;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(248, 247, 244, 0.45) 50%, transparent 80%);
+            filter: blur(55px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .hero-grid {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 37% 63%;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ==========================================================================
+           LEFT COLUMN: MINIMAL EDITORIAL COPY (CONFIDENT, BOLD, AMPLE SPACE)
+           ========================================================================== */
+        .hero-copy {
+            position: relative;
+            z-index: 30;
+            padding-right: 2vw;
+            padding-top: 20px;
+            padding-bottom: 40px;
+        }
+
+        .hero-eyebrow {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(14px);
+            animation: luxuryReveal 1s var(--ease-cinematic) 0.15s forwards;
+        }
+
+        .hero-title {
+            font-size: clamp(54px, 5.8vw, 92px);
+            font-weight: 800;
+            line-height: 0.94;
+            letter-spacing: -0.035em;
+            color: var(--text-primary);
+            margin-bottom: 26px;
+            opacity: 0;
+            transform: translateY(22px);
+            animation: luxuryReveal 1.2s var(--ease-cinematic) 0.3s forwards;
+        }
+
+        .hero-title span {
+            display: block;
+        }
+
+        .hero-desc {
+            font-size: clamp(17px, 1.35vw, 20px);
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            margin-bottom: 46px;
+            max-width: 380px;
+            letter-spacing: -0.01em;
+            opacity: 0;
+            transform: translateY(18px);
+            animation: luxuryReveal 1.2s var(--ease-cinematic) 0.45s forwards;
+        }
+
+        .hero-action {
+            opacity: 0;
+            transform: translateY(16px);
+            animation: luxuryReveal 1.2s var(--ease-cinematic) 0.6s forwards;
+        }
+
+        .cta-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            height: 60px;
+            padding: 0 40px;
+            background: var(--text-primary);
+            color: #FFFFFF;
+            font-family: var(--font-main);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 999px;
+            box-shadow: 0 18px 36px -8px rgba(15, 16, 19, 0.24), 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.4s var(--ease-cinematic), box-shadow 0.4s var(--ease-cinematic), background 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-pill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16), transparent);
+            transition: left 0.7s var(--ease-cinematic);
+        }
+
+        .cta-pill:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 24px 44px -8px rgba(15, 16, 19, 0.32), 0 6px 18px rgba(240, 130, 31, 0.15);
+            background: #08090B;
+        }
+
+        .cta-pill:hover::after {
+            left: 100%;
+        }
+
+        .cta-pill .arrow {
+            font-size: 17px;
+            transition: transform 0.35s var(--ease-cinematic);
+            color: var(--brand-orange);
+        }
+
+        .cta-pill:hover .arrow {
+            transform: translateX(4px);
+        }
+
+        /* ==========================================================================
+           RIGHT COLUMN: ENORMOUS HERO OBJECT (LOW-ANGLE EDITORIAL STAGE)
+           ========================================================================== */
+        .hero-viewport {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            perspective: 1600px;
+            overflow: visible;
+        }
+
+        .product-3d-stage {
+            position: relative;
+            width: 135%;
+            max-width: 1520px;
+            transform-style: preserve-3d;
+            transform: translate3d(4%, 0, 0);
+            transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1);
+            will-change: transform;
+            opacity: 0;
+            animation: productReveal 1.8s var(--ease-cinematic) 0.25s forwards;
+        }
+
+        .product-svg {
+            width: 100%;
+            height: auto;
+            display: block;
+            overflow: visible;
+            filter: drop-shadow(0 45px 70px rgba(15, 17, 23, 0.12));
+        }
+
+        /* Animations */
+        @keyframes luxuryReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes productReveal {
+            from {
+                opacity: 0;
+                transform: translate3d(10%, 4%, -40px) scale(0.93);
+            }
+            to {
+                opacity: 1;
+                transform: translate3d(4%, 0, 0) scale(1);
+            }
+        }
+
+        /* Secondary scale figure: subtle breathing */
+        @keyframes restingBreath {
+            0%, 100% {
+                transform: scale(1) translate(0, 0);
+            }
+            50% {
+                transform: scale(1.006, 1.012) translate(-0.6px, -1.2px);
+            }
+        }
+
+        .dog-resting-group {
+            transform-origin: 750px 480px;
+            animation: restingBreath 7s ease-in-out infinite 2s;
+            will-change: transform;
+        }
+
+        /* Subtle orange accent pulse along platform chamfer */
+        @keyframes orangeEdgeGlow {
+            0%, 100% {
+                opacity: 0.85;
+                filter: drop-shadow(0 0 6px rgba(240, 130, 31, 0.35));
+            }
+            50% {
+                opacity: 1;
+                filter: drop-shadow(0 0 16px rgba(240, 130, 31, 0.65));
+            }
+        }
+
+        .orange-accent-chamfer {
+            animation: orangeEdgeGlow 5s ease-in-out infinite alternate;
+        }
+
+        /* ==========================================================================
+           RESPONSIVE TUNING
+           ========================================================================== */
+        @media (max-width: 1140px) {
+            .hero-grid {
+                grid-template-columns: 40% 60%;
+            }
+            .hero-title {
+                font-size: 68px;
+            }
+            .product-3d-stage {
+                width: 140%;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .site-header {
+                height: 70px;
+                padding: 0 24px;
+            }
+            .hero {
+                padding: 95px 24px 60px;
+                min-height: auto;
+                display: block;
+            }
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .hero-copy {
+                padding: 0;
+                max-width: 520px;
+            }
+            .hero-title {
+                font-size: 50px;
+                margin-bottom: 18px;
+            }
+            .hero-desc {
+                margin-bottom: 32px;
+            }
+            .hero-viewport {
+                min-height: 440px;
+                height: auto;
+            }
+            .product-3d-stage {
+                width: 115%;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- MINIMAL BRAND HEADER -->
+    <header class="site-header">
+        <a href="#" class="brand-logo" id="brandLogo">
+            RASCALROVER<sup>®</sup>
+        </a>
+    </header>
+
+    <!-- STUDIO ATMOSPHERE LIGHTING -->
+    <div class="studio-light-reflection" id="studioLight"></div>
+
+    <!-- MAIN HERO SECTION -->
+    <section class="hero" id="heroSection">
+        <div class="hero-grid" id="heroGrid">
+            
+            <!-- LEFT EDITORIAL COLUMN: TYPOGRAPHY & CALL TO ACTION -->
+            <div class="hero-copy" id="heroTextCol">
+                <div class="hero-eyebrow" id="heroEyebrow">RASCALROVER®</div>
+                <h1 class="hero-title" id="heroTitle">
+                    <span>BUILT FOR</span>
+                    <span>THE JOURNEY.</span>
+                </h1>
+                <p class="hero-desc" id="heroDesc">
+                    A better ride for your best friend.
+                </p>
+                <div class="hero-action" id="heroAction">
+                    <a href="#shop" class="cta-pill" id="heroCta">
+                        SHOP RASCALROVER
+                        <span class="arrow">→</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: THE ENORMOUS PRODUCT HERO (3D LOW-ANGLE OPEN DOOR VIEW) -->
+            <div class="hero-viewport" id="heroViewport">
+                <div class="product-3d-stage" id="heroProductStage">
+                    
+                    <svg class="product-svg" id="heroSvg" viewBox="0 0 1440 920" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <!-- Studio Ambient Ground Occlusion -->
+                            <filter id="studioGroundBlur" x="-120" y="580" width="1680" height="340" filterUnits="userSpaceOnUse">
+                                <feGaussianBlur stdDeviation="42" result="blur"/>
+                            </filter>
+                            <filter id="underbodyCreviceBlur" x="180" y="670" width="1280" height="230" filterUnits="userSpaceOnUse">
+                                <feGaussianBlur stdDeviation="16" result="blur"/>
+                            </filter>
+                            <filter id="orangeRimBloom" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="5" result="glow"/>
+                                <feMerge>
+                                    <feMergeNode in="glow"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+
+                            <!-- Diamond Quilted Ballistic 900D Nylon Pattern -->
+                            <pattern id="ballisticQuiltPattern" width="46" height="46" patternUnits="userSpaceOnUse" patternTransform="rotate(32)">
+                                <path d="M0 23 L23 0 L46 23 L23 46 Z" fill="none" stroke="#2B2F39" stroke-width="1.2" stroke-dasharray="3.2, 1.8"/>
+                                <path d="M4 23 L23 4 L42 23 L23 42 Z" fill="none" stroke="#1A1C22" stroke-width="0.75"/>
+                                <circle cx="23" cy="23" r="1.6" fill="#111317" opacity="0.6"/>
+                            </pattern>
+
+                            <!-- Rubberized Breathable Airflow HexaMesh™ Window Pattern -->
+                            <pattern id="hexMeshPattern" width="8" height="8" patternUnits="userSpaceOnUse">
+                                <rect width="8" height="8" fill="#131518"/>
+                                <circle cx="4" cy="4" r="2.2" fill="#252831"/>
+                                <circle cx="4" cy="4" r="1.1" fill="#0C0D10"/>
+                            </pattern>
+
+                            <!-- Specular Light Reflection Across Rigid Platform Surface -->
+                            <linearGradient id="deckLightSweep" x1="320" y1="520" x2="1360" y2="760" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#3A3F4C"/>
+                                <stop offset="28%" stop-color="#262A32"/>
+                                <stop offset="70%" stop-color="#1A1C22"/>
+                                <stop offset="100%" stop-color="#111216"/>
+                            </linearGradient>
+
+                            <!-- Solid Hard-Bottom Composite Core Edge (48px Structural Profile) -->
+                            <linearGradient id="rigidCoreThickness" x1="320" y1="720" x2="320" y2="775" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#555B69"/>
+                                <stop offset="10%" stop-color="#323641"/>
+                                <stop offset="48%" stop-color="#1E2027"/>
+                                <stop offset="85%" stop-color="#121317"/>
+                                <stop offset="100%" stop-color="#08090B"/>
+                            </linearGradient>
+
+                            <!-- Amber Precision Tracer Line (#F0821F) -->
+                            <linearGradient id="amberTracerGrad" x1="320" y1="720" x2="1440" y2="655" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#F0821F" stop-opacity="1"/>
+                                <stop offset="35%" stop-color="#FFA44F" stop-opacity="0.9"/>
+                                <stop offset="80%" stop-color="#F0821F" stop-opacity="0.35"/>
+                                <stop offset="100%" stop-color="#F0821F" stop-opacity="0"/>
+                            </linearGradient>
+
+                            <!-- Vehicle Cabin Silhouettes Dissolving into Studio Atmosphere -->
+                            <linearGradient id="cabinDissolve" x1="740" y1="180" x2="740" y2="520" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#E2DFD6" stop-opacity="0.22"/>
+                                <stop offset="50%" stop-color="#D2CFC5" stop-opacity="0.35"/>
+                                <stop offset="100%" stop-color="#1C1E23" stop-opacity="0.75"/>
+                            </linearGradient>
+
+                            <!-- Resting Dog Silhouette Studio Tones -->
+                            <linearGradient id="dogStudioTones" x1="600" y1="360" x2="920" y2="620" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#464955"/>
+                                <stop offset="25%" stop-color="#2E313B"/>
+                                <stop offset="70%" stop-color="#191B21"/>
+                                <stop offset="100%" stop-color="#0F1014"/>
+                            </linearGradient>
+
+                            <linearGradient id="dogRimLighting" x1="530" y1="330" x2="820" y2="440" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.8"/>
+                                <stop offset="50%" stop-color="#F0821F" stop-opacity="0.55"/>
+                                <stop offset="100%" stop-color="#F0821F" stop-opacity="0"/>
+                            </linearGradient>
+
+                            <!-- Matte Hardware Clasps -->
+                            <linearGradient id="matteBuckleHardware" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#7B808E"/>
+                                <stop offset="50%" stop-color="#454852"/>
+                                <stop offset="100%" stop-color="#1C1D21"/>
+                            </linearGradient>
+                        </defs>
+
+                        <!-- ==========================================================
+                             LAYER 1: VEHICLE INTERIOR ENVIRONMENT (ORGANIC & MINIMAL)
+                             Subtle geometry suggesting luxury SUV cabin; no rectangular boxes
+                             ========================================================== -->
+                        <g class="cabin-environment" id="cabinEnv" opacity="0.65">
+                            <!-- Subtle Rear Seatback Cushion Arc -->
+                            <path d="M460 360 C640 310 940 280 1360 310 L1380 470 C1060 455 680 475 420 515 Z" fill="url(#cabinDissolve)"/>
+
+                            <!-- Car Rear Headrest 1 (Driver Side) -->
+                            <rect x="620" y="248" width="116" height="86" rx="26" fill="#CAC6BD" opacity="0.45"/>
+                            <rect x="650" y="334" width="12" height="30" fill="#9A978E" opacity="0.4"/>
+                            <rect x="696" y="334" width="12" height="30" fill="#9A978E" opacity="0.4"/>
+
+                            <!-- Car Rear Headrest 2 (Passenger Side) -->
+                            <rect x="1060" y="228" width="118" height="88" rx="26" fill="#C3BFB4" opacity="0.4"/>
+                            <rect x="1090" y="316" width="12" height="30" fill="#9A978E" opacity="0.4"/>
+                            <rect x="1136" y="316" width="12" height="30" fill="#9A978E" opacity="0.4"/>
+
+                            <!-- Faint Roofline Horizon -->
+                            <path d="M500 200 C820 160 1160 180 1440 250" stroke="#FFFFFF" stroke-width="1.5" opacity="0.45"/>
+                        </g>
+
+                        <!-- ==========================================================
+                             LAYER 2: GROUND & CONTACT SHADOWS
+                             Demonstrates zero sagging over the footwell gap
+                             ========================================================== -->
+                        <g class="underbody-shadows">
+                            <!-- Soft floor bloom -->
+                            <ellipse cx="880" cy="760" rx="560" ry="110" fill="#14151B" opacity="0.14" filter="url(#studioGroundBlur)"/>
+                            <!-- Deep contact occlusion beneath solid composite deck -->
+                            <path d="M340 765 L980 755 L1440 685 L1410 765 L920 815 L330 790 Z" fill="#090A0D" opacity="0.45" filter="url(#underbodyCreviceBlur)"/>
+                        </g>
+
+                        <!-- ==========================================================
+                             LAYER 3: THE HERO DOG SEAT COVER (OVERSPEC'D 3D RIGID FORM)
+                             Viewed into the open rear passenger door:
+                             - Left: Front hammock wall with HexaMesh window
+                             - Right/Back: Rear hammock wall against back seat
+                             - Center: Spacious, open, rigid hard-bottom deck
+                             - Foreground: Thick rigid core edge facing the door sill
+                             ========================================================== -->
+                        <g class="product-cover-rig" id="productCover">
+                            
+                            <!-- 3A: REAR HAMMOCK WALL (Rises against the vehicle rear seat backrest) -->
+                            <g class="rear-hammock-wall">
+                                <!-- Shell -->
+                                <path d="M480 340 L1280 300 L1320 470 L430 505 Z" fill="#1B1D23"/>
+                                <!-- Diamond Quilted Texture -->
+                                <path d="M480 340 L1280 300 L1320 470 L430 505 Z" fill="url(#ballisticQuiltPattern)" opacity="0.82"/>
+                                <!-- Top Roll Piping -->
+                                <path d="M480 340 L1280 300" stroke="#353945" stroke-width="6.5" stroke-linecap="round"/>
+                                <path d="M480 340 L1280 300" stroke="#686F80" stroke-width="1.8" stroke-linecap="round"/>
+
+                                <!-- Headrest Anchor Straps (Passenger Side) -->
+                                <path d="M1100 316 L1100 248 L1132 248 L1132 316" fill="#111215" stroke="#22252C" stroke-width="2"/>
+                                <rect x="1094" y="270" width="44" height="15" rx="3" fill="url(#matteBuckleHardware)"/>
+                                <rect x="1102" y="274" width="28" height="7" rx="2" fill="#111215"/>
+
+                                <!-- Headrest Anchor Straps (Driver Side) -->
+                                <path d="M660 334 L660 270 L692 270 L692 334" fill="#111215" stroke="#22252C" stroke-width="2"/>
+                                <rect x="654" y="290" width="44" height="15" rx="3" fill="url(#matteBuckleHardware)"/>
+                                <rect x="662" y="294" width="28" height="7" rx="2" fill="#111215"/>
+                            </g>
+
+                            <!-- 3B: FRONT HAMMOCK WALL (Left side: Bridges toward front seats) -->
+                            <!-- Placed on the LEFT of the stage so it does NOT block the dog or deck -->
+                            <g class="front-hammock-bridge">
+                                <!-- Front Left Barrier Fabric -->
+                                <path d="M210 460 L430 505 L340 720 L160 690 Z" fill="#17191E"/>
+                                <path d="M210 460 L430 505 L340 720 L160 690 Z" fill="url(#ballisticQuiltPattern)" opacity="0.6"/>
+
+                                <!-- Breathable Rubberized Airflow HexaMesh™ Window (Facing front seats / driver) -->
+                                <g class="front-mesh-window">
+                                    <path d="M250 495 L390 525 L360 615 L225 580 Z" fill="url(#hexMeshPattern)" stroke="#272B33" stroke-width="4"/>
+                                    <!-- Reinforced perimeter seam with subtle orange accent -->
+                                    <path d="M250 495 L390 525 L360 615 L225 580 Z" fill="none" stroke="#F0821F" stroke-width="1.5" opacity="0.5"/>
+                                    <path d="M250 495 L390 525 L360 615 L225 580 Z" fill="none" stroke="#393E4C" stroke-width="1" stroke-dasharray="4, 2"/>
+                                </g>
+
+                                <!-- Front Hammock Top Contour Rail -->
+                                <path d="M210 460 L430 505" stroke="#363B48" stroke-width="6" stroke-linecap="round"/>
+                                <path d="M210 460 L430 505" stroke="#F0821F" stroke-width="1.2" stroke-linecap="round" opacity="0.8"/>
+
+                                <!-- Front Seat Anchor Straps -->
+                                <path d="M240 465 L215 390 L242 384 L264 460" fill="#111215" stroke="#22252C" stroke-width="1.5"/>
+                                <rect x="216" y="415" width="38" height="13" rx="3" fill="url(#matteBuckleHardware)"/>
+                            </g>
+
+                            <!-- 3C: RIGID HARD BOTTOM PLATFORM - TOP DECK SURFACE (FULL UNOBSTRUCTED VIEW) -->
+                            <!-- Coordinates: Left (340, 720) to (430, 505), Back (430, 505) to (1320, 470), Right (1320, 470) to (1440, 655), Front (340, 720) to (1440, 655) -->
+                            <g class="rigid-deck-surface">
+                                <!-- Solid Quilted Platform Surface -->
+                                <path id="deckSurface" d="M430 505 L1320 470 L1440 655 L340 720 Z" fill="url(#deckLightSweep)"/>
+                                
+                                <!-- Diamond Quilt Pattern Layer -->
+                                <path d="M430 505 L1320 470 L1440 655 L340 720 Z" fill="url(#ballisticQuiltPattern)" opacity="0.94"/>
+
+                                <!-- Rigid load-bearing structural seam lines -->
+                                <line x1="418" y1="565" x2="1340" y2="520" stroke="#1F2229" stroke-width="2" stroke-dasharray="9, 5"/>
+                                <line x1="398" y1="620" x2="1380" y2="570" stroke="#1F2229" stroke-width="2" stroke-dasharray="9, 5"/>
+                                <line x1="372" y1="675" x2="1415" y2="618" stroke="#1F2229" stroke-width="2.2" stroke-dasharray="9, 5"/>
+
+                                <!-- Safety Belt Access Tether Ports with Reinforced Slits -->
+                                <g class="seatbelt-port" transform="translate(710, 506) rotate(-2)">
+                                    <rect x="0" y="0" width="42" height="14" rx="4" fill="#0B0C0F" stroke="#353944" stroke-width="2"/>
+                                    <line x1="8" y1="7" x2="34" y2="7" stroke="#1F222A" stroke-width="3"/>
+                                </g>
+                                <g class="seatbelt-port" transform="translate(1010, 490) rotate(-2)">
+                                    <rect x="0" y="0" width="42" height="14" rx="4" fill="#0B0C0F" stroke="#353944" stroke-width="2"/>
+                                    <line x1="8" y1="7" x2="34" y2="7" stroke="#1F222A" stroke-width="3"/>
+                                </g>
+                            </g>
+
+                            <!-- 3D: RIGID COMPOSITE CORE EDGE PROFILE (48PX VISIBLE THICKNESS) -->
+                            <!-- Proves visually that this is an engineered, solid, non-sagging deck -->
+                            <g class="rigid-deck-thickness-profile">
+                                <!-- Solid extruded face along the front door sill -->
+                                <path d="M340 720 L1440 655 L1440 701 L340 767 Z" fill="url(#rigidCoreThickness)"/>
+                                
+                                <!-- Core Honeycomb Sandwich Construction Layer -->
+                                <path d="M340 731 L1440 666 L1440 681 L340 747 Z" fill="#20232B" stroke="#2D323E" stroke-width="0.9"/>
+                                
+                                <!-- Heavy-duty reinforced perimeter binding -->
+                                <path d="M340 767 L1440 701" stroke="#0E0F12" stroke-width="5" stroke-linecap="square"/>
+                                <path d="M340 767 L1440 701" stroke="#292C36" stroke-width="1.5" stroke-linecap="square"/>
+
+                                <!-- Orange Precision Accent Edge Tracer (#F0821F) -->
+                                <path class="orange-accent-chamfer" d="M340 720 L1440 655" stroke="url(#amberTracerGrad)" stroke-width="3.2" stroke-linecap="round" filter="url(#orangeRimBloom)"/>
+                                <path d="M340 720 L1440 655" stroke="#FFFFFF" stroke-width="0.8" stroke-linecap="round" opacity="0.75"/>
+                            </g>
+
+                            <!-- 3E: PROTECTIVE DOOR SILL FLAP & INDUSTRIAL CORNER ZIPPER -->
+                            <g class="protective-door-flap">
+                                <path d="M1440 655 L1490 625 L1460 765 L1440 780 Z" fill="#15171C"/>
+                                <path d="M1440 655 L1490 625 L1460 765 L1440 780 Z" fill="url(#ballisticQuiltPattern)" opacity="0.75"/>
+                                <!-- Corner Zipper Track -->
+                                <path d="M1440 655 L1440 780" stroke="#323640" stroke-width="5"/>
+                                <path d="M1440 655 L1440 780" stroke="#7A8092" stroke-width="1.6" stroke-dasharray="2.5, 2.5"/>
+                                <!-- Metal Zipper Pull -->
+                                <rect x="1435" y="700" width="10" height="18" rx="2" fill="url(#matteBuckleHardware)"/>
+                                <circle cx="1440" cy="705" r="2" fill="#111215"/>
+                            </g>
+                        </g>
+
+                        <!-- ==========================================================
+                             LAYER 4: SECONDARY SCALE FIGURE (SERENE RESTING LABRADOR)
+                             Anatomically realistic, resting peacefully on the solid platform.
+                             Communicates absolute stability, zero sagging, pure comfort.
+                             NOT cartoonish. Minimal editorial silhouette with rim lighting.
+                             ========================================================== -->
+                        <g class="dog-resting-group" id="dogFigure">
+                            <!-- Natural Dog Contact Shadow directly onto the diamond quilted deck -->
+                            <ellipse cx="780" cy="575" rx="190" ry="26" fill="#090A0D" opacity="0.65" filter="url(#underbodyCreviceBlur)"/>
+                            <ellipse cx="910" cy="565" rx="110" ry="18" fill="#07080A" opacity="0.55" filter="url(#underbodyCreviceBlur)"/>
+
+                            <!-- Sophisticated Sculptural Dog Form in Peaceful Sphinx / Resting Pose -->
+                            <!-- Hindquarters & Thigh Resting Flat on the Rigid Deck -->
+                            <path d="M880 545 C940 540 1005 500 995 445 C985 395 935 385 880 392 C825 400 775 420 740 455 L770 555 Z" fill="url(#dogStudioTones)"/>
+                            
+                            <!-- Solid Torso & Broad Chest Supported Firmly by Platform -->
+                            <path d="M680 550 C640 515 640 455 690 420 C745 385 825 385 895 400 C920 430 925 495 895 545 Z" fill="url(#dogStudioTones)"/>
+                            
+                            <!-- Gentle Sloping Neck and Withers Reaching Forward Serenely -->
+                            <path d="M660 445 C648 405 630 365 595 342 C570 325 520 330 495 348 C485 358 490 376 512 382 C542 388 568 415 585 450 Z" fill="url(#dogStudioTones)"/>
+
+                            <!-- Noble Resting Head & Muzzle (Gentle resting chin, calm gaze forward) -->
+                            <path d="M502 350 C482 350 432 362 420 374 C414 382 420 388 438 392 C468 396 505 392 528 384 C542 376 535 352 502 350 Z" fill="#24262E"/>
+                            
+                            <!-- Natural Drooping Ear -->
+                            <path d="M532 346 C526 366 520 400 538 418 C546 425 554 418 550 404 C544 384 546 360 540 346 Z" fill="#1B1C22"/>
+                            <path d="M532 350 C527 368 523 395 535 410" stroke="url(#dogRimLighting)" stroke-width="1.6" stroke-linecap="round"/>
+
+                            <!-- Front Paws Resting Flat and Forward on the Firm Platform -->
+                            <path d="M600 480 L575 554 C570 562 558 565 532 565 C515 565 510 558 522 550 L560 522 L588 470 Z" fill="#1C1E25"/>
+                            <path d="M642 490 L630 558 C624 566 612 570 588 570 C570 570 565 562 578 554 L608 518 Z" fill="#15171D"/>
+
+                            <!-- Relaxed Tail Resting Along Platform Plane -->
+                            <path d="M990 455 C1030 472 1068 505 1080 538 C1084 548 1074 550 1062 544 C1044 520 1012 492 986 476 Z" fill="#17181E"/>
+
+                            <!-- Studio Key Light & Subtle Orange (#F0821F) Edge Rim Lighting along Spine -->
+                            <path d="M495 348 C525 325 580 330 610 352 C652 385 705 396 775 392 C852 390 930 385 978 430 C990 442 994 465 984 494" 
+                                  fill="none" stroke="url(#dogRimLighting)" stroke-width="2.6" stroke-linecap="round" opacity="0.92"/>
+                            
+                            <!-- Minimalist Leather Collar with Matte Brass Accent Ring -->
+                            <path d="M552 385 C560 400 568 414 578 425" stroke="#F0821F" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="572" cy="422" r="3" fill="#E6A15C"/>
+                        </g>
+
+                        <!-- ==========================================================
+                             LAYER 5: FOREGROUND SPECULAR REFLECTION
+                             Subtle automotive studio sheen across the hard front edge
+                             ========================================================== -->
+                        <g class="studio-sheen" pointer-events="none">
+                            <path d="M340 720 L860 695 L835 708 L340 732 Z" fill="#FFFFFF" opacity="0.14" filter="url(#orangeRimBloom)"/>
+                        </g>
+                    </svg>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         CINEMATIC SCRIPT: SMOOTH MOUSE PARALLAX & CAMERA SCROLL PUSH-IN
+         ========================================================================== -->
+    <script>
+        (function() {
+            'use strict';
+
+            const heroProductStage = document.getElementById('heroProductStage');
+            const cabinEnv = document.getElementById('cabinEnv');
+            const productCover = document.getElementById('productCover');
+            const dogFigure = document.getElementById('dogFigure');
+            const studioLight = document.getElementById('studioLight');
+            const heroTextCol = document.getElementById('heroTextCol');
+            const heroSection = document.getElementById('heroSection');
+
+            let mouseX = 0, mouseY = 0;
+            let currentX = 0, currentY = 0;
+            let isDesktop = window.innerWidth > 900;
+            let ticking = false;
+
+            window.addEventListener('resize', () => {
+                isDesktop = window.innerWidth > 900;
+            });
+
+            // Smooth Desktop Mouse Parallax
+            window.addEventListener('mousemove', (e) => {
+                if (!isDesktop) return;
+                const normX = (e.clientX / window.innerWidth) - 0.5;
+                const normY = (e.clientY / window.innerHeight) - 0.5;
+                mouseX = normX;
+                mouseY = normY;
+                if (!ticking) {
+                    requestAnimationFrame(updateParallax);
+                    ticking = true;
+                }
+            });
+
+            function updateParallax() {
+                currentX += (mouseX - currentX) * 0.05;
+                currentY += (mouseY - currentY) * 0.05;
+
+                // Subtle differentiated depth offsets:
+                // Studio light: 12px
+                // Cabin Environment: 3px
+                // Product Cover: 6px
+                // Dog Scale Figure: 8px
+                if (studioLight) {
+                    studioLight.style.transform = `translate3d(${currentX * 14}px, ${currentY * 10}px, 0)`;
+                }
+                if (cabinEnv) {
+                    cabinEnv.style.transform = `translate3d(${currentX * 3}px, ${currentY * 2}px, 0)`;
+                }
+                if (productCover) {
+                    productCover.style.transform = `translate3d(${currentX * 6}px, ${currentY * 4}px, 0)`;
+                }
+                if (dogFigure) {
+                    dogFigure.style.transform = `translate3d(${currentX * 8}px, ${currentY * 6}px, 0)`;
+                }
+
+                if (Math.abs(mouseX - currentX) > 0.0008 || Math.abs(mouseY - currentY) > 0.0008) {
+                    requestAnimationFrame(updateParallax);
+                } else {
+                    ticking = false;
+                }
+            }
+
+            // Scroll Push-In: Camera approaches the product
+            window.addEventListener('scroll', () => {
+                const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                const heroHeight = heroSection ? heroSection.offsetHeight : window.innerHeight;
+                const progress = Math.min(scrollY / heroHeight, 1);
+
+                if (progress <= 1 && heroProductStage) {
+                    const scale = 1 + (progress * 0.12);
+                    const translateY = progress * 30;
+                    const translateX = progress * -18;
+                    heroProductStage.style.transform = `translate3d(${4 + translateX}px, ${translateY}px, 0) scale(${scale})`;
+
+                    if (heroTextCol) {
+                        const textOpacity = Math.max(1 - (progress * 1.5), 0);
+                        const textTranslate = progress * -35;
+                        heroTextCol.style.opacity = textOpacity;
+                        heroTextCol.style.transform = `translate3d(0, ${textTranslate}px, 0)`;
+                    }
+                }
+            }, { passive: true });
+
+        })();
+    </script>
+</body>
+</html>

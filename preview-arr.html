@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: Video Slider (arrVideo.html)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS STYLES CHO DOG VIDEO SLIDER -->
+    <style>
+        /* =========================================
+           GLOBAL RESET / BASE PAGE STYLES
+        ========================================= */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .preview-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* =========================================
+           PREVIEW HEADER & STATUS BAR
+        ========================================= */
+        .preview-header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px 30px;
+            margin-bottom: 36px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .header-badge-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 10px #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+        }
+
+        .file-tag {
+            font-family: monospace;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .preview-title {
+            font-size: 26px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .preview-subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        .instructions-list {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 13px;
+            color: #cbd5e1;
+        }
+
+        .instruction-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .instruction-icon {
+            color: #f58220;
+            font-weight: bold;
+        }
+
+        /* =========================================
+           SLIDER SECTION WRAPPER
+        ========================================= */
+        .slider-section {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 30px 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            margin-bottom: 40px;
+        }
+
+        .section-heading {
+            color: #0f172a;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-left: 8px;
+            border-left: 4px solid #f58220;
+        }
+
+        /* =========================================
+           DOG VIDEO SLIDER STYLES (FROM PRODUCTION)
+        ========================================= */
+        .dog-video-slider-unique,
+        .dog-video-slider-unique * {
+            box-sizing: border-box;
+        }
+
+        .dog-video-slider-unique {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+            --dog-orange: #F58220;
+        }
+
+        .dog-video-slider-unique .dog-video-track {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            padding: 4px;
+        }
+
+        .dog-video-slider-unique .dog-video-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        .dog-video-slider-unique .dog-video-card {
+            position: relative;
+            flex: 0 0 calc((100% - 60px) / 4.7);
+            aspect-ratio: 9 / 16;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #f5f0eb;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .dog-video-slider-unique .dog-video-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .dog-video-slider-unique .dog-video-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 12px;
+            pointer-events: none;
+        }
+
+        .dog-video-slider-unique .dog-video-play {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(245, 130, 32, 0.9);
+            border: 2px solid #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.25s ease;
+            box-shadow: 0 4px 16px rgba(245, 130, 32, 0.45);
+            z-index: 2;
+        }
+
+        .dog-video-slider-unique .dog-video-play::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 17px solid #ffffff;
+            margin-left: 4px;
+        }
+
+        .dog-video-slider-unique .dog-video-card.is-playing .dog-video-play {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .dog-video-slider-unique .dog-video-card.is-buffering .dog-video-play {
+            opacity: 1;
+            pointer-events: none;
+            background: rgba(0, 0, 0, 0.7);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #f58220;
+            animation: dogVideoSpin 0.75s linear infinite;
+        }
+
+        .dog-video-slider-unique .dog-video-card.is-buffering .dog-video-play::after {
+            display: none;
+        }
+
+        @keyframes dogVideoSpin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .dog-video-slider-unique .dog-video-card:not(.is-playing):not(.is-buffering) .dog-video-play:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            background: #e07016;
+        }
+
+        .dog-video-slider-unique .dog-video-mute {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.25s ease, background-color 0.25s ease;
+            z-index: 2;
+            padding: 0;
+        }
+
+        .dog-video-slider-unique .dog-video-card:hover .dog-video-mute {
+            opacity: 1;
+        }
+
+        .dog-video-slider-unique .dog-video-card:hover .dog-video-mute:hover {
+            background: rgba(245, 130, 32, 0.9);
+            border-color: #f58220;
+        }
+
+        .dog-video-slider-unique .dog-video-mute svg {
+            width: 18px;
+            height: 18px;
+            stroke: #ffffff;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        .dog-video-slider-unique .dog-video-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            opacity: 0;
+            transition: opacity 0.25s ease, background-color 0.25s ease;
+            padding: 0;
+        }
+
+        .dog-video-slider-unique .dog-video-arrow-left {
+            left: 8px;
+        }
+
+        .dog-video-slider-unique .dog-video-arrow-right {
+            right: 8px;
+        }
+
+        .dog-video-slider-unique:hover .dog-video-arrow {
+            opacity: 1;
+        }
+
+        .dog-video-slider-unique .dog-video-arrow:hover {
+            background: #f58220;
+            border-color: #f58220;
+            transform: translateY(-50%) scale(1.08);
+        }
+
+        .dog-video-slider-unique .dog-video-arrow:hover svg {
+            stroke: #ffffff;
+        }
+
+        .dog-video-slider-unique .dog-video-arrow svg {
+            width: 20px;
+            height: 20px;
+            stroke: #1f2937;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            transition: stroke 0.2s ease;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .dog-video-slider-unique .dog-video-card {
+                flex: 0 0 calc((100% - 32px) / 3);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .dog-video-slider-unique .dog-video-track {
+                gap: 12px;
+            }
+
+            .dog-video-slider-unique .dog-video-card {
+                flex: 0 0 calc((100% - 24px) / 2.15);
+            }
+
+            .dog-video-slider-unique .dog-video-play {
+                width: 44px;
+                height: 44px;
+            }
+
+            .dog-video-slider-unique .dog-video-mute {
+                opacity: 1;
+                width: 32px;
+                height: 32px;
+            }
+
+            .dog-video-slider-unique .dog-video-arrow {
+                display: none;
+            }
+        }
+
+        /* =========================================
+           DETAILS / LINK CHECKLIST TABLE
+        ========================================= */
+        .details-section {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .details-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #f8fafc;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .video-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 14px;
+        }
+
+        .video-item {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .video-idx {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #f58220;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .video-info {
+            overflow: hidden;
+            font-size: 12px;
+        }
+
+        .video-name {
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .video-link {
+            color: #38bdf8;
+            text-decoration: none;
+            font-family: monospace;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+
+        .video-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="preview-container">
+
+        <!-- HEADER -->
+        <div class="preview-header">
+            <div class="header-badge-row">
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    ĐÃ CẬP NHẬT HOÀN TẤT 6/6 VIDEO
+                </div>
+                <span class="file-tag">Nguồn: arrVideo.html</span>
+            </div>
+            <h1 class="preview-title">Trang Preview Trực Quan: Video Slider Carousel</h1>
+            <p class="preview-subtitle">
+                Tất cả 6 link video Cloudinary bạn cung cấp đã được cập nhật chính xác vào mảng video của slider kèm ảnh poster xem trước tương ứng.
+            </p>
+            <div class="instructions-list">
+                <div class="instruction-item">
+                    <span class="instruction-icon">▶</span> Click vào từng card để Play / Tạm dừng
+                </div>
+                <div class="instruction-item">
+                    <span class="instruction-icon">🔊</span> Click biểu tượng loa góc phải để Bật / Tắt tiếng
+                </div>
+                <div class="instruction-item">
+                    <span class="instruction-icon">❮ ❯</span> Dùng mũi tên trái / phải hoặc vuốt để cuộn slider
+                </div>
+            </div>
+        </div>
+
+        <!-- LIVE SLIDER SECTION (NHÚNG TỪ arrVideo.html) -->
+        <div class="slider-section">
+            <h2 class="section-heading">Giao diện Slider thực tế (6 Video Clips)</h2>
+
+            <div class="dog-video-slider-unique">
+
+                <!-- PREVIOUS -->
+                <button class="dog-video-arrow dog-video-arrow-left" type="button" aria-label="Previous videos">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M15 18L9 12L15 6"></path>
+                    </svg>
+                </button>
+
+                <!-- VIDEO TRACK -->
+                <div class="dog-video-track">
+                    <!-- CARD 1 -->
+                    <div class="dog-video-card">
+                        <video playsinline muted loop preload="none"
+                            poster="https://res.cloudinary.com/x9bj9p2l/video/upload/f_auto,q_auto,w_400/v1787588124/RascalRoverVd1.jpg">
+                            <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1787588124/RascalRoverVd1.mp4" type="video/mp4">
+                        </video>
+                        <button class="dog-video-play" type="button" aria-label="Play video"></button>
+                        <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                                <line x1="17" y1="9" x2="21" y2="15"></line>
+                                <line x1="21" y1="9" x2="17" y2="15"></line>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- CARD 2 -->
+                    <div class="dog-video-card">
+                        <video playsinline muted loop preload="none"
+                            poster="https://res.cloudinary.com/x9bj9p2l/video/upload/f_auto,q_auto,w_400/v1787588706/RascalRoverVd2.jpg">
+                            <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1787588706/RascalRoverVd2.mp4" type="video/mp4">
+                        </video>
+                        <button class="dog-video-play" type="button" aria-label="Play video"></button>
+                        <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                                <line x1="17" y1="9" x2="21" y2="15"></line>
+                                <line x1="21" y1="9" x2="17" y2="15"></line>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- CARD 3 -->
+                    <div class="dog-video-card">
+                        <video playsinline muted loop preload="none"
+                            poster="https://res.cloudinary.com/x9bj9p2l/video/upload/f_auto,q_auto,w_400/v1787590596/RascalRoverVd3.jpg">
+                            <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1787590596/RascalRoverVd3.mp4" type="video/mp4">
+                        </video>
+                        <button class="dog-video-play" type="button" aria-label="Play video"></button>
+                        <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                                <line x1="17" y1="9" x2="21" y2="15"></line>
+                                <line x1="21" y1="9" x2="17" y2="15"></line>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- CARD 4 -->
+                    <div class="dog-video-card">
+                        <video playsinline muted loop preload="none"
+                            poster="https://res.cloudinary.com/x9bj9p2l/video/upload/f_auto,q_auto,w_400/v1787591753/Amazon.com_YJGF_Hard_Bottom_Dog_Car_Seat_Cover_for_Back_Seat_Seat_Extender_for_Dogs_Strong_Support_More_Rest_Space_Waterproof_Scratch_Resistant_Car_Seat_Protector_Dog_Hammock_for_Car_SUV_Small_Truck_Pet_Supplie_2.jpg">
+                            <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1787591753/Amazon.com_YJGF_Hard_Bottom_Dog_Car_Seat_Cover_for_Back_Seat_Seat_Extender_for_Dogs_Strong_Support_More_Rest_Space_Waterproof_Scratch_Resistant_Car_Seat_Protector_Dog_Hammock_for_Car_SUV_Small_Truck_Pet_Supplie_2.mp4" type="video/mp4">
+                        </video>
+                        <button class="dog-video-play" type="button" aria-label="Play video"></button>
+                        <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                                <line x1="17" y1="9" x2="21" y2="15"></line>
+                                <line x1="21" y1="9" x2="17" y2="15"></line>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- CARD 5 -->
+                    <div class="dog-video-card">
+                        <video playsinline muted loop preload="none"
+                            poster="https://res.cloudinary.com/x9bj9p2l/video/upload/f_auto,q_auto,w_400/v1788585048/RascalRoverVd6.jpg">
+                            <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1788585048/RascalRoverVd6.mp4" type="video/mp4">
+                        </video>
+                        <button class="dog-video-play" type="button" aria-label="Play video"></button>
+                        <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                                <line x1="17" y1="9" x2="21" y2="15"></line>
+                                <line x1="21" y1="9" x2="17" y2="15"></line>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- CARD 6 -->
+                    <div class="dog-video-card">
+                        <video playsinline muted loop preload="none"
+                            poster="https://res.cloudinary.com/x9bj9p2l/video/upload/f_auto,q_auto,w_400/v1788585091/RascalRoverVd7.jpg">
+                            <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1788585091/RascalRoverVd7.mp4" type="video/mp4">
+                        </video>
+                        <button class="dog-video-play" type="button" aria-label="Play video"></button>
+                        <button class="dog-video-mute" type="button" aria-label="Unmute video">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                                <line x1="17" y1="9" x2="21" y2="15"></line>
+                                <line x1="21" y1="9" x2="17" y2="15"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- NEXT -->
+                <button class="dog-video-arrow dog-video-arrow-right" type="button" aria-label="Next videos">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M9 18L15 12L9 6"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- DETAILS / VERIFICATION LIST -->
+        <div class="details-section">
+            <h3 class="details-title">
+                <span>📋 Danh sách 6 Video Cloudinary (Tối ưu tốc độ tải trang: H.264 FastStart + q_auto, 0 KB ban đầu):</span>
+            </h3>
+            <div class="video-list">
+                <div class="video-item">
+                    <div class="video-idx">1</div>
+                    <div class="video-info">
+                        <div class="video-name">RascalRoverVd1.mp4 (H.264 Web-Optimized)</div>
+                        <a class="video-link" href="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1787588124/RascalRoverVd1.mp4" target="_blank">upload/vc_h264,q_auto/v1787588124/RascalRoverVd1.mp4</a>
+                    </div>
+                </div>
+                <div class="video-item">
+                    <div class="video-idx">2</div>
+                    <div class="video-info">
+                        <div class="video-name">RascalRoverVd2.mp4 (H.264 Web-Optimized)</div>
+                        <a class="video-link" href="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1787588706/RascalRoverVd2.mp4" target="_blank">upload/vc_h264,q_auto/v1787588706/RascalRoverVd2.mp4</a>
+                    </div>
+                </div>
+                <div class="video-item">
+                    <div class="video-idx">3</div>
+                    <div class="video-info">
+                        <div class="video-name">RascalRoverVd3.mp4 (FastStart Moov Atom)</div>
+                        <a class="video-link" href="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1787590596/RascalRoverVd3.mp4" target="_blank">upload/vc_h264,q_auto/v1787590596/RascalRoverVd3.mp4</a>
+                    </div>
+                </div>
+                <div class="video-item">
+                    <div class="video-idx">4</div>
+                    <div class="video-info">
+                        <div class="video-name">Amazon.com_YJGF_Hard_Bottom_Dog_Car_Seat_Cover...mp4</div>
+                        <a class="video-link" href="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1787591753/Amazon.com_YJGF_Hard_Bottom_Dog_Car_Seat_Cover_for_Back_Seat_Seat_Extender_for_Dogs_Strong_Support_More_Rest_Space_Waterproof_Scratch_Resistant_Car_Seat_Protector_Dog_Hammock_for_Car_SUV_Small_Truck_Pet_Supplie_2.mp4" target="_blank">upload/vc_h264,q_auto/v1787591753/Amazon.com_YJGF...mp4</a>
+                    </div>
+                </div>
+                <div class="video-item">
+                    <div class="video-idx">5</div>
+                    <div class="video-info">
+                        <div class="video-name">RascalRoverVd6.mp4</div>
+                        <a class="video-link" href="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1788585048/RascalRoverVd6.mp4" target="_blank">upload/vc_h264,q_auto/v1788585048/RascalRoverVd6.mp4</a>
+                    </div>
+                </div>
+                <div class="video-item">
+                    <div class="video-idx">6</div>
+                    <div class="video-info">
+                        <div class="video-name">RascalRoverVd7.mp4</div>
+                        <a class="video-link" href="https://res.cloudinary.com/x9bj9p2l/video/upload/vc_h264,q_auto/v1788585091/RascalRoverVd7.mp4" target="_blank">upload/vc_h264,q_auto/v1788585091/RascalRoverVd7.mp4</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT SLIDER ENGINE -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const sliders = document.querySelectorAll(".dog-video-slider-unique");
+
+            sliders.forEach(function (slider) {
+                const track = slider.querySelector(".dog-video-track");
+                const leftButton = slider.querySelector(".dog-video-arrow-left");
+                const rightButton = slider.querySelector(".dog-video-arrow-right");
+                const cards = slider.querySelectorAll(".dog-video-card");
+
+                if (!track) return;
+
+                cards.forEach(function (card) {
+                    const video = card.querySelector("video");
+                    const playButton = card.querySelector(".dog-video-play");
+                    const muteButton = card.querySelector(".dog-video-mute");
+
+                    if (!video) return;
+
+                    // Video events for robust buffering and playing state
+                    video.addEventListener("playing", function () {
+                        card.classList.remove("is-buffering");
+                        card.classList.add("is-playing");
+                    });
+
+                    video.addEventListener("waiting", function () {
+                        if (!video.paused) {
+                            card.classList.add("is-buffering");
+                        }
+                    });
+
+                    video.addEventListener("pause", function () {
+                        card.classList.remove("is-buffering");
+                        card.classList.remove("is-playing");
+                    });
+
+                    video.addEventListener("ended", function () {
+                        card.classList.remove("is-buffering");
+                        card.classList.remove("is-playing");
+                    });
+
+                    video.addEventListener("error", function (e) {
+                        card.classList.remove("is-buffering");
+                        card.classList.remove("is-playing");
+                        console.error("Video playback error:", video.error);
+                    });
+
+                    // Mute / Unmute handler
+                    function updateMuteButton() {
+                        if (!muteButton) return;
+                        if (video.muted) {
+                            muteButton.setAttribute("aria-label", "Unmute video");
+                            muteButton.innerHTML = `
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                                    <line x1="17" y1="9" x2="21" y2="15"></line>
+                                    <line x1="21" y1="9" x2="17" y2="15"></line>
+                                </svg>
+                            `;
+                        } else {
+                            muteButton.setAttribute("aria-label", "Mute video");
+                            muteButton.innerHTML = `
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+                                    <path d="M17 8.5C18.3 9.5 19 10.7 19 12C19 13.3 18.3 14.5 17 15.5"></path>
+                                    <path d="M19.5 6.5C21.1 8 22 9.8 22 12C22 14.2 21.1 16 19.5 17.5"></path>
+                                </svg>
+                            `;
+                        }
+                    }
+
+                    function togglePlay() {
+                        if (video.paused) {
+                            // Tạm dừng các video khác trong slider
+                            slider.querySelectorAll("video").forEach(function (other) {
+                                if (other !== video && !other.paused) {
+                                    other.pause();
+                                    const otherCard = other.closest(".dog-video-card");
+                                    if (otherCard) {
+                                        otherCard.classList.remove("is-playing");
+                                        otherCard.classList.remove("is-buffering");
+                                    }
+                                }
+                            });
+
+                            // Khi ấn Play: Bật tiếng ngay lập tức
+                            video.muted = false;
+                            updateMuteButton();
+
+                            card.classList.add("is-buffering");
+                            const playPromise = video.play();
+                            if (playPromise !== undefined) {
+                                playPromise.then(function () {
+                                    card.classList.remove("is-buffering");
+                                    card.classList.add("is-playing");
+                                }).catch(function (e) {
+                                    // Fallback nếu trình duyệt hạn chế autoplay có tiếng
+                                    if (e.name === "NotAllowedError") {
+                                        video.muted = true;
+                                        updateMuteButton();
+                                        video.play().then(function () {
+                                            card.classList.remove("is-buffering");
+                                            card.classList.add("is-playing");
+                                        });
+                                    } else {
+                                        card.classList.remove("is-buffering");
+                                        console.warn("Play interrupted or blocked:", e);
+                                    }
+                                });
+                            }
+                        } else {
+                            video.pause();
+                            card.classList.remove("is-playing");
+                            card.classList.remove("is-buffering");
+                        }
+                    }
+
+                    // Click card or play button toggles play
+                    card.addEventListener("click", function (e) {
+                        if (e.target.closest(".dog-video-mute")) return;
+                        togglePlay();
+                    });
+
+                    if (playButton) {
+                        playButton.addEventListener("click", function (e) {
+                            e.stopPropagation();
+                            togglePlay();
+                        });
+                    }
+
+                    if (muteButton) {
+                        muteButton.addEventListener("click", function (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            video.muted = !video.muted;
+                            updateMuteButton();
+                        });
+
+                        updateMuteButton();
+                    }
+                });
+
+                // Scroll Amount calculation
+                function getScrollAmount() {
+                    const firstCard = track.querySelector(".dog-video-card");
+                    if (!firstCard) return 0;
+                    const styles = window.getComputedStyle(track);
+                    const gap = parseFloat(styles.columnGap) || parseFloat(styles.gap) || 16;
+                    return firstCard.getBoundingClientRect().width + gap;
+                }
+
+                if (rightButton) {
+                    rightButton.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        track.scrollBy({ left: getScrollAmount(), behavior: "smooth" });
+                    });
+                }
+
+                if (leftButton) {
+                    leftButton.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        track.scrollBy({ left: -getScrollAmount(), behavior: "smooth" });
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
