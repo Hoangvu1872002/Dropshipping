@@ -1,0 +1,410 @@
+<!-- =========================================================
+     VIDEO 4: RASCAL ROVER INSTALL (16:9 VIDEO CARD)
+     Hoạt động CHUẨN XÁC như 1 item trong array (arrVideo):
+     - Hiện poster sắc nét với nút Play tròn màu cam ở giữa
+     - Bấm vào phát CÓ ÂM THANH ngay lập tức, nút Play ẩn đi
+     - Bấm lại thì Tạm dừng và nút Play hiện lại
+     - Nút Mute góc dưới cho phép Bật/Tắt tiếng
+     - Tự động dừng khi cuộn ra ngoài màn hình
+     - Kích thước: 16:9 Widescreen (thay vì 9:16 dạng dọc của array)
+========================================================= -->
+
+<div class="dog-video-single-card" id="rascalRoverInstallCard">
+    <!-- VIDEO -->
+    <video playsinline muted loop preload="none"
+        poster="https://res.cloudinary.com/x9bj9p2l/video/upload/f_auto,q_auto,so_5/v1789206441/RascalRoverInsstall.jpg">
+        <source src="https://res.cloudinary.com/x9bj9p2l/video/upload/v1789206441/RascalRoverInsstall.mp4"
+            type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+
+    <!-- NÚT PLAY TRÒN MÀU CAM Ở GIỮA CARD -->
+    <button class="dog-video-play" type="button" aria-label="Play video"></button>
+
+    <!-- NÚT MUTE / UNMUTE GÓC DƯỚI PHẢI -->
+    <button class="dog-video-mute" type="button" aria-label="Unmute video">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M5 9V15H9L14 19V5L9 9H5Z"></path>
+            <line x1="17" y1="9" x2="21" y2="15"></line>
+            <line x1="21" y1="9" x2="17" y2="15"></line>
+        </svg>
+    </button>
+</div>
+
+<style>
+    /* =========================================================
+       CSS CHO VIDEO CARD (CHUẨN THEO ITEM ARRAY - TỈ LỆ 16:9)
+    ========================================================= */
+    .dog-video-single-card {
+        position: relative !important;
+        width: 100% !important;
+        max-width: 1200px !important;
+        aspect-ratio: 16 / 9 !important;
+        margin: 0 auto !important;
+        overflow: hidden !important;
+        border-radius: 16px !important;
+        background: #000000 !important;
+        cursor: pointer !important;
+        box-sizing: border-box !important;
+        line-height: 0 !important;
+        isolation: isolate !important;
+        box-shadow: none !important;
+        transition: transform 0.25s ease !important;
+    }
+
+    .dog-video-single-card:hover {
+        box-shadow: none !important;
+    }
+
+    /* VIDEO ELEMENT */
+    .dog-video-single-card video {
+        display: block !important;
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        aspect-ratio: 16 / 9 !important;
+        object-fit: cover !important;
+        background: transparent !important;
+        border-radius: 16px !important;
+        pointer-events: none !important;
+        box-sizing: border-box !important;
+    }
+
+    /* =========================================================
+       NÚT PLAY (CHUẨN 100% ITEM ARRAY)
+       - Nút tròn cam #F58220 viền trắng, đổ bóng cam
+       - Tam giác Play màu trắng bên trong
+       - Đang phát thì ẨN ĐI, Tạm dừng thì HIỆN LẠI
+    ========================================================= */
+    .dog-video-single-card .dog-video-play {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 64px !important;
+        height: 64px !important;
+        min-width: 64px !important;
+        min-height: 64px !important;
+        max-width: 64px !important;
+        max-height: 64px !important;
+        aspect-ratio: 1 / 1 !important;
+        border-radius: 50% !important;
+        background: rgba(245, 130, 32, 0.92) !important;
+        border: 2.5px solid #ffffff !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.25s ease !important;
+        box-shadow: 0 6px 20px rgba(245, 130, 32, 0.5) !important;
+        z-index: 10 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        outline: none !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+    }
+
+    /* Tam giác Play màu trắng */
+    .dog-video-single-card .dog-video-play::after {
+        content: '' !important;
+        display: block !important;
+        width: 0 !important;
+        height: 0 !important;
+        border-top: 12px solid transparent !important;
+        border-bottom: 12px solid transparent !important;
+        border-left: 20px solid #ffffff !important;
+        margin-left: 5px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Hiệu ứng hover nút Play */
+    .dog-video-single-card:not(.is-playing) .dog-video-play:hover {
+        transform: translate(-50%, -50%) scale(1.08) !important;
+        background: #e07016 !important;
+    }
+
+    /* Đang Play -> Ẩn nút Play */
+    .dog-video-single-card.is-playing .dog-video-play {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+
+    /* Buffering Spinner */
+    .dog-video-single-card.is-buffering .dog-video-play {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: none !important;
+        background: rgba(0, 0, 0, 0.75) !important;
+        border: 3px solid rgba(255, 255, 255, 0.3) !important;
+        border-top-color: #F58220 !important;
+        animation: dogSingleSpin 0.75s linear infinite !important;
+    }
+
+    .dog-video-single-card.is-buffering .dog-video-play::after {
+        display: none !important;
+    }
+
+    @keyframes dogSingleSpin {
+        0% {
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+
+        100% {
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
+    }
+
+    /* =========================================================
+       NÚT MUTE / UNMUTE (CHUẨN 100% ITEM ARRAY)
+       - Nút tròn mờ góc dưới phải
+       - Hiện khi rê chuột (hover) trên desktop, luôn hiện trên mobile
+    ========================================================= */
+    .dog-video-single-card .dog-video-mute {
+        position: absolute !important;
+        bottom: 18px !important;
+        right: 18px !important;
+        width: 42px !important;
+        height: 42px !important;
+        min-width: 42px !important;
+        min-height: 42px !important;
+        max-width: 42px !important;
+        max-height: 42px !important;
+        aspect-ratio: 1 / 1 !important;
+        border-radius: 50% !important;
+        background: rgba(0, 0, 0, 0.65) !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.35) !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #ffffff !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transition: opacity 0.25s ease, background-color 0.25s ease, transform 0.2s ease !important;
+        z-index: 10 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        outline: none !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+    }
+
+    .dog-video-single-card .dog-video-mute svg {
+        width: 20px !important;
+        height: 20px !important;
+        display: block !important;
+        pointer-events: none !important;
+        color: #ffffff !important;
+    }
+
+    /* Hiện nút mute khi hover hoặc khi video đang play */
+    .dog-video-single-card:hover .dog-video-mute,
+    .dog-video-single-card.is-playing .dog-video-mute {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+
+    .dog-video-single-card .dog-video-mute:hover {
+        background: rgba(245, 130, 32, 0.95) !important;
+        border-color: #f58220 !important;
+        transform: scale(1.08) !important;
+    }
+
+    @media (max-width: 749px) {
+        .dog-video-single-card {
+            border-radius: 12px !important;
+        }
+
+        .dog-video-single-card video {
+            border-radius: 12px !important;
+        }
+
+        .dog-video-single-card .dog-video-play {
+            width: 52px !important;
+            height: 52px !important;
+            min-width: 52px !important;
+            min-height: 52px !important;
+            max-width: 52px !important;
+            max-height: 52px !important;
+        }
+
+        .dog-video-single-card .dog-video-play::after {
+            border-top-width: 10px !important;
+            border-bottom-width: 10px !important;
+            border-left-width: 16px !important;
+            margin-left: 4px !important;
+        }
+
+        .dog-video-single-card .dog-video-mute {
+            opacity: 1 !important;
+            visibility: visible !important;
+            bottom: 12px !important;
+            right: 12px !important;
+            width: 36px !important;
+            height: 36px !important;
+            min-width: 36px !important;
+            min-height: 36px !important;
+        }
+
+        .dog-video-single-card .dog-video-mute svg {
+            width: 17px !important;
+            height: 17px !important;
+        }
+    }
+</style>
+
+<script>
+    (function () {
+        function setupRascalRoverCard() {
+            const card = document.getElementById("rascalRoverInstallCard") || document.querySelector(".dog-video-single-card");
+            if (!card) return;
+
+            const video = card.querySelector("video");
+            const playButton = card.querySelector(".dog-video-play");
+            const muteButton = card.querySelector(".dog-video-mute");
+
+            if (!video) return;
+
+            // Đồng bộ sự kiện Playback
+            video.addEventListener("playing", function () {
+                card.classList.remove("is-buffering");
+                card.classList.add("is-playing");
+            });
+
+            video.addEventListener("waiting", function () {
+                if (!video.paused) {
+                    card.classList.add("is-buffering");
+                }
+            });
+
+            video.addEventListener("pause", function () {
+                card.classList.remove("is-buffering");
+                card.classList.remove("is-playing");
+            });
+
+            video.addEventListener("ended", function () {
+                card.classList.remove("is-buffering");
+                card.classList.remove("is-playing");
+            });
+
+            // Cập nhật icon Mute / Unmute
+            function updateMuteButton() {
+                if (!muteButton) return;
+                if (video.muted) {
+                    muteButton.setAttribute("aria-label", "Unmute video");
+                    muteButton.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9V15H9L14 19V5L9 9H5Z"></path><line x1="17" y1="9" x2="21" y2="15"></line><line x1="21" y1="9" x2="17" y2="15"></line></svg>';
+                } else {
+                    muteButton.setAttribute("aria-label", "Mute video");
+                    muteButton.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9V15H9L14 19V5L9 9H5Z"></path><path d="M17 8.5C18.3 9.5 19 10.7 19 12C19 13.3 18.3 14.5 17 15.5"></path><path d="M19.5 6.5C21.1 8 22 9.8 22 12C22 14.2 21.1 16 19.5 17.5"></path></svg>';
+                }
+            }
+
+            // Logic Play / Pause giống 100% item của array (arrVideo)
+            function togglePlay() {
+                if (video.paused) {
+                    // Khi bấm phát: Tự động mở âm thanh
+                    video.muted = false;
+                    updateMuteButton();
+
+                    card.classList.add("is-buffering");
+                    const playPromise = video.play();
+                    if (playPromise !== undefined) {
+                        playPromise
+                            .then(function () {
+                                card.classList.remove("is-buffering");
+                                card.classList.add("is-playing");
+                            })
+                            .catch(function (error) {
+                                // Fallback nếu trình duyệt hạn chế autoplay có tiếng khi chưa tương tác
+                                if (error.name === "NotAllowedError") {
+                                    video.muted = true;
+                                    updateMuteButton();
+                                    video.play().then(function () {
+                                        card.classList.remove("is-buffering");
+                                        card.classList.add("is-playing");
+                                    });
+                                } else {
+                                    card.classList.remove("is-buffering");
+                                    console.warn("Play interrupted:", error);
+                                }
+                            });
+                    }
+                } else {
+                    video.pause();
+                    card.classList.remove("is-playing");
+                    card.classList.remove("is-buffering");
+                }
+            }
+
+            // Bấm vào card -> Toggle Play / Pause
+            card.addEventListener("click", function (e) {
+                if (e.target.closest(".dog-video-mute")) return;
+                togglePlay();
+            });
+
+            // Bấm vào nút Play ở giữa
+            if (playButton) {
+                playButton.addEventListener("click", function (e) {
+                    e.stopPropagation();
+                    togglePlay();
+                });
+            }
+
+            // Bấm vào nút Mute ở góc
+            if (muteButton) {
+                muteButton.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    video.muted = !video.muted;
+                    updateMuteButton();
+                });
+            }
+
+            // Tự động dừng khi cuộn ra khỏi tầm nhìn (IntersectionObserver)
+            if ("IntersectionObserver" in window) {
+                const autoPauseObserver = new IntersectionObserver(
+                    function (entries) {
+                        entries.forEach(function (entry) {
+                            if (!entry.isIntersecting && !video.paused) {
+                                video.pause();
+                            }
+                        });
+                    },
+                    { threshold: 0 }
+                );
+                autoPauseObserver.observe(card);
+            }
+
+            // Đồng bộ khi đổi tab
+            document.addEventListener("visibilitychange", function () {
+                if (document.hidden) {
+                    if (!video.paused) {
+                        video._wasPlaying = true;
+                        video.pause();
+                    }
+                } else {
+                    if (video._wasPlaying) {
+                        video._wasPlaying = false;
+                        video.play().catch(function () { });
+                    }
+                }
+            });
+
+            updateMuteButton();
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", setupRascalRoverCard);
+        } else {
+            setupRascalRoverCard();
+        }
+    })();
+</script>

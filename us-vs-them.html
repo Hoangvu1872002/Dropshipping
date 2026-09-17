@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comparison Table UI</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    /* =========================================================
+       US VS THEM COMPARISON TABLE - SCOPED CSS
+       Được bọc hoàn toàn trong .us-vs-them-wrapper
+       Không ảnh hưởng tới style toàn website (Shopify / Landing Page)
+    ========================================================= */
+
+    /* Reset riêng biệt chỉ áp dụng bên trong component */
+    .us-vs-them-wrapper,
+    .us-vs-them-wrapper *,
+    .us-vs-them-wrapper *::before,
+    .us-vs-them-wrapper *::after {
+      box-sizing: border-box !important;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Outer Wrapper Container */
+    .us-vs-them-wrapper {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+      color: #1a1a1a !important;
+      -webkit-font-smoothing: antialiased !important;
+      width: 100% !important;
+      max-width: 620px !important;
+      margin: 0 auto !important;
+      padding: 35px 10px !important; /* Reserves space top & bottom for the overhang */
+      position: relative !important;
+      overflow: visible !important;
+    }
+
+    /* Outer Table Card */
+    .us-vs-them-wrapper .uvt-table-card {
+      background: #ffffff !important;
+      border-radius: 18px !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06) !important;
+      position: relative !important;
+      overflow: visible !important;
+    }
+
+    /* Grid Layout: Features (58%), RuffRover (23%), Others (19%) */
+    .us-vs-them-wrapper .uvt-table-grid {
+      display: grid !important;
+      grid-template-columns: 2.8fr 1.1fr 0.9fr !important;
+    }
+
+    /* Header Row */
+    .us-vs-them-wrapper .uvt-table-header {
+      height: 60px !important;
+    }
+
+    .us-vs-them-wrapper .uvt-header-cell {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-weight: 800 !important;
+      font-size: 16px !important;
+    }
+
+    .us-vs-them-wrapper .uvt-header-cell.uvt-others {
+      color: #111111 !important;
+      font-weight: 800 !important;
+    }
+
+    /* Data Rows */
+    .us-vs-them-wrapper .uvt-table-row {
+      height: 52px !important;
+      border-top: 1px solid #eeeeee !important;
+      align-items: center !important;
+    }
+
+    /* Alternating row colors */
+    .us-vs-them-wrapper .uvt-table-row:nth-child(even) {
+      background-color: #f7f7f7 !important;
+    }
+
+    .us-vs-them-wrapper .uvt-table-row:nth-child(odd) {
+      background-color: #ffffff !important;
+    }
+
+    /* Centered Feature Label */
+    .us-vs-them-wrapper .uvt-feature-cell {
+      padding: 0 16px !important;
+      font-weight: 800 !important;
+      font-size: 14.5px !important;
+      color: #111111 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      text-align: center !important;
+      letter-spacing: -0.01em !important;
+    }
+
+    .us-vs-them-wrapper .uvt-status-cell {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    /* Highlighted RUFFROVER Center Column Card */
+    .us-vs-them-wrapper .uvt-ruffrover-highlight-col {
+      position: absolute !important;
+      top: -28px !important;
+      bottom: -28px !important;
+      left: calc(58.3333% - 3px) !important;
+      width: calc(22.9167% + 6px) !important;
+      background: #f27415 !important;
+      border-radius: 18px !important;
+      box-shadow: 0 10px 28px rgba(242, 116, 21, 0.38) !important;
+      z-index: 5 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      overflow: hidden !important;
+    }
+
+    /* Orange Header Area inside Highlighted Card */
+    .us-vs-them-wrapper .uvt-ruffrover-header {
+      height: 88px !important; /* 60px table header + 28px top overhang */
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      color: #ffffff !important;
+      padding-top: 4px !important;
+    }
+
+    .us-vs-them-wrapper .uvt-ruffrover-logo-wrap {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 3px !important;
+    }
+
+    .us-vs-them-wrapper .uvt-ruffrover-logo-icon {
+      width: 46px !important;
+      height: 22px !important;
+      fill: #000000 !important;
+    }
+
+    .us-vs-them-wrapper .uvt-ruffrover-brand-name {
+      font-size: 14.5px !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.04em !important;
+      color: #ffffff !important;
+      text-transform: uppercase !important;
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      line-height: 1 !important;
+    }
+
+    /* Rows inside Highlighted Card */
+    .us-vs-them-wrapper .uvt-ruffrover-rows {
+      display: flex !important;
+      flex-direction: column !important;
+    }
+
+    .us-vs-them-wrapper .uvt-ruffrover-row {
+      height: 52px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+
+    /* Circular Status Badges */
+    .us-vs-them-wrapper .uvt-icon-badge {
+      width: 25px !important;
+      height: 25px !important;
+      border-radius: 50% !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    /* Green Badge for RUFFROVER */
+    .us-vs-them-wrapper .uvt-icon-badge.uvt-green {
+      background-color: #26c623 !important;
+      color: #ffffff !important;
+    }
+
+    /* Soft Pink/Red Badge for Others Cross */
+    .us-vs-them-wrapper .uvt-icon-badge.uvt-red-soft {
+      background-color: #f4e7e9 !important;
+      color: #c92a42 !important;
+    }
+
+    /* Soft Pink/Red Badge for Others Check (Row 5) */
+    .us-vs-them-wrapper .uvt-icon-badge.uvt-red-soft-check {
+      background-color: #f4e7e9 !important;
+      color: #c92a42 !important;
+    }
+
+    .us-vs-them-wrapper .uvt-icon-svg {
+      width: 14px !important;
+      height: 14px !important;
+      stroke-width: 3.2 !important;
+      stroke: currentColor !important;
+      fill: none !important;
+      stroke-linecap: round !important;
+      stroke-linejoin: round !important;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 540px) {
+      .us-vs-them-wrapper {
+        padding: 30px 4px !important;
+      }
+      .us-vs-them-wrapper .uvt-feature-cell {
+        font-size: 12px !important;
+        padding: 0 6px !important;
+      }
+      .us-vs-them-wrapper .uvt-header-cell.uvt-others {
+        font-size: 13.5px !important;
+      }
+      .us-vs-them-wrapper .uvt-ruffrover-brand-name {
+        font-size: 11.5px !important;
+      }
+      .us-vs-them-wrapper .uvt-ruffrover-logo-icon {
+        width: 38px !important;
+        height: 18px !important;
+      }
+      .us-vs-them-wrapper .uvt-ruffrover-highlight-col {
+        left: calc(58.3333% - 2px) !important;
+        width: calc(22.9167% + 4px) !important;
+      }
+      .us-vs-them-wrapper .uvt-icon-badge {
+        width: 22px !important;
+        height: 22px !important;
+      }
+      .us-vs-them-wrapper .uvt-icon-svg {
+        width: 12px !important;
+        height: 12px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Main Section / Wrapper -->
+  <div class="us-vs-them-wrapper">
+    <div class="uvt-table-card">
+      
+      <!-- Highlighted Orange Column: RUFFROVER -->
+      <div class="uvt-ruffrover-highlight-col">
+        <div class="uvt-ruffrover-header">
+          <div class="uvt-ruffrover-logo-wrap">
+            <!-- Dog Silhouette SVG -->
+            <svg class="uvt-ruffrover-logo-icon" viewBox="0 0 100 45">
+              <path d="M 85 10 C 80 5, 73 8, 68 12 C 63 15, 55 14, 48 12 C 40 10, 32 12, 25 18 C 20 22, 12 25, 5 22 C 3 21, 0 23, 2 26 C 5 30, 14 30, 20 27 C 28 23, 36 22, 44 26 C 52 30, 60 28, 67 24 C 73 20, 80 22, 85 18 C 88 15, 89 12, 85 10 Z 
+                       M 75 14 C 77 10, 82 8, 86 6 C 90 4, 94 8, 91 12 C 87 16, 81 17, 75 14 Z 
+                       M 15 25 C 12 32, 10 38, 14 42 C 16 44, 19 41, 18 37 C 17 33, 19 30, 22 27 Z 
+                       M 62 25 C 64 32, 68 38, 73 42 C 76 44, 78 40, 75 36 C 72 32, 70 28, 67 24 Z" />
+            </svg>
+            <span class="uvt-ruffrover-brand-name">RUFFROVER</span>
+          </div>
+        </div>
+
+        <div class="uvt-ruffrover-rows">
+          <!-- Row 1 -->
+          <div class="uvt-ruffrover-row">
+            <div class="uvt-icon-badge uvt-green">
+              <svg class="uvt-icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+          </div>
+          <!-- Row 2 -->
+          <div class="uvt-ruffrover-row">
+            <div class="uvt-icon-badge uvt-green">
+              <svg class="uvt-icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+          </div>
+          <!-- Row 3 -->
+          <div class="uvt-ruffrover-row">
+            <div class="uvt-icon-badge uvt-green">
+              <svg class="uvt-icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+          </div>
+          <!-- Row 4 -->
+          <div class="uvt-ruffrover-row">
+            <div class="uvt-icon-badge uvt-green">
+              <svg class="uvt-icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+          </div>
+          <!-- Row 5 (Rips Over Time & Flimsy -> RuffRover DOES NOT -> White X) -->
+          <div class="uvt-ruffrover-row">
+            <div class="uvt-icon-badge uvt-green">
+              <svg class="uvt-icon-svg" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </div>
+          </div>
+          <!-- Row 6 -->
+          <div class="uvt-ruffrover-row">
+            <div class="uvt-icon-badge uvt-green">
+              <svg class="uvt-icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+          </div>
+          <!-- Row 7 -->
+          <div class="uvt-ruffrover-row">
+            <div class="uvt-icon-badge uvt-green">
+              <svg class="uvt-icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Outer Table Header -->
+      <div class="uvt-table-grid uvt-table-header">
+        <div class="uvt-header-cell"></div>
+        <div class="uvt-header-cell"></div>
+        <div class="uvt-header-cell uvt-others">Others</div>
+      </div>
+
+      <!-- Feature Rows -->
+      <!-- Row 1 -->
+      <div class="uvt-table-grid uvt-table-row">
+        <div class="uvt-feature-cell">Ultra Spacious</div>
+        <div class="uvt-status-cell"></div>
+        <div class="uvt-status-cell">
+          <div class="uvt-icon-badge uvt-red-soft">
+            <svg class="uvt-icon-svg" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="uvt-table-grid uvt-table-row">
+        <div class="uvt-feature-cell">Heavy Duty Hard Bottom</div>
+        <div class="uvt-status-cell"></div>
+        <div class="uvt-status-cell">
+          <div class="uvt-icon-badge uvt-red-soft">
+            <svg class="uvt-icon-svg" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="uvt-table-grid uvt-table-row">
+        <div class="uvt-feature-cell">Resists up to 280lbs</div>
+        <div class="uvt-status-cell"></div>
+        <div class="uvt-status-cell">
+          <div class="uvt-icon-badge uvt-red-soft">
+            <svg class="uvt-icon-svg" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 4 -->
+      <div class="uvt-table-grid uvt-table-row">
+        <div class="uvt-feature-cell">100% Tear &amp; Waterproof</div>
+        <div class="uvt-status-cell"></div>
+        <div class="uvt-status-cell">
+          <div class="uvt-icon-badge uvt-red-soft">
+            <svg class="uvt-icon-svg" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 5 -->
+      <div class="uvt-table-grid uvt-table-row">
+        <div class="uvt-feature-cell">Rips Over Time &amp; Flimsy</div>
+        <div class="uvt-status-cell"></div>
+        <div class="uvt-status-cell">
+          <div class="uvt-icon-badge uvt-red-soft-check">
+            <svg class="uvt-icon-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 6 -->
+      <div class="uvt-table-grid uvt-table-row">
+        <div class="uvt-feature-cell">Airflow Screen Feature</div>
+        <div class="uvt-status-cell"></div>
+        <div class="uvt-status-cell">
+          <div class="uvt-icon-badge uvt-red-soft">
+            <svg class="uvt-icon-svg" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 7 -->
+      <div class="uvt-table-grid uvt-table-row">
+        <div class="uvt-feature-cell">Includes 1-Year Warranty</div>
+        <div class="uvt-status-cell"></div>
+        <div class="uvt-status-cell">
+          <div class="uvt-icon-badge uvt-red-soft">
+            <svg class="uvt-icon-svg" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
