@@ -384,10 +384,16 @@
         @media (max-width: 640px) {
             .dog-video-slider-unique .dog-video-track {
                 gap: 12px;
+                padding: 4px 16px;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
             }
 
             .dog-video-slider-unique .dog-video-card {
-                flex: 0 0 calc((100% - 24px) / 2.15);
+                flex: 0 0 90%;
+                max-width: 380px;
+                border-radius: 12px;
+                scroll-snap-align: start;
             }
 
             .dog-video-slider-unique .dog-video-play {

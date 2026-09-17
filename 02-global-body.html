@@ -221,15 +221,9 @@
                 }
 
                 function setPlayIcon(isPlaying) {
-                    if (isPlaying) {
-                        if (pauseIcon) pauseIcon.style.setProperty("display", "block", "important");
-                        if (playIcon) playIcon.style.setProperty("display", "none", "important");
-                        playPauseButton.setAttribute("aria-label", "Pause video");
-                    } else {
-                        if (pauseIcon) pauseIcon.style.setProperty("display", "none", "important");
-                        if (playIcon) playIcon.style.setProperty("display", "block", "important");
-                        playPauseButton.setAttribute("aria-label", "Play video");
-                    }
+                    if (pauseIcon) pauseIcon.style.setProperty("display", "none", "important");
+                    if (playIcon) playIcon.style.setProperty("display", "none", "important");
+                    playPauseButton.setAttribute("aria-label", isPlaying ? "Pause video" : "Play video");
                 }
 
                 // Gán sự kiện playback chung
