@@ -663,4 +663,46 @@
             display: none !important;
         }
     }
+
+    /* =========================================
+       10. GLOBAL CONTAINER OVERRIDE
+    ========================================= */
+    @media (min-width: 834px) {
+
+        html body .container,
+        .container {
+            max-width: 1300px !important;
+        }
+    }
+
+    /* =========================================
+       11. REVIEW GRID OVERRIDE
+    ========================================= */
+    .layout-grid-resize,
+    .layout-grid-resize__container {
+        --cols-max-width: 320px !important;
+        /* Nới rộng độ rộng tối đa mỗi thẻ review */
+    }
+
+    /* =========================================
+       12. STICKY CONTAINER CONTENT WIDTH OVERRIDE
+    ========================================= */
+    /* 1. Thanh nền trắng và bóng đổ luôn phủ kín 100% toàn màn hình */
+    .sticky__container {
+        width: 100% !important;
+        max-width: 100% !important;
+        left: 0 !important;
+        right: 0 !important;
+        transform: none !important;
+        box-sizing: border-box !important;
+        background-color: #fff !important;
+    }
+
+    /* 2. Ép nội dung (ảnh, chữ, nút) thu vào đúng khung 1300px căn giữa */
+    @media (min-width: 1300px) {
+        .sticky__container {
+            padding-left: calc((100% - 1300px) / 2) !important;
+            padding-right: calc((100% - 1300px) / 2) !important;
+        }
+    }
 </style>
