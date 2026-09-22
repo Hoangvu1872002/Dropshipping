@@ -91,7 +91,7 @@
                 videos.forEach(function (video) {
                     if (video._wasPlayingBeforeHide) {
                         video._wasPlayingBeforeHide = false;
-                        video.play().catch(function () {});
+                        video.play().catch(function () { });
                     }
                 });
             }
@@ -140,7 +140,7 @@
                                                 window.FlusbaseSingleVideoObserver.unobserve(wrapper);
                                             }
                                         })
-                                        .catch(function () {});
+                                        .catch(function () { });
                                 }
                             }
                         }
@@ -184,14 +184,134 @@
             });
         }
 
+        // Helper dùng chung cho từng Video Card (dùng cho cả Slider và Single Card Video 4)
+        function setupDogCard(card, slider) {
+            if (!card || card.dataset.dogCardInit) return;
+            card.dataset.dogCardInit = "1";
+
+            const video = card.querySelector("video");
+            const playButton = card.querySelector(".dog-video-play");
+            const muteButton = card.querySelector(".dog-video-mute");
+
+            if (!video) return;
+
+            // Nếu nằm trong slider có cơ chế lazy load thumbnail
+            if (slider && typeof loadThumbnail === "function") {
+                card._flusbaseLoadVideo = function () {
+                    loadThumbnail(video, card);
+                };
+                if (window.FlusbaseVideoObserver) {
+                    window.FlusbaseVideoObserver.observe(card);
+                }
+            }
+
+            // Gán sự kiện playback chung
+            bindVideoPlaybackEvents(video, card);
+
+            function updateMuteButton() {
+                if (!muteButton) return;
+                if (video.muted) {
+                    muteButton.setAttribute("aria-label", "Unmute video");
+                    muteButton.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9V15H9L14 19V5L9 9H5Z"></path><line x1="17" y1="9" x2="21" y2="15"></line><line x1="21" y1="9" x2="17" y2="15"></line></svg>';
+                } else {
+                    muteButton.setAttribute("aria-label", "Mute video");
+                    muteButton.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9V15H9L14 19V5L9 9H5Z"></path><path d="M17 8.5C18.3 9.5 19 10.7 19 12C19 13.3 18.3 14.5 17 15.5"></path><path d="M19.5 6.5C21.1 8 22 9.8 22 12C22 14.2 21.1 16 19.5 17.5"></path></svg>';
+                }
+            }
+
+            let isToggling = false;
+            function togglePlay() {
+                if (isToggling) return;
+                isToggling = true;
+                setTimeout(function () {
+                    isToggling = false;
+                }, 200);
+
+                if (!card.classList.contains("is-playing")) {
+                    // Nếu ở trong slider thì pause các card khác cùng slider
+                    if (slider) {
+                        slider.querySelectorAll("video").forEach(function (other) {
+                            if (other !== video && !other.paused) {
+                                other.pause();
+                                const otherCard = other.closest(".dog-video-card");
+                                if (otherCard) {
+                                    otherCard.classList.remove("is-playing");
+                                    otherCard.classList.remove("is-buffering");
+                                }
+                            }
+                        });
+                    }
+
+                    if (video.preload !== "auto") video.preload = "auto";
+                    video.muted = false;
+                    updateMuteButton();
+
+                    card.classList.add("is-buffering");
+                    const playPromise = video.play();
+                    if (playPromise !== undefined) {
+                        playPromise
+                            .then(function () {
+                                card.classList.remove("is-buffering");
+                                card.classList.add("is-playing");
+                            })
+                            .catch(function (error) {
+                                // Fallback nếu mobile chặn tự động phát có âm thanh
+                                if (error && error.name === "NotAllowedError") {
+                                    video.muted = true;
+                                    updateMuteButton();
+                                    video.play().then(function () {
+                                        card.classList.remove("is-buffering");
+                                        card.classList.add("is-playing");
+                                    }).catch(function () {
+                                        card.classList.remove("is-buffering");
+                                    });
+                                } else {
+                                    card.classList.remove("is-buffering");
+                                    console.warn("Play interrupted or blocked:", error);
+                                }
+                            });
+                    }
+                } else {
+                    video.pause();
+                    card.classList.remove("is-playing");
+                    card.classList.remove("is-buffering");
+                }
+            }
+
+            card.addEventListener("click", function (event) {
+                if (event.target.closest(".dog-video-mute")) return;
+                togglePlay();
+            });
+
+            if (playButton) {
+                playButton.addEventListener("click", function (event) {
+                    event.stopPropagation();
+                    togglePlay();
+                });
+            }
+
+            if (muteButton) {
+                muteButton.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    video.muted = !video.muted;
+                    updateMuteButton();
+                });
+            }
+
+            if (window.FlusbaseAutoPauseObserver) {
+                window.FlusbaseAutoPauseObserver.observe(card);
+            }
+
+            updateMuteButton();
+        }
+
         // Global Video Engine Namespace
         window.FlusbaseVideoEngine = {
             initSinglePlayer: function (wrapper) {
                 const video = wrapper.querySelector("video");
                 if (!video || video.dataset.initialized) return;
                 video.dataset.initialized = "1";
-
-                const isRuffRascal = wrapper.classList.contains("ruffrascal-pv-wrapper");
 
                 const playPauseButton = wrapper.querySelector(
                     "#playPauseButton, #ruffrascalPvPlayPause, #productVideoPlayPauseUnique, .video-button, .ruffrascal-pv-button"
@@ -229,10 +349,16 @@
                 // Gán sự kiện playback chung
                 bindVideoPlaybackEvents(video, wrapper, setPlayIcon);
 
+                let isToggling = false;
                 function togglePlay() {
-                    if (video.paused) {
+                    if (isToggling) return;
+                    isToggling = true;
+                    setTimeout(function () {
+                        isToggling = false;
+                    }, 200);
+
+                    if (!wrapper.classList.contains("is-playing")) {
                         delete video.dataset.userPaused;
-                        // Khong pause video khac: Cac video 1, 2, 3 co the chay dong thoi
                         if (video.preload !== "auto") video.preload = "auto";
                         video.muted = true;
                         updateMuteIcon();
@@ -260,14 +386,8 @@
                     }
                 }
 
-                // Thao tác click toàn bộ container để phát / dừng
                 wrapper.addEventListener("click", function (event) {
                     if (event.target.closest("#muteButton, #ruffrascalPvMute, #productVideoMuteUnique")) return;
-                    togglePlay();
-                });
-
-                playPauseButton.addEventListener("click", function (event) {
-                    event.stopPropagation();
                     togglePlay();
                 });
 
@@ -300,107 +420,7 @@
                 if (!track || !cards.length) return;
 
                 cards.forEach(function (card) {
-                    if (card.dataset.dogCardInit) return;
-                    card.dataset.dogCardInit = "1";
-
-                    const video = card.querySelector("video");
-                    const playButton = card.querySelector(".dog-video-play");
-                    const muteButton = card.querySelector(".dog-video-mute");
-
-                    if (!video) return;
-
-                    card._flusbaseLoadVideo = function () {
-                        loadThumbnail(video, card);
-                    };
-                    if (window.FlusbaseVideoObserver) {
-                        window.FlusbaseVideoObserver.observe(card);
-                    }
-
-                    // Gán sự kiện playback chung
-                    bindVideoPlaybackEvents(video, card);
-
-                    function updateMuteButton() {
-                        if (!muteButton) return;
-                        if (video.muted) {
-                            muteButton.setAttribute("aria-label", "Unmute video");
-                            muteButton.innerHTML = '<svg viewBox="0 0 24 24"><path d="M5 9V15H9L14 19V5L9 9H5Z"></path><line x1="17" y1="9" x2="21" y2="15"></line><line x1="21" y1="9" x2="17" y2="15"></line></svg>';
-                        } else {
-                            muteButton.setAttribute("aria-label", "Mute video");
-                            muteButton.innerHTML = '<svg viewBox="0 0 24 24"><path d="M5 9V15H9L14 19V5L9 9H5Z"></path><path d="M17 8.5C18.3 9.5 19 10.7 19 12C19 13.3 18.3 14.5 17 15.5"></path><path d="M19.5 6.5C21.1 8 22 9.8 22 12C22 14.2 21.1 16 19.5 17.5"></path></svg>';
-                        }
-                    }
-
-                    function togglePlay() {
-                        if (video.paused) {
-                            // Chi pause cac card khac trong cung slider de tranh trung lap am thanh, khong anh huong video 1, 2, 3
-                            slider.querySelectorAll("video").forEach(function (other) {
-                                if (other !== video && !other.paused) {
-                                    other.pause();
-                                    const otherCard = other.closest(".dog-video-card");
-                                    if (otherCard) {
-                                        otherCard.classList.remove("is-playing");
-                                        otherCard.classList.remove("is-buffering");
-                                    }
-                                }
-                            });
-                            video.muted = false;
-                            updateMuteButton();
-
-                            card.classList.add("is-buffering");
-                            const playPromise = video.play();
-                            if (playPromise !== undefined) {
-                                playPromise
-                                    .then(function () {
-                                        card.classList.remove("is-buffering");
-                                        card.classList.add("is-playing");
-                                    })
-                                    .catch(function (error) {
-                                        if (error.name === "NotAllowedError") {
-                                            video.muted = true;
-                                            updateMuteButton();
-                                            video.play().then(function () {
-                                                card.classList.remove("is-buffering");
-                                                card.classList.add("is-playing");
-                                            });
-                                        } else {
-                                            card.classList.remove("is-buffering");
-                                            console.warn("Play interrupted or blocked:", error);
-                                        }
-                                    });
-                            }
-                        } else {
-                            video.pause();
-                            card.classList.remove("is-playing");
-                            card.classList.remove("is-buffering");
-                        }
-                    }
-
-                    card.addEventListener("click", function (event) {
-                        if (event.target.closest(".dog-video-mute")) return;
-                        togglePlay();
-                    });
-
-                    if (playButton) {
-                        playButton.addEventListener("click", function (event) {
-                            event.stopPropagation();
-                            togglePlay();
-                        });
-                    }
-
-                    if (muteButton) {
-                        muteButton.addEventListener("click", function (event) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                            video.muted = !video.muted;
-                            updateMuteButton();
-                        });
-
-                        updateMuteButton();
-                    }
-
-                    if (window.FlusbaseAutoPauseObserver) {
-                        window.FlusbaseAutoPauseObserver.observe(card);
-                    }
+                    setupDogCard(card, slider);
                 });
 
                 function getScrollAmount() {
@@ -428,13 +448,25 @@
                 }
             },
 
+            initSingleCard: function (card) {
+                setupDogCard(card, null);
+            },
+
             initAll: function () {
-                // Find and initialize single video players
+                // Find and initialize single video players (1, 2, 3)
                 const singleWrappers = document.querySelectorAll(
                     ".custom-video-wrapper, .ruffrascal-pv-wrapper, .product-video-unique"
                 );
                 singleWrappers.forEach(function (wrapper) {
                     window.FlusbaseVideoEngine.initSinglePlayer(wrapper);
+                });
+
+                // Find and initialize single video cards (Video 4)
+                const singleCards = document.querySelectorAll(
+                    ".dog-video-single-card, #rascalRoverInstallCard"
+                );
+                singleCards.forEach(function (card) {
+                    window.FlusbaseVideoEngine.initSingleCard(card);
                 });
 
                 // Find and initialize sliders
@@ -445,11 +477,20 @@
             }
         };
 
-        // Auto-init on page ready
+        // 1. Tự động khởi tạo khi trang sẵn sàng
         if (document.readyState === "loading") {
             document.addEventListener("DOMContentLoaded", window.FlusbaseVideoEngine.initAll);
         } else {
             window.FlusbaseVideoEngine.initAll();
+        }
+
+        // 2. Tự động khởi tạo khi Flusbase chèn component / chuyển trang
+        if ("MutationObserver" in window) {
+            let timer = null;
+            new MutationObserver(function () {
+                clearTimeout(timer);
+                timer = setTimeout(window.FlusbaseVideoEngine.initAll, 50);
+            }).observe(document.documentElement || document.body, { childList: true, subtree: true });
         }
     })();
 </script>

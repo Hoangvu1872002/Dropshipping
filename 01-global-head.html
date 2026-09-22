@@ -12,6 +12,7 @@
     .product-video-unique *,
     .dog-video-slider-unique * {
         box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent !important;
     }
 
     /* =========================================
@@ -29,6 +30,9 @@
         background: transparent;
         line-height: 0;
         isolation: isolate;
+        cursor: pointer;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
     }
 
     /* Ratio configurations */
@@ -49,7 +53,11 @@
         border-radius: 12px;
         background: transparent;
         object-fit: cover;
-        cursor: pointer;
+        pointer-events: none !important;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
     }
 
     .custom-video-wrapper video {
@@ -101,8 +109,6 @@
         align-items: center !important;
         justify-content: center !important;
         opacity: 1 !important;
-        visibility: visible !important;
-        pointer-events: auto !important;
         transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.25s ease !important;
         box-shadow: 0 4px 16px rgba(245, 130, 32, 0.45) !important;
         z-index: 2 !important;
@@ -135,12 +141,12 @@
     }
 
     /* Play triangle: 100% IDENTICAL TO ARR VIDEO (.dog-video-play::after) */
-    .custom-video-wrapper:not(.is-playing) .video-button::after,
-    .ruffrascal-pv-wrapper:not(.is-playing) .ruffrascal-pv-button::after,
-    .product-video-unique:not(.is-playing) .video-button::after,
-    .custom-video-wrapper:not(.is-playing) #playPauseButton::after,
-    .ruffrascal-pv-wrapper:not(.is-playing) #ruffrascalPvPlayPause::after,
-    .product-video-unique:not(.is-playing) #productVideoPlayPauseUnique::after {
+    .custom-video-wrapper .video-button::after,
+    .ruffrascal-pv-wrapper .ruffrascal-pv-button::after,
+    .product-video-unique .video-button::after,
+    #playPauseButton::after,
+    #ruffrascalPvPlayPause::after,
+    #productVideoPlayPauseUnique::after {
         content: '' !important;
         display: block !important;
         width: 0 !important;
@@ -152,13 +158,7 @@
         box-sizing: border-box !important;
     }
 
-    /* While playing / buffering: hide the CSS play triangle */
-    .custom-video-wrapper.is-playing .video-button::after,
-    .ruffrascal-pv-wrapper.is-playing .ruffrascal-pv-button::after,
-    .product-video-unique.is-playing .video-button::after,
-    .custom-video-wrapper.is-playing #playPauseButton::after,
-    .ruffrascal-pv-wrapper.is-playing #ruffrascalPvPlayPause::after,
-    .product-video-unique.is-playing #productVideoPlayPauseUnique::after,
+    /* While buffering: hide the CSS play triangle */
     .custom-video-wrapper.is-buffering .video-button::after,
     .ruffrascal-pv-wrapper.is-buffering .ruffrascal-pv-button::after,
     .product-video-unique.is-buffering .video-button::after,
@@ -179,7 +179,6 @@
     .ruffrascal-pv-wrapper:not(.is-playing) #ruffrascalPvPlayPause,
     .product-video-unique:not(.is-playing) #productVideoPlayPauseUnique {
         opacity: 1 !important;
-        visibility: visible !important;
         pointer-events: auto !important;
     }
 
@@ -191,30 +190,20 @@
     .ruffrascal-pv-wrapper.is-playing #ruffrascalPvPlayPause,
     .product-video-unique.is-playing #productVideoPlayPauseUnique {
         opacity: 0 !important;
-        visibility: hidden !important;
         pointer-events: none !important;
-        transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.2s ease, background-color 0.2s ease !important;
     }
 
-    /* Hover effect on Play Button when paused */
-    .custom-video-wrapper:not(.is-playing):not(.is-buffering) .video-button:hover,
-    .ruffrascal-pv-wrapper:not(.is-playing):not(.is-buffering) .ruffrascal-pv-button:hover,
-    .product-video-unique:not(.is-playing):not(.is-buffering) .video-button:hover,
-    .custom-video-wrapper:not(.is-playing):not(.is-buffering) #playPauseButton:hover,
-    .ruffrascal-pv-wrapper:not(.is-playing):not(.is-buffering) #ruffrascalPvPlayPause:hover,
-    .product-video-unique:not(.is-playing):not(.is-buffering) #productVideoPlayPauseUnique:hover {
-        transform: translate(-50%, -50%) scale(1.1) !important;
-        background: #e07016 !important;
-    }
-
-    /* Active click on Play Button */
-    .custom-video-wrapper:not(.is-playing) .video-button:active,
-    .ruffrascal-pv-wrapper:not(.is-playing) .ruffrascal-pv-button:active,
-    .product-video-unique:not(.is-playing) .video-button:active,
-    .custom-video-wrapper:not(.is-playing) #playPauseButton:active,
-    .ruffrascal-pv-wrapper:not(.is-playing) #ruffrascalPvPlayPause:active,
-    .product-video-unique:not(.is-playing) #productVideoPlayPauseUnique:active {
-        transform: translate(-50%, -50%) scale(0.96) !important;
+    /* Hover effect on Play Button when paused (Desktop only, avoids mobile sticky hover flicker) */
+    @media (hover: hover) and (pointer: fine) {
+        .custom-video-wrapper:not(.is-playing):not(.is-buffering) .video-button:hover,
+        .ruffrascal-pv-wrapper:not(.is-playing):not(.is-buffering) .ruffrascal-pv-button:hover,
+        .product-video-unique:not(.is-playing):not(.is-buffering) .video-button:hover,
+        .custom-video-wrapper:not(.is-playing):not(.is-buffering) #playPauseButton:hover,
+        .ruffrascal-pv-wrapper:not(.is-playing):not(.is-buffering) #ruffrascalPvPlayPause:hover,
+        .product-video-unique:not(.is-playing):not(.is-buffering) #productVideoPlayPauseUnique:hover {
+            transform: translate(-50%, -50%) scale(1.1) !important;
+            background: #e07016 !important;
+        }
     }
 
     /* Buffering spinner for Single Players */
@@ -395,8 +384,9 @@
         background: #e07016 !important;
     }
 
-    /* Card Mute Button */
-    .dog-video-slider-unique .dog-video-mute {
+    /* Card Mute Button (Dùng chung 100% cho cả Item Slider arrVideo và Single Card Video 4) */
+    .dog-video-slider-unique .dog-video-mute,
+    .dog-video-single-card .dog-video-mute {
         position: absolute !important;
         bottom: 12px !important;
         right: 12px !important;
@@ -429,19 +419,22 @@
         appearance: none !important;
     }
 
-    .dog-video-slider-unique .dog-video-card:hover .dog-video-mute {
+    .dog-video-slider-unique .dog-video-card:hover .dog-video-mute,
+    .dog-video-single-card:hover .dog-video-mute {
         opacity: 1 !important;
         visibility: visible !important;
         pointer-events: auto !important;
     }
 
-    .dog-video-slider-unique .dog-video-card:hover .dog-video-mute:hover {
+    .dog-video-slider-unique .dog-video-mute:hover,
+    .dog-video-single-card .dog-video-mute:hover {
         background: rgba(245, 130, 32, 0.9) !important;
         border-color: #f58220 !important;
         transform: scale(1.08) !important;
     }
 
-    .dog-video-slider-unique .dog-video-mute svg {
+    .dog-video-slider-unique .dog-video-mute svg,
+    .dog-video-single-card .dog-video-mute svg {
         display: block !important;
         width: 18px !important;
         height: 18px !important;
@@ -462,7 +455,9 @@
     }
 
     .dog-video-slider-unique .dog-video-mute svg path,
-    .dog-video-slider-unique .dog-video-mute svg line {
+    .dog-video-slider-unique .dog-video-mute svg line,
+    .dog-video-single-card .dog-video-mute svg path,
+    .dog-video-single-card .dog-video-mute svg line {
         stroke: #ffffff !important;
         stroke-width: 2 !important;
         stroke-linecap: round !important;
@@ -650,7 +645,8 @@
         }
 
         /* Always show Mute button on mobile */
-        .dog-video-slider-unique .dog-video-mute {
+        .dog-video-slider-unique .dog-video-mute,
+        .dog-video-single-card .dog-video-mute {
             width: 32px !important;
             height: 32px !important;
             opacity: 1 !important;
