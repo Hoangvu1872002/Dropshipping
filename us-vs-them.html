@@ -89,6 +89,33 @@
       background-color: #ffffff !important;
     }
 
+    /* Preserve outer card rounded corners because of overflow: visible */
+    .us-vs-them-wrapper .uvt-table-header {
+      border-top-left-radius: 18px !important;
+      border-top-right-radius: 18px !important;
+    }
+
+    .us-vs-them-wrapper .uvt-table-header .uvt-header-cell:first-child {
+      border-top-left-radius: 18px !important;
+    }
+
+    .us-vs-them-wrapper .uvt-table-header .uvt-header-cell:last-child {
+      border-top-right-radius: 18px !important;
+    }
+
+    .us-vs-them-wrapper .uvt-table-row:last-child {
+      border-bottom-left-radius: 18px !important;
+      border-bottom-right-radius: 18px !important;
+    }
+
+    .us-vs-them-wrapper .uvt-table-row:last-child .uvt-feature-cell {
+      border-bottom-left-radius: 18px !important;
+    }
+
+    .us-vs-them-wrapper .uvt-table-row:last-child .uvt-status-cell:last-child {
+      border-bottom-right-radius: 18px !important;
+    }
+
     /* Centered Feature Label */
     .us-vs-them-wrapper .uvt-feature-cell {
       padding: 0 16px !important;
@@ -124,38 +151,34 @@
       overflow: hidden !important;
     }
 
-    /* Orange Header Area inside Highlighted Card */
+    /* Harmonious Warm Peach Cream Header Area */
     .us-vs-them-wrapper .uvt-ruffrover-header {
       height: 88px !important; /* 60px table header + 28px top overhang */
       display: flex !important;
       flex-direction: column !important;
       align-items: center !important;
       justify-content: center !important;
-      color: #ffffff !important;
-      padding-top: 4px !important;
+      background: linear-gradient(180deg, #FFF9F4 0%, #FFF1E6 100%) !important;
+      border-bottom: 1.5px solid rgba(242, 116, 21, 0.22) !important;
+      padding: 0 10px !important;
+      box-sizing: border-box !important;
     }
 
     .us-vs-them-wrapper .uvt-ruffrover-logo-wrap {
       display: flex !important;
-      flex-direction: column !important;
       align-items: center !important;
-      gap: 3px !important;
+      justify-content: center !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
     }
 
-    .us-vs-them-wrapper .uvt-ruffrover-logo-icon {
-      width: 46px !important;
-      height: 22px !important;
-      fill: #000000 !important;
-    }
-
-    .us-vs-them-wrapper .uvt-ruffrover-brand-name {
-      font-size: 14.5px !important;
-      font-weight: 900 !important;
-      letter-spacing: 0.04em !important;
-      color: #ffffff !important;
-      text-transform: uppercase !important;
-      font-family: 'Plus Jakarta Sans', sans-serif !important;
-      line-height: 1 !important;
+    .us-vs-them-wrapper .uvt-ruffrover-logo-img {
+      max-width: 100% !important;
+      max-height: 48px !important;
+      width: auto !important;
+      height: auto !important;
+      object-fit: contain !important;
+      display: block !important;
     }
 
     /* Rows inside Highlighted Card */
@@ -222,12 +245,12 @@
       .us-vs-them-wrapper .uvt-header-cell.uvt-others {
         font-size: 13.5px !important;
       }
-      .us-vs-them-wrapper .uvt-ruffrover-brand-name {
-        font-size: 11.5px !important;
+      .us-vs-them-wrapper .uvt-ruffrover-header {
+        height: 76px !important;
+        padding: 0 6px !important;
       }
-      .us-vs-them-wrapper .uvt-ruffrover-logo-icon {
-        width: 38px !important;
-        height: 18px !important;
+      .us-vs-them-wrapper .uvt-ruffrover-logo-img {
+        max-height: 32px !important;
       }
       .us-vs-them-wrapper .uvt-ruffrover-highlight-col {
         left: calc(58.3333% - 2px) !important;
@@ -254,14 +277,9 @@
       <div class="uvt-ruffrover-highlight-col">
         <div class="uvt-ruffrover-header">
           <div class="uvt-ruffrover-logo-wrap">
-            <!-- Dog Silhouette SVG -->
-            <svg class="uvt-ruffrover-logo-icon" viewBox="0 0 100 45">
-              <path d="M 85 10 C 80 5, 73 8, 68 12 C 63 15, 55 14, 48 12 C 40 10, 32 12, 25 18 C 20 22, 12 25, 5 22 C 3 21, 0 23, 2 26 C 5 30, 14 30, 20 27 C 28 23, 36 22, 44 26 C 52 30, 60 28, 67 24 C 73 20, 80 22, 85 18 C 88 15, 89 12, 85 10 Z 
-                       M 75 14 C 77 10, 82 8, 86 6 C 90 4, 94 8, 91 12 C 87 16, 81 17, 75 14 Z 
-                       M 15 25 C 12 32, 10 38, 14 42 C 16 44, 19 41, 18 37 C 17 33, 19 30, 22 27 Z 
-                       M 62 25 C 64 32, 68 38, 73 42 C 76 44, 78 40, 75 36 C 72 32, 70 28, 67 24 Z" />
-            </svg>
-            <span class="uvt-ruffrover-brand-name">RUFFROVER</span>
+            <img class="uvt-ruffrover-logo-img"
+                 src="https://res.cloudinary.com/x9bj9p2l/image/upload/v1790841049/1787399913acf6dde9d8.png"
+                 alt="RASCAL ROVER">
           </div>
         </div>
 
@@ -387,7 +405,7 @@
 
       <!-- Row 7 -->
       <div class="uvt-table-grid uvt-table-row">
-        <div class="uvt-feature-cell">Includes 1-Year Warranty</div>
+        <div class="uvt-feature-cell">30-Day Money-Back Guarantee</div>
         <div class="uvt-status-cell"></div>
         <div class="uvt-status-cell">
           <div class="uvt-icon-badge uvt-red-soft">
