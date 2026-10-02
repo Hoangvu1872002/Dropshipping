@@ -195,6 +195,7 @@
 
     /* Hover effect on Play Button when paused (Desktop only, avoids mobile sticky hover flicker) */
     @media (hover: hover) and (pointer: fine) {
+
         .custom-video-wrapper:not(.is-playing):not(.is-buffering) .video-button:hover,
         .ruffrascal-pv-wrapper:not(.is-playing):not(.is-buffering) .ruffrascal-pv-button:hover,
         .product-video-unique:not(.is-playing):not(.is-buffering) .video-button:hover,
@@ -687,11 +688,12 @@
     .sticky__container {
         width: 100% !important;
         max-width: 100% !important;
+        border-top: 1px solid rgba(241, 129, 32, 0.2) !important;
         left: 0 !important;
         right: 0 !important;
         transform: none !important;
         box-sizing: border-box !important;
-        background-color: #fff !important;
+        background-color: #FBF7F4 !important;
     }
 
     /* 2. Ép nội dung (ảnh, chữ, nút) thu vào đúng khung 1300px căn giữa */
