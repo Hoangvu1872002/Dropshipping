@@ -1,0 +1,665 @@
+<!-- ==========================================================================
+     SECTION: INFINITE IMAGE MARQUEE (ẢNH CHẠY NGANG LIÊN TỤC 60FPS)
+     - Dễ dàng copy/paste vào Shopify (Custom Liquid / Custom HTML), WordPress, Webflow, hoặc Landing Page.
+     - Thiết kế theo chuẩn hình ảnh mẫu: Khung ảnh vuông, nền kem ấm sang trọng (#FAF6F0), chạy mượt mà vô tận.
+     - Tự động tạm dừng khi rê chuột (pause on hover).
+     - Hỗ trợ xem ảnh phóng to sắc nét (Lightbox Popup) khi click vào ảnh.
+     ========================================================================== -->
+
+<section class="ugc-marquee-section" id="ugcMarqueeSection" aria-label="Customer Lifestyle Gallery">
+    <!-- Lớp phủ làm mờ viền 2 bên tạo chiều sâu (Fade Edges) -->
+    <div class="ugc-marquee-fade-left" aria-hidden="true"></div>
+    <div class="ugc-marquee-fade-right" aria-hidden="true"></div>
+
+    <div class="ugc-marquee-viewport" id="ugcMarqueeViewport">
+        <div class="ugc-marquee-track" id="ugcMarqueeTrack">
+
+            <!-- NHÓM ẢNH 1 -->
+            <div class="ugc-marquee-group" id="ugcGroup1">
+                <!-- 1. Gia đình dã ngoại -->
+                <div class="ugc-marquee-item" onclick="ugcOpenLightbox(0)" role="button" tabindex="0" aria-label="Xem ảnh gia đình dã ngoại">
+                    <img src="https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?auto=format&fit=crop&w=800&h=800&q=80" 
+                         alt="Gia đình ngồi ghế đá dã ngoại cùng balo bỉm sữa" loading="lazy">
+                    <div class="ugc-item-overlay">
+                        <span class="ugc-zoom-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 2. Sân bay du lịch -->
+                <div class="ugc-marquee-item" onclick="ugcOpenLightbox(1)" role="button" tabindex="0" aria-label="Xem ảnh du lịch sân bay">
+                    <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&h=800&q=80" 
+                         alt="Gia đình chuẩn bị lên máy bay tại sảnh chờ" loading="lazy">
+                    <div class="ugc-item-overlay">
+                        <span class="ugc-zoom-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 3. Mẹ & bé thềm hoa -->
+                <div class="ugc-marquee-item" onclick="ugcOpenLightbox(2)" role="button" tabindex="0" aria-label="Xem ảnh mẹ và các bé trước hiên nhà">
+                    <img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=800&h=800&q=80" 
+                         alt="Mẹ và hai bé gái vui chơi bên thềm hiên nhà" loading="lazy">
+                    <div class="ugc-item-overlay">
+                        <span class="ugc-zoom-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 4. Chị em ôm nhau -->
+                <div class="ugc-marquee-item" onclick="ugcOpenLightbox(3)" role="button" tabindex="0" aria-label="Xem ảnh chị em ôm nhau">
+                    <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=800&h=800&q=80" 
+                         alt="Khoảnh khắc chị ôm em bé sơ sinh đáng yêu" loading="lazy">
+                    <div class="ugc-item-overlay">
+                        <span class="ugc-zoom-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 5. Mẹ dạo phố cùng bé -->
+                <div class="ugc-marquee-item" onclick="ugcOpenLightbox(4)" role="button" tabindex="0" aria-label="Xem ảnh mẹ bế bé dạo phố">
+                    <img src="https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=800&h=800&q=80" 
+                         alt="Mẹ đeo balo thời trang bế bé dạo phố" loading="lazy">
+                    <div class="ugc-item-overlay">
+                        <span class="ugc-zoom-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 6. Nâng bé lên cao -->
+                <div class="ugc-marquee-item" onclick="ugcOpenLightbox(5)" role="button" tabindex="0" aria-label="Xem ảnh mẹ nâng bổng bé">
+                    <img src="https://images.unsplash.com/photo-1596870230751-ebdfce98ec42?auto=format&fit=crop&w=800&h=800&q=80" 
+                         alt="Mẹ nâng bổng bé tràn ngập nụ cười hạnh phúc" loading="lazy">
+                    <div class="ugc-item-overlay">
+                        <span class="ugc-zoom-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 7. Buổi picnic thư giãn -->
+                <div class="ugc-marquee-item" onclick="ugcOpenLightbox(6)" role="button" tabindex="0" aria-label="Xem ảnh dã ngoại picnic">
+                    <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=800&h=800&q=80" 
+                         alt="Gia đình dã ngoại trên thảm cỏ ven hồ" loading="lazy">
+                    <div class="ugc-item-overlay">
+                        <span class="ugc-zoom-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 8. Đi dạo công viên -->
+                <div class="ugc-marquee-item" onclick="ugcOpenLightbox(7)" role="button" tabindex="0" aria-label="Xem ảnh dạo công viên">
+                    <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=800&h=800&q=80" 
+                         alt="Cả nhà vui vẻ đi dạo ngoài trời" loading="lazy">
+                    <div class="ugc-item-overlay">
+                        <span class="ugc-zoom-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NHÓM ẢNH 2 (BẢN SAO CHO VÒNG LẶP LIÊN TỤC VÔ TẬN) -->
+            <div class="ugc-marquee-group" id="ugcGroup2" aria-hidden="true">
+                <!-- Bản sao 1 -->
+                <div class="ugc-marquee-item" onclick="ugcOpenLightbox(0)" role="button" tabindex="0" aria-label="Xem ảnh gia đình dã ngoại">
+                    <img src="https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?auto=format&fit=crop&w=800&h=800&q=80" alt="Family" loading="lazy">
+                    <div class="ugc-item-overlay">
+                        <span class="ugc-zoom-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <!-- Bản sao 2 -->
+                <div class="ugc-marquee-item" onclick="ugcOpenLightbox(1)" role="button" tabindex="0" aria-label="Xem ảnh du lịch sân bay">
+                    <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&h=800&q=80" alt="Travel" loading="lazy">
+                    <div class="ugc-item-overlay">
+                        <span class="ugc-zoom-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <!-- Bản sao 3 -->
+                <div class="ugc-marquee-item" onclick="ugcOpenLightbox(2)" role="button" tabindex="0" aria-label="Xem ảnh mẹ và các bé trước hiên nhà">
+                    <img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=800&h=800&q=80" alt="Mom & Kids" loading="lazy">
+                    <div class="ugc-item-overlay">
+                        <span class="ugc-zoom-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <!-- Bản sao 4 -->
+                <div class="ugc-marquee-item" onclick="ugcOpenLightbox(3)" role="button" tabindex="0" aria-label="Xem ảnh chị em ôm nhau">
+                    <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=800&h=800&q=80" alt="Siblings" loading="lazy">
+                    <div class="ugc-item-overlay">
+                        <span class="ugc-zoom-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <!-- Bản sao 5 -->
+                <div class="ugc-marquee-item" onclick="ugcOpenLightbox(4)" role="button" tabindex="0" aria-label="Xem ảnh mẹ bế bé dạo phố">
+                    <img src="https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=800&h=800&q=80" alt="Strolling" loading="lazy">
+                    <div class="ugc-item-overlay">
+                        <span class="ugc-zoom-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <!-- Bản sao 6 -->
+                <div class="ugc-marquee-item" onclick="ugcOpenLightbox(5)" role="button" tabindex="0" aria-label="Xem ảnh mẹ nâng bổng bé">
+                    <img src="https://images.unsplash.com/photo-1596870230751-ebdfce98ec42?auto=format&fit=crop&w=800&h=800&q=80" alt="Joy" loading="lazy">
+                    <div class="ugc-item-overlay">
+                        <span class="ugc-zoom-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <!-- Bản sao 7 -->
+                <div class="ugc-marquee-item" onclick="ugcOpenLightbox(6)" role="button" tabindex="0" aria-label="Xem ảnh dã ngoại picnic">
+                    <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=800&h=800&q=80" alt="Picnic" loading="lazy">
+                    <div class="ugc-item-overlay">
+                        <span class="ugc-zoom-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <!-- Bản sao 8 -->
+                <div class="ugc-marquee-item" onclick="ugcOpenLightbox(7)" role="button" tabindex="0" aria-label="Xem ảnh dạo công viên">
+                    <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=800&h=800&q=80" alt="Walk" loading="lazy">
+                    <div class="ugc-item-overlay">
+                        <span class="ugc-zoom-icon">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- LIGHTBOX MODAL (POPUP PHÓNG TO ẢNH KHI NHẤP CHUỘT) -->
+<div class="ugc-lightbox-modal" id="ugcLightboxModal" aria-hidden="true" onclick="ugcHandleLightboxBackdrop(event)">
+    <div class="ugc-lightbox-container">
+        <button class="ugc-lightbox-close" onclick="ugcCloseLightbox()" aria-label="Đóng popup">
+            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <button class="ugc-lightbox-nav prev" onclick="ugcNavigateLightbox(-1)" aria-label="Ảnh trước">
+            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
+        <button class="ugc-lightbox-nav next" onclick="ugcNavigateLightbox(1)" aria-label="Ảnh kế tiếp">
+            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </button>
+        <div class="ugc-lightbox-image-box">
+            <img id="ugcLightboxActiveImg" src="https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?auto=format&fit=crop&w=1200&h=1200&q=85" alt="Enlarged photo">
+            <div class="ugc-lightbox-caption" id="ugcLightboxCaption">1/8 — Gia đình sum vầy trong chuyến dã ngoại ngoài trời</div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* ==========================================================================
+   CSS SCOPED CHO INFINITE IMAGE MARQUEE SECTION
+   ========================================================================== */
+.ugc-marquee-section {
+    --marquee-bg: #FAF6F0;       /* Màu nền kem ấm sang trọng như ảnh mẫu */
+    --section-padding-y: 34px;   /* Khoảng cách lề trên & dưới (Có thể đổi 0px, 16px, 50px...) */
+    --item-size: 240px;          /* Kích thước ảnh máy tính */
+    --item-gap: 18px;            /* Khoảng cách giữa các ảnh */
+    --item-radius: 8px;          /* Độ bo góc ảnh */
+    --marquee-speed: 32s;        /* Thời gian chạy 1 vòng */
+    --marquee-direction: normal; /* 'normal' (trái qua) hoặc 'reverse' (phải qua) */
+
+    position: relative !important;
+    width: 100% !important;
+    background-color: var(--marquee-bg) !important;
+    padding: var(--section-padding-y, 34px) 0 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+}
+
+.ugc-marquee-viewport {
+    width: 100% !important;
+    overflow: hidden !important;
+    position: relative !important;
+    display: flex !important;
+}
+
+.ugc-marquee-track {
+    display: flex !important;
+    width: max-content !important;
+    gap: var(--item-gap) !important;
+    will-change: transform !important;
+}
+
+.ugc-marquee-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--item-gap) !important;
+    flex-shrink: 0 !important;
+    animation: ugcScrollAnim var(--marquee-speed) linear infinite var(--marquee-direction) !important;
+    will-change: transform !important;
+}
+
+/* Dừng cuộn nhẹ nhàng khi rê chuột hoặc khi mở Lightbox */
+.ugc-marquee-section:hover .ugc-marquee-group,
+.ugc-marquee-section.lightbox-active-freeze .ugc-marquee-group {
+    animation-play-state: paused !important;
+}
+
+@keyframes ugcScrollAnim {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    100% {
+        transform: translate3d(calc(-100% - var(--item-gap)), 0, 0);
+    }
+}
+
+.ugc-marquee-item {
+    position: relative !important;
+    width: var(--item-size) !important;
+    height: var(--item-size) !important;
+    flex-shrink: 0 !important;
+    border-radius: var(--item-radius) !important;
+    overflow: hidden !important;
+    background-color: #ECE8E1 !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04) !important;
+    transform: translateZ(0) !important;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.ugc-marquee-item:hover {
+    transform: scale(1.035) !important;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14) !important;
+    z-index: 2 !important;
+}
+
+.ugc-marquee-item img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+    pointer-events: none !important;
+    transition: transform 0.5s ease !important;
+}
+
+.ugc-marquee-item:hover img {
+    transform: scale(1.06) !important;
+}
+
+.ugc-item-overlay {
+    position: absolute !important;
+    inset: 0 !important;
+    background: rgba(0, 0, 0, 0.28) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 0 !important;
+    transition: opacity 0.25s ease !important;
+}
+
+.ugc-marquee-item:hover .ugc-item-overlay {
+    opacity: 1 !important;
+}
+
+.ugc-zoom-icon {
+    width: 44px !important;
+    height: 44px !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    color: #1E293B !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transform: scale(0.7) !important;
+    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+.ugc-marquee-item:hover .ugc-zoom-icon {
+    transform: scale(1) !important;
+}
+
+/* Lớp che mờ 2 bên cạnh */
+.ugc-marquee-fade-left,
+.ugc-marquee-fade-right {
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 50px !important;
+    z-index: 5 !important;
+    pointer-events: none !important;
+}
+
+.ugc-marquee-fade-left {
+    left: 0 !important;
+    background: linear-gradient(to right, var(--marquee-bg) 0%, rgba(250, 246, 240, 0) 100%) !important;
+}
+
+.ugc-marquee-fade-right {
+    right: 0 !important;
+    background: linear-gradient(to left, var(--marquee-bg) 0%, rgba(250, 246, 240, 0) 100%) !important;
+}
+
+/* Lightbox Modal */
+.ugc-lightbox-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    background: rgba(10, 12, 16, 0.92) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    z-index: 999999 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+    will-change: opacity, visibility !important;
+}
+
+.ugc-lightbox-modal.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+.ugc-lightbox-container {
+    position: relative !important;
+    max-width: 650px !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+}
+
+.ugc-lightbox-close {
+    position: absolute !important;
+    top: -46px !important;
+    right: 0 !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+}
+
+.ugc-lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+    transform: rotate(90deg) !important;
+}
+
+.ugc-lightbox-nav {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: none !important;
+    color: #0F172A !important;
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.2s ease !important;
+    z-index: 10 !important;
+}
+
+.ugc-lightbox-nav:hover {
+    background: #FFFFFF !important;
+    transform: translateY(-50%) scale(1.08) !important;
+}
+
+.ugc-lightbox-nav.prev { left: -22px !important; }
+.ugc-lightbox-nav.next { right: -22px !important; }
+
+.ugc-lightbox-image-box {
+    position: relative !important;
+    width: 100% !important;
+    aspect-ratio: 1 / 1 !important;
+    max-height: 80vh !important;
+    background: #0B0E14 !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65) !important;
+    transform: scale(0.96) !important;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.ugc-lightbox-modal.active .ugc-lightbox-image-box {
+    transform: scale(1) !important;
+}
+
+.ugc-lightbox-image-box img {
+    width: 100% !important;
+    height: calc(100% - 46px) !important;
+    object-fit: cover !important;
+    display: block !important;
+    background: #000 !important;
+    transition: opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1), transform 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    will-change: opacity, transform !important;
+}
+
+.ugc-lightbox-image-box img.img-switching {
+    opacity: 0 !important;
+    transform: scale(0.97) !important;
+}
+
+.ugc-lightbox-caption {
+    height: 46px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 18px !important;
+    background: #14171F !important;
+    color: #E2E8F0 !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    text-align: center !important;
+    border-top: 1px solid #232B3B !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+html { scrollbar-gutter: stable !important; }
+
+/* Responsive */
+@media (max-width: 991px) {
+    .ugc-marquee-section {
+        --item-size: 200px !important;
+        --item-gap: 14px !important;
+        padding: calc(var(--section-padding-y, 34px) * 0.8) 0 !important;
+    }
+    .ugc-lightbox-nav.prev { left: 10px !important; }
+    .ugc-lightbox-nav.next { right: 10px !important; }
+}
+
+@media (max-width: 600px) {
+    .ugc-marquee-section {
+        --item-size: 165px !important;
+        --item-gap: 12px !important;
+        padding: calc(var(--section-padding-y, 34px) * 0.65) 0 !important;
+    }
+    .ugc-marquee-fade-left, .ugc-marquee-fade-right { width: 30px !important; }
+}
+</style>
+
+<script>
+(function() {
+    const ugcPhotos = [
+        { src: "https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?auto=format&fit=crop&w=1200&h=1200&q=85", title: "Gia đình sum vầy trong chuyến dã ngoại ngoài trời" },
+        { src: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&h=1200&q=85", title: "Chuyến bay và hành trình di chuyển tiện lợi tại sân bay" },
+        { src: "https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=1200&h=1200&q=85", title: "Mẹ và hai công chúa nhỏ thư thái bên thềm hoa" },
+        { src: "https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=1200&h=1200&q=85", title: "Khoảnh khắc ngọt ngào yêu thương giữa hai chị em" },
+        { src: "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=1200&h=1200&q=85", title: "Mẹ cùng bé dạo bước nhẹ nhàng trong trung tâm" },
+        { src: "https://images.unsplash.com/photo-1596870230751-ebdfce98ec42?auto=format&fit=crop&w=1200&h=1200&q=85", title: "Niềm vui nâng bổng con yêu đầy gắn kết và rạng rỡ" },
+        { src: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1200&h=1200&q=85", title: "Buổi picnic ngoài trời cùng nôi ngủ di động tiện ích" },
+        { src: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=1200&h=1200&q=85", title: "Trải nghiệm đồng hành êm ái trên mọi cung đường" }
+    ];
+
+    // Nạp sẵn toàn bộ ảnh vào cache
+    ugcPhotos.forEach(function(item) {
+        var pre = new Image();
+        pre.src = item.src;
+    });
+
+    var currentIdx = 0;
+    var isSwitching = false;
+
+    window.ugcOpenLightbox = function(index) {
+        currentIdx = index;
+        const sec = document.getElementById('ugcMarqueeSection');
+        if (sec) sec.classList.add('lightbox-active-freeze');
+        const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+        if (scrollBarWidth > 0) document.body.style.paddingRight = scrollBarWidth + 'px';
+        document.body.style.overflow = 'hidden';
+
+        const photo = ugcPhotos[currentIdx];
+        const img = document.getElementById('ugcLightboxActiveImg');
+        const cap = document.getElementById('ugcLightboxCaption');
+        if (cap && photo) cap.textContent = (currentIdx + 1) + '/' + ugcPhotos.length + ' — ' + photo.title;
+        if (img && photo) {
+            img.classList.add('img-switching');
+            img.src = photo.src;
+            if (img.complete) {
+                requestAnimationFrame(function() { img.classList.remove('img-switching'); });
+            } else {
+                img.onload = function() { img.classList.remove('img-switching'); };
+            }
+        }
+
+        const modal = document.getElementById('ugcLightboxModal');
+        if (modal) {
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+        }
+    };
+
+    window.ugcCloseLightbox = function() {
+        const modal = document.getElementById('ugcLightboxModal');
+        if (modal) {
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+        }
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+        const sec = document.getElementById('ugcMarqueeSection');
+        if (sec) sec.classList.remove('lightbox-active-freeze');
+
+        const img = document.getElementById('ugcLightboxActiveImg');
+        if (img) {
+            setTimeout(function() { img.classList.add('img-switching'); }, 200);
+        }
+    };
+
+    window.ugcNavigateLightbox = function(step) {
+        if (isSwitching) return;
+        isSwitching = true;
+
+        const img = document.getElementById('ugcLightboxActiveImg');
+        const cap = document.getElementById('ugcLightboxCaption');
+        if (img) img.classList.add('img-switching');
+
+        setTimeout(function() {
+            currentIdx = (currentIdx + step + ugcPhotos.length) % ugcPhotos.length;
+            const photo = ugcPhotos[currentIdx];
+            if (cap && photo) cap.textContent = (currentIdx + 1) + '/' + ugcPhotos.length + ' — ' + photo.title;
+            if (img && photo) {
+                img.src = photo.src;
+                if (img.complete) {
+                    requestAnimationFrame(function() {
+                        img.classList.remove('img-switching');
+                        isSwitching = false;
+                    });
+                } else {
+                    img.onload = function() {
+                        img.classList.remove('img-switching');
+                        isSwitching = false;
+                    };
+                }
+            } else {
+                isSwitching = false;
+            }
+        }, 120);
+    };
+
+    window.ugcHandleLightboxBackdrop = function(e) {
+        if (e.target.id === 'ugcLightboxModal') ugcCloseLightbox();
+    };
+
+    window.addEventListener('keydown', function(e) {
+        const modal = document.getElementById('ugcLightboxModal');
+        if (modal && modal.classList.contains('active')) {
+            if (e.key === 'Escape') ugcCloseLightbox();
+            if (e.key === 'ArrowLeft') ugcNavigateLightbox(-1);
+            if (e.key === 'ArrowRight') ugcNavigateLightbox(1);
+        }
+    });
+})();
+</script>
