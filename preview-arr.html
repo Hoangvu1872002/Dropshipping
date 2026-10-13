@@ -255,26 +255,44 @@
             pointer-events: none;
         }
 
+        /* Buffering: Nút đứng yên */
         .dog-video-slider-unique .dog-video-card.is-buffering .dog-video-play {
             opacity: 1;
             pointer-events: none;
             background: rgba(0, 0, 0, 0.7);
             border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top-color: #f58220;
-            animation: dogVideoSpin 0.75s linear infinite;
+            box-shadow: none;
+            animation: none;
         }
 
+        /* Chỉ viền cam xoay tròn */
         .dog-video-slider-unique .dog-video-card.is-buffering .dog-video-play::after {
-            display: none;
+            content: '';
+            display: block;
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            width: auto;
+            height: auto;
+            margin: 0;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #f58220;
+            box-sizing: border-box;
+            pointer-events: none;
+            transform-origin: center center;
+            animation: dogBorderSpin 0.75s linear infinite;
         }
 
-        @keyframes dogVideoSpin {
+        @keyframes dogBorderSpin {
             0% {
-                transform: translate(-50%, -50%) rotate(0deg);
+                transform: rotate(0deg);
             }
 
             100% {
-                transform: translate(-50%, -50%) rotate(360deg);
+                transform: rotate(360deg);
             }
         }
 

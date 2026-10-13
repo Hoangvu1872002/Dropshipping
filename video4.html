@@ -90,7 +90,7 @@
         position: absolute !important;
         top: 50% !important;
         left: 50% !important;
-        transform: translate(-50%, -50%) !important;
+        transform: translate(-50%, -50%);
         width: 64px !important;
         height: 64px !important;
         min-width: 64px !important;
@@ -149,28 +149,45 @@
         pointer-events: none !important;
     }
 
-    /* Buffering Spinner */
+    /* Buffering Spinner: Nút đứng yên */
     .dog-video-single-card.is-buffering .dog-video-play {
         opacity: 1 !important;
         visibility: visible !important;
         pointer-events: none !important;
         background: rgba(0, 0, 0, 0.75) !important;
         border: 3px solid rgba(255, 255, 255, 0.3) !important;
-        border-top-color: #F58220 !important;
-        animation: dogSingleSpin 0.75s linear infinite !important;
+        box-shadow: none !important;
+        animation: none !important;
     }
 
+    /* Chỉ xoay tròn cái viền cam */
     .dog-video-single-card.is-buffering .dog-video-play::after {
-        display: none !important;
+        content: '' !important;
+        display: block !important;
+        position: absolute !important;
+        top: -3px !important;
+        left: -3px !important;
+        right: -3px !important;
+        bottom: -3px !important;
+        width: auto !important;
+        height: auto !important;
+        margin: 0 !important;
+        border-radius: 50% !important;
+        border: 3px solid transparent !important;
+        border-top-color: #F58220 !important;
+        box-sizing: border-box !important;
+        pointer-events: none !important;
+        transform-origin: center center !important;
+        animation: dogSingleSpin 0.75s linear infinite !important;
     }
 
     @keyframes dogSingleSpin {
         0% {
-            transform: translate(-50%, -50%) rotate(0deg);
+            transform: rotate(0deg);
         }
 
         100% {
-            transform: translate(-50%, -50%) rotate(360deg);
+            transform: rotate(360deg);
         }
     }
 

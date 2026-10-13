@@ -155,7 +155,7 @@
             position: absolute !important;
             top: 50% !important;
             left: 50% !important;
-            transform: translate(-50%, -50%) !important;
+            transform: translate(-50%, -50%);
             width: 56px !important;
             height: 56px !important;
             min-width: 56px !important;
@@ -239,14 +239,30 @@
         box-sizing: border-box !important;
     }
 
-    /* While buffering: hide the CSS play triangle */
+    /* While buffering: only the orange border ring spins around the stationary button */
     .custom-video-wrapper.is-buffering .video-button::after,
     .ruffrascal-pv-wrapper.is-buffering .ruffrascal-pv-button::after,
     .product-video-unique.is-buffering .video-button::after,
     .custom-video-wrapper.is-buffering #playPauseButton::after,
     .ruffrascal-pv-wrapper.is-buffering #ruffrascalPvPlayPause::after,
     .product-video-unique.is-buffering #productVideoPlayPauseUnique::after {
-        display: none !important;
+        content: '' !important;
+        display: block !important;
+        position: absolute !important;
+        top: -3px !important;
+        left: -3px !important;
+        right: -3px !important;
+        bottom: -3px !important;
+        width: auto !important;
+        height: auto !important;
+        margin: 0 !important;
+        border-radius: 50% !important;
+        border: 3px solid transparent !important;
+        border-top-color: #f58220 !important;
+        box-sizing: border-box !important;
+        pointer-events: none !important;
+        transform-origin: center center !important;
+        animation: dogBorderSpin 0.75s linear infinite !important;
     }
 
     /* Visibility logic (100% IDENTICAL TO ARR VIDEO):
@@ -287,7 +303,7 @@
         }
     }
 
-    /* Buffering spinner for Single Players */
+    /* Buffering spinner for Single Players: Button stays stationary */
     .custom-video-wrapper.is-buffering .video-button,
     .ruffrascal-pv-wrapper.is-buffering .ruffrascal-pv-button,
     .product-video-unique.is-buffering .video-button,
@@ -299,9 +315,8 @@
         pointer-events: none !important;
         background: rgba(0, 0, 0, 0.7) !important;
         border: 3px solid rgba(255, 255, 255, 0.3) !important;
-        border-top-color: #f58220 !important;
         box-shadow: none !important;
-        animation: dogVideoSpin 0.75s linear infinite !important;
+        animation: none !important;
     }
 
         /* Bottom-Right Mute Button - Hidden for single players since audio is removed */
@@ -385,7 +400,7 @@
             position: absolute !important;
             top: 50% !important;
             left: 50% !important;
-            transform: translate(-50%, -50%) !important;
+            transform: translate(-50%, -50%);
             width: 56px !important;
             height: 56px !important;
             min-width: 56px !important;
@@ -434,29 +449,55 @@
             pointer-events: none !important;
         }
 
-        /* Buffering spinner when video is loading */
+        /* Buffering spinner when video is loading: Button stays stationary */
         .dog-video-slider-unique .dog-video-card.is-buffering .dog-video-play {
             opacity: 1 !important;
             visibility: visible !important;
             pointer-events: none !important;
             background: rgba(0, 0, 0, 0.7) !important;
             border: 3px solid rgba(255, 255, 255, 0.3) !important;
-            border-top-color: var(--dog-orange) !important;
             box-shadow: none !important;
-            animation: dogVideoSpin 0.75s linear infinite !important;
+            animation: none !important;
         }
 
+        /* Only the orange border spins via ::after */
         .dog-video-slider-unique .dog-video-card.is-buffering .dog-video-play::after {
-            display: none !important;
+            content: '' !important;
+            display: block !important;
+            position: absolute !important;
+            top: -3px !important;
+            left: -3px !important;
+            right: -3px !important;
+            bottom: -3px !important;
+            width: auto !important;
+            height: auto !important;
+            margin: 0 !important;
+            border-radius: 50% !important;
+            border: 3px solid transparent !important;
+            border-top-color: var(--dog-orange, #f58220) !important;
+            box-sizing: border-box !important;
+            pointer-events: none !important;
+            transform-origin: center center !important;
+            animation: dogBorderSpin 0.75s linear infinite !important;
+        }
+
+        @keyframes dogBorderSpin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         @keyframes dogVideoSpin {
             0% {
-                transform: translate(-50%, -50%) rotate(0deg);
+                transform: rotate(0deg);
             }
 
             100% {
-                transform: translate(-50%, -50%) rotate(360deg);
+                transform: rotate(360deg);
             }
         }
 
@@ -655,7 +696,7 @@
             #productVideoPlayPauseUnique {
                 top: 50% !important;
                 left: 50% !important;
-                transform: translate(-50%, -50%) !important;
+                transform: translate(-50%, -50%);
                 width: 44px !important;
                 height: 44px !important;
                 min-width: 44px !important;
