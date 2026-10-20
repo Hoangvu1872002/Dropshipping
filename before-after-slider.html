@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Section So Sánh Trước & Sau (Before/After Image Comparison Slider)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           DEMO PAGE WRAPPER & CONTROLS STYLES
+           (Chỉ dùng cho trang xem thử này, không ảnh hưởng đến component chính)
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scrollbar-gutter: stable;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #0d1117;
+            color: #E2E8F0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Demo Header */
+        .demo-header {
+            padding: 40px 20px 24px;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+            text-align: center;
+        }
+
+        .demo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: rgba(240, 130, 31, 0.15);
+            border: 1px solid rgba(240, 130, 31, 0.35);
+            color: #F0821F;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .demo-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #F0821F;
+            box-shadow: 0 0 10px #F0821F;
+            animation: pulse-dot 1.8s infinite ease-in-out;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+        }
+
+        .demo-title {
+            font-size: clamp(26px, 4vw, 38px);
+            font-weight: 900;
+            color: #FFFFFF;
+            letter-spacing: -0.02em;
+            line-height: 1.25;
+            margin-bottom: 12px;
+        }
+
+        .demo-title span {
+            background: linear-gradient(135deg, #F97316 0%, #FBBF24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .demo-subtitle {
+            font-size: 15px;
+            color: #94A3B8;
+            max-width: 700px;
+            margin: 0 auto 24px;
+            line-height: 1.6;
+        }
+
+        /* Demo Quick Controls Panel */
+        .demo-controls-panel {
+            background: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 16px;
+            padding: 16px 20px;
+            max-width: 900px;
+            margin: 0 auto 36px;
+            width: calc(100% - 32px);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .ctrl-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ctrl-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #94A3B8;
+        }
+
+        .btn-group {
+            display: inline-flex;
+            background: #0D1117;
+            padding: 3px;
+            border-radius: 9px;
+            border: 1px solid #30363D;
+        }
+
+        .btn-ctrl {
+            background: transparent;
+            border: none;
+            color: #94A3B8;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 7px 14px;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-ctrl:hover {
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-ctrl.active {
+            background: #F0821F;
+            color: #FFFFFF;
+            box-shadow: 0 2px 8px rgba(240, 130, 31, 0.4);
+        }
+
+        /* Main Container Preview (Tối ưu cho ảnh 4:3 & 1:1) - Không margin/padding bên ngoài */
+        .showcase-area {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 0;
+            width: 100%;
+            transition: max-width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Code export section */
+        .export-section {
+            max-width: 1100px;
+            margin: 0 auto 60px;
+            padding: 0 16px;
+            width: 100%;
+        }
+
+        .export-card {
+            background: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .export-header {
+            padding: 16px 22px;
+            background: #1F242C;
+            border-bottom: 1px solid #30363D;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .export-header h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #F0F6FC;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-copy {
+            background: linear-gradient(135deg, #F0821F, #E06D10);
+            color: #FFFFFF;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(240, 130, 31, 0.35);
+        }
+
+        .btn-copy:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(240, 130, 31, 0.45);
+        }
+
+        .btn-copy.copied {
+            background: #10B981;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .code-preview {
+            background: #090D13;
+            padding: 20px;
+            color: #E2E8F0;
+            font-family: 'Consolas', 'Fira Code', Monaco, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            max-height: 350px;
+            overflow-y: auto;
+            white-space: pre;
+            border-bottom-left-radius: 18px;
+            border-bottom-right-radius: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- DEMO HEADER -->
+    <header class="demo-header">
+        <div class="demo-badge">🔥 High-Converting UI Component</div>
+        <h1 class="demo-title">Before & After <span>Image Comparison Slider</span></h1>
+        <p class="demo-subtitle">
+            Engineered for Shopify & E-commerce stores. Ultra-smooth drag interaction on both Mobile & Desktop with responsive touch support.
+        </p>
+    </header>
+
+    <!-- QUICK CONTROLS BAR -->
+    <div class="demo-controls-panel">
+        <div class="ctrl-group">
+            <span class="ctrl-label">Aspect Ratio:</span>
+            <div class="btn-group">
+                <button class="btn-ctrl active" id="btn-aspect-43" onclick="setAspectRatio('4 / 3', this)">4:3 (Khuyên dùng - Chuẩn điểm chính)</button>
+                <button class="btn-ctrl" id="btn-aspect-11" onclick="setAspectRatio('1 / 1', this)">1:1 (Trọn vẹn 100%)</button>
+                <button class="btn-ctrl" id="btn-aspect-32" onclick="setAspectRatio('3 / 2', this)">3:2 (Ngang)</button>
+                <button class="btn-ctrl" id="btn-aspect-169" onclick="setAspectRatio('16 / 9', this)">16:9 (Landscape)</button>
+            </div>
+        </div>
+
+        <div class="ctrl-group">
+            <span class="ctrl-label">Position:</span>
+            <div class="btn-group">
+                <button class="btn-ctrl" id="btn-pos-20" onclick="setSliderPosition(20)">20%</button>
+                <button class="btn-ctrl active" id="btn-pos-50" onclick="setSliderPosition(50)">50%</button>
+                <button class="btn-ctrl" id="btn-pos-80" onclick="setSliderPosition(80)">80%</button>
+            </div>
+        </div>
+
+        <div class="ctrl-group">
+            <span class="ctrl-label">Color:</span>
+            <div class="btn-group">
+                <button class="btn-ctrl active" onclick="setThemeColor('#F0821F', this)">Orange</button>
+                <button class="btn-ctrl" onclick="setThemeColor('#10B981', this)">Green</button>
+                <button class="btn-ctrl" onclick="setThemeColor('#3B82F6', this)">Blue</button>
+                <button class="btn-ctrl" onclick="setThemeColor('#111827', this)">Dark</button>
+            </div>
+        </div>
+
+        <div class="ctrl-group">
+            <button class="btn-ctrl" id="btn-auto-toggle" onclick="toggleAutoPlay()" style="background:#21262D; color:#F0F6FC;">
+                ▶ Play Auto Demo
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN SHOWCASE AREA (THE ACTUAL COMPONENT TO EMBED) -->
+    <div class="showcase-area">
+
+        <!-- =========================================================================
+             RUFFROVER™ - BEFORE & AFTER COMPARISON SLIDER COMPONENT
+             Self-contained, zero CSS conflict on Shopify / Landing Pages
+             Prefix riêng biệt: "rr-ba-*" + Scoped !important chống đè style 100%
+             ========================================================================= -->
+        <div class="rr-ba-wrapper" id="rrBaComparison">
+            <style>
+                /* =========================================================
+                   RESET & SCOPED STYLES - KHÔNG ẢNH HƯỞNG TỚI THEME TOÀN SHOP
+                   ========================================================= */
+                .rr-ba-wrapper,
+                .rr-ba-wrapper *,
+                .rr-ba-wrapper *::before,
+                .rr-ba-wrapper *::after {
+                    box-sizing: border-box !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                }
+
+                /* Outer Wrapper Container - Triệt tiêu 100% margin và padding bên ngoài */
+                .rr-ba-wrapper {
+                    --rr-ba-primary: #F0821F;        /* Primary brand color (Orange) */
+                    --rr-ba-primary-rgb: 240, 130, 31;
+                    --rr-ba-pos: 50%;                 /* Default split position */
+                    --rr-ba-radius: 18px;             /* Card border radius */
+                    --rr-ba-aspect: 4 / 3;            /* Tỉ lệ mặc định: 4:3 (Tối ưu điểm chính cho ảnh vuông) */
+                    --rr-ba-max-width: 760px;
+                    --rr-ba-max-height: none;
+
+                    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+                    width: 100% !important;
+                    max-width: var(--rr-ba-max-width, 760px) !important;
+                    margin: 0 auto !important;
+                    margin-top: 0 !important;
+                    margin-bottom: 0 !important;
+                    padding: 0 !important;
+                    position: relative !important;
+                    color: #1A202C !important;
+                    -webkit-font-smoothing: antialiased !important;
+                    content-visibility: auto !important;
+                    contain-intrinsic-size: 0 500px !important;
+                    transition: max-width 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                }
+
+                /* Section Header */
+                .rr-ba-wrapper .rr-ba-header {
+                    text-align: center !important;
+                    margin-top: 0 !important;
+                    margin-left: 0 !important;
+                    margin-right: 0 !important;
+                    margin-bottom: 20px !important;
+                    padding: 0 10px !important;
+                }
+
+                .rr-ba-wrapper .rr-ba-tag {
+                    display: inline-flex !important;
+                    align-items: center !important;
+                    gap: 6px !important;
+                    background: rgba(var(--rr-ba-primary-rgb), 0.12) !important;
+                    color: var(--rr-ba-primary) !important;
+                    padding: 5px 14px !important;
+                    border-radius: 999px !important;
+                    font-size: 13px !important;
+                    font-weight: 800 !important;
+                    letter-spacing: 0.05em !important;
+                    text-transform: uppercase !important;
+                    margin-bottom: 10px !important;
+                    line-height: 1.3 !important;
+                }
+
+                .rr-ba-wrapper .rr-ba-title {
+                    font-size: clamp(22px, 3.2vw, 32px) !important;
+                    font-weight: 900 !important;
+                    color: #0F172A !important;
+                    letter-spacing: -0.02em !important;
+                    line-height: 1.25 !important;
+                    margin-bottom: 8px !important;
+                }
+
+                .rr-ba-wrapper .rr-ba-subtitle {
+                    font-size: 14.5px !important;
+                    color: #64748B !important;
+                    max-width: 540px !important;
+                    margin: 0 auto !important;
+                    line-height: 1.55 !important;
+                }
+
+                /* Main Card Container */
+                .rr-ba-wrapper .rr-ba-card {
+                    background: #FFFFFF !important;
+                    border-radius: var(--rr-ba-radius) !important;
+                    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.1), 0 4px 15px rgba(0, 0, 0, 0.04) !important;
+                    border: 1px solid rgba(226, 232, 240, 0.8) !important;
+                    overflow: hidden !important;
+                    position: relative !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    margin: 0 auto !important;
+                    padding: 0 !important;
+                }
+
+                /* Comparison Canvas (Khung hình chữ nhật - Không kẹt max-height để 4:3 khít 100%) */
+                .rr-ba-wrapper .rr-ba-canvas {
+                    position: relative !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    aspect-ratio: var(--rr-ba-aspect) !important;
+                    max-height: none !important;
+                    overflow: hidden !important;
+                    user-select: none !important;
+                    -webkit-user-select: none !important;
+                    touch-action: pan-y !important;
+                    cursor: ew-resize !important;
+                    background: #0F172A !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    transition: aspect-ratio 0.35s ease !important;
+                }
+
+                .rr-ba-wrapper script,
+                .rr-ba-wrapper style {
+                    display: none !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    height: 0 !important;
+                    width: 0 !important;
+                }
+
+                /* Image Layers */
+                .rr-ba-wrapper .rr-ba-layer {
+                    position: absolute !important;
+                    inset: 0 !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    pointer-events: none !important;
+                }
+
+                .rr-ba-wrapper .rr-ba-img {
+                    display: block !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    max-width: none !important;
+                    object-fit: cover !important;
+                    object-position: center 15% !important; /* Căn chỉnh điểm nhìn lên 15% giữ trọn khuôn mặt cún */
+                    pointer-events: none !important;
+                }
+
+                /* Dịch chuyển nhẹ ảnh Before sang trái & After sang phải KHÔNG làm phóng to (giữ nguyên 100% kích thước gốc) */
+                .rr-ba-wrapper .rr-ba-layer-before .rr-ba-img {
+                    position: absolute !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    transform: translateX(-7%) !important;
+                }
+
+                .rr-ba-wrapper .rr-ba-layer-after .rr-ba-img {
+                    position: absolute !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    transform: translateX(7%) !important;
+                }
+
+                /* After Layer (Bottom layer, full width) */
+                .rr-ba-wrapper .rr-ba-layer-after {
+                    z-index: 1 !important;
+                }
+
+                /* Before Layer (Top layer, clipped by percentage) */
+                .rr-ba-wrapper .rr-ba-layer-before {
+                    z-index: 2 !important;
+                    clip-path: inset(0 calc(100% - var(--rr-ba-pos)) 0 0) !important;
+                    -webkit-clip-path: inset(0 calc(100% - var(--rr-ba-pos)) 0 0) !important;
+                    will-change: clip-path !important;
+                }
+
+                /* Badges */
+                .rr-ba-wrapper .rr-ba-badge {
+                    position: absolute !important;
+                    top: 18px !important;
+                    z-index: 4 !important;
+                    background: var(--rr-ba-primary) !important;
+                    color: #FFFFFF !important;
+                    font-size: 14px !important;
+                    font-weight: 800 !important;
+                    letter-spacing: 0.03em !important;
+                    padding: 7px 18px !important;
+                    border-radius: 8px !important;
+                    text-transform: capitalize !important;
+                    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+                    pointer-events: none !important;
+                    transition: transform 0.2s ease, opacity 0.2s ease !important;
+                    line-height: 1.2 !important;
+                }
+
+                .rr-ba-wrapper .rr-ba-badge-before {
+                    left: 18px !important;
+                }
+
+                .rr-ba-wrapper .rr-ba-badge-after {
+                    right: 18px !important;
+                }
+
+                /* Vertical Divider Line */
+                .rr-ba-wrapper .rr-ba-divider {
+                    position: absolute !important;
+                    top: 0 !important;
+                    bottom: 0 !important;
+                    left: var(--rr-ba-pos) !important;
+                    width: 3px !important;
+                    background: #FFFFFF !important;
+                    transform: translateX(-50%) !important;
+                    z-index: 5 !important;
+                    pointer-events: none !important;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4) !important;
+                    transition: box-shadow 0.2s ease !important;
+                }
+
+                .rr-ba-wrapper .rr-ba-canvas.is-dragging .rr-ba-divider {
+                    box-shadow: 0 0 14px var(--rr-ba-primary) !important;
+                }
+
+                /* Center Knob Handle */
+                .rr-ba-wrapper .rr-ba-handle {
+                    position: absolute !important;
+                    top: 50% !important;
+                    left: 50% !important;
+                    transform: translate(-50%, -50%) !important;
+                    width: 50px !important;
+                    height: 50px !important;
+                    border-radius: 50% !important;
+                    background: rgba(255, 255, 255, 0.95) !important;
+                    border: 3px solid #FFFFFF !important;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.08) !important;
+                    backdrop-filter: blur(8px) !important;
+                    -webkit-backdrop-filter: blur(8px) !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    cursor: ew-resize !important;
+                    pointer-events: auto !important;
+                    color: #1E293B !important;
+                    transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                                background 0.2s ease, 
+                                border-color 0.2s ease, 
+                                color 0.2s ease, 
+                                box-shadow 0.2s ease !important;
+                    outline: none !important;
+                    user-select: none !important;
+                    -webkit-user-select: none !important;
+                }
+
+                /* Hover nút tròn: viền cam sáng */
+                .rr-ba-wrapper .rr-ba-canvas:hover .rr-ba-handle,
+                .rr-ba-wrapper .rr-ba-handle:hover {
+                    transform: translate(-50%, -50%) scale(1.08) !important;
+                    border-color: var(--rr-ba-primary) !important;
+                    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45), 0 0 0 2px rgba(var(--rr-ba-primary-rgb), 0.35) !important;
+                }
+
+                /* KHI ẤN (ACTIVE), HOẶC ĐANG KÉO (DRAGGING), HOẶC FOCUS:
+                   BẬT MÀU CAM THƯƠNG HIỆU RỰC RỠ + MŨI TÊN TRẮNG + QUẦNG SÁNG NHƯ DEMO.
+                   KHI NHẢ RA (POINTER UP / UNFOCUS) THÌ LẬP TỨC TẮT VÀ VỀ MÀU TRẮNG BAN ĐẦU! */
+                .rr-ba-wrapper .rr-ba-canvas.is-active .rr-ba-handle,
+                .rr-ba-wrapper .rr-ba-canvas.is-dragging .rr-ba-handle,
+                .rr-ba-wrapper .rr-ba-canvas.is-focused .rr-ba-handle,
+                .rr-ba-wrapper .rr-ba-handle.is-active,
+                .rr-ba-wrapper .rr-ba-handle:active,
+                .rr-ba-wrapper .rr-ba-canvas:has(.rr-ba-range:focus-visible) .rr-ba-handle {
+                    transform: translate(-50%, -50%) scale(1.15) !important;
+                    background: var(--rr-ba-primary) !important;      /* Chuyển sang nền màu cam thương hiệu */
+                    border-color: #FFFFFF !important;                /* Viền trắng nổi bật */
+                    color: #FFFFFF !important;                        /* Mũi tên đổi thành màu trắng */
+                    box-shadow: 0 0 0 6px rgba(var(--rr-ba-primary-rgb), 0.45), 0 8px 32px rgba(var(--rr-ba-primary-rgb), 0.7) !important;
+                    outline: none !important;
+                }
+
+                /* Arrows inside knob (< | >) */
+                .rr-ba-wrapper .rr-ba-arrows {
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    gap: 5px !important;
+                    color: inherit !important;
+                    transition: color 0.2s ease !important;
+                    pointer-events: none !important;
+                }
+
+                .rr-ba-wrapper .rr-ba-arrows svg {
+                    width: 14px !important;
+                    height: 14px !important;
+                    min-width: 14px !important;
+                    max-width: 14px !important;
+                    min-height: 14px !important;
+                    max-height: 14px !important;
+                    fill: currentColor !important;
+                    display: block !important;
+                    flex-shrink: 0 !important;
+                    transition: fill 0.2s ease !important;
+                }
+
+                .rr-ba-wrapper .rr-ba-canvas.is-active .rr-ba-arrows svg,
+                .rr-ba-wrapper .rr-ba-canvas.is-dragging .rr-ba-arrows svg,
+                .rr-ba-wrapper .rr-ba-canvas.is-focused .rr-ba-arrows svg,
+                .rr-ba-wrapper .rr-ba-handle.is-active .rr-ba-arrows svg,
+                .rr-ba-wrapper .rr-ba-handle:active .rr-ba-arrows svg,
+                .rr-ba-wrapper .rr-ba-canvas:has(.rr-ba-range:focus-visible) .rr-ba-arrows svg {
+                    fill: #FFFFFF !important;
+                }
+
+                .rr-ba-wrapper .rr-ba-arrows-line {
+                    width: 1.5px !important;
+                    height: 16px !important;
+                    background-color: #CBD5E1 !important;
+                    border-radius: 2px !important;
+                    transition: background 0.2s ease !important;
+                }
+
+                .rr-ba-wrapper .rr-ba-canvas.is-active .rr-ba-arrows-line,
+                .rr-ba-wrapper .rr-ba-canvas.is-dragging .rr-ba-arrows-line,
+                .rr-ba-wrapper .rr-ba-canvas.is-focused .rr-ba-arrows-line,
+                .rr-ba-wrapper .rr-ba-handle.is-active .rr-ba-arrows-line,
+                .rr-ba-wrapper .rr-ba-handle:active .rr-ba-arrows-line,
+                .rr-ba-wrapper .rr-ba-canvas:has(.rr-ba-range:focus-visible) .rr-ba-arrows-line {
+                    background: rgba(255, 255, 255, 0.75) !important;
+                }
+
+                /* Vạch phân cách phát sáng khi Dragging/Active */
+                .rr-ba-wrapper .rr-ba-canvas.is-active .rr-ba-divider,
+                .rr-ba-wrapper .rr-ba-canvas.is-dragging .rr-ba-divider,
+                .rr-ba-wrapper .rr-ba-canvas.is-focused .rr-ba-divider {
+                    box-shadow: 0 0 16px var(--rr-ba-primary) !important;
+                }
+
+                /* Hint Pill */
+                .rr-ba-wrapper .rr-ba-hint {
+                    position: absolute !important;
+                    bottom: 20px !important;
+                    left: 50% !important;
+                    transform: translateX(-50%) !important;
+                    z-index: 6 !important;
+                    background: rgba(15, 23, 42, 0.75) !important;
+                    backdrop-filter: blur(6px) !important;
+                    -webkit-backdrop-filter: blur(6px) !important;
+                    color: #FFFFFF !important;
+                    font-size: 12px !important;
+                    font-weight: 700 !important;
+                    padding: 6px 14px !important;
+                    border-radius: 999px !important;
+                    pointer-events: none !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    gap: 6px !important;
+                    letter-spacing: 0.03em !important;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+                    transition: opacity 0.4s ease, transform 0.4s ease !important;
+                    white-space: nowrap !important;
+                }
+
+                .rr-ba-wrapper .rr-ba-hint.is-hidden {
+                    opacity: 0 !important;
+                    transform: translateX(-50%) translateY(10px) !important;
+                }
+
+                /* Accessible Range Input - Triệt tiêu viền outline mặc định */
+                .rr-ba-wrapper .rr-ba-range {
+                    position: absolute !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    opacity: 0 !important;
+                    cursor: ew-resize !important;
+                    z-index: 10 !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    border: none !important;
+                    outline: none !important;
+                    box-shadow: none !important;
+                    background: transparent !important;
+                    -webkit-appearance: none !important;
+                    appearance: none !important;
+                    -webkit-tap-highlight-color: transparent !important;
+                }
+
+                .rr-ba-wrapper .rr-ba-range:focus,
+                .rr-ba-wrapper .rr-ba-range:focus-visible,
+                .rr-ba-wrapper .rr-ba-range:active {
+                    outline: none !important;
+                    box-shadow: none !important;
+                    border: none !important;
+                }
+
+                .rr-ba-wrapper .rr-ba-range::-webkit-slider-thumb {
+                    -webkit-appearance: none !important;
+                    appearance: none !important;
+                    width: 50px !important;
+                    height: 50px !important;
+                    opacity: 0 !important;
+                    cursor: ew-resize !important;
+                }
+
+                .rr-ba-wrapper .rr-ba-range::-moz-range-thumb {
+                    width: 50px !important;
+                    height: 50px !important;
+                    opacity: 0 !important;
+                    cursor: ew-resize !important;
+                    border: none !important;
+                }
+
+                /* Responsive Mobile */
+                @media (max-width: 640px) {
+                    .rr-ba-wrapper {
+                        padding: 0 !important;
+                    }
+
+                    .rr-ba-wrapper .rr-ba-badge {
+                        font-size: 12px !important;
+                        padding: 5px 14px !important;
+                        top: 12px !important;
+                    }
+
+                    .rr-ba-wrapper .rr-ba-badge-before {
+                        left: 12px !important;
+                    }
+
+                    .rr-ba-wrapper .rr-ba-badge-after {
+                        right: 12px !important;
+                    }
+
+                    .rr-ba-wrapper .rr-ba-handle {
+                        width: 44px !important;
+                        height: 44px !important;
+                    }
+                }
+            </style>
+
+            <!-- Section Header -->
+            <div class="rr-ba-header">
+                <div class="rr-ba-tag">
+                    <span>✨ Real Results</span>
+                </div>
+                <h2 class="rr-ba-title">See The Difference</h2>
+                <p class="rr-ba-subtitle">
+                    Drag the slider to compare before and after using our protective pet cover.
+                </p>
+            </div>
+
+            <!-- Main Comparison Card -->
+            <div class="rr-ba-card">
+                <div class="rr-ba-canvas" id="rrBaCanvas" onpointerdown="if(!window._rrBaLoaded){try{var w=this.closest('.rr-ba-wrapper')||this.parentElement;var s=w?w.querySelector('script.rr-ba-script'):null;if(s){window._rrBaLoaded=true;var n=document.createElement('script');n.textContent=s.textContent;document.head.appendChild(n);}}catch(e){}}">
+                    
+                    <!-- AFTER Image (Bottom layer) -->
+                    <div class="rr-ba-layer rr-ba-layer-after">
+                        <img class="rr-ba-img"
+                             id="ba-img-after" 
+                             src="https://res.cloudinary.com/x9bj9p2l/image/upload/v1792037622/Jen__2.webp" 
+                             alt="After - Clean car interior, protected and comfortable dog"
+                             loading="lazy"
+                             decoding="async"
+                             width="823"
+                             height="823">
+                    </div>
+
+                    <!-- BEFORE Image (Top layer, clipped) -->
+                    <div class="rr-ba-layer rr-ba-layer-before">
+                        <img class="rr-ba-img"
+                             id="ba-img-before" 
+                             src="https://res.cloudinary.com/x9bj9p2l/image/upload/v1792036752/Muddy_Retriever_Reveals_Slipped_Car_Cover.png" 
+                             alt="Before - Muddy paws and slipped car cover"
+                             loading="lazy"
+                             decoding="async"
+                             width="1254"
+                             height="1254">
+                    </div>
+
+                    <!-- Before & After Badges -->
+                    <div class="rr-ba-badge rr-ba-badge-before" id="ba-label-before">Before</div>
+                    <div class="rr-ba-badge rr-ba-badge-after" id="ba-label-after">After</div>
+
+                    <!-- Center Divider Line & Handle -->
+                    <div class="rr-ba-divider">
+                        <div class="rr-ba-handle" aria-hidden="true">
+                            <div class="rr-ba-arrows">
+                                <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                                <span class="rr-ba-arrows-line"></span>
+                                <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Guide Hint -->
+                    <div class="rr-ba-hint" id="ba-hint">
+                        <span>👈 Drag to compare 👉</span>
+                    </div>
+
+                    <!-- Range input for keyboard accessibility -->
+                    <input type="range" 
+                           class="rr-ba-range" 
+                           id="ba-range-input" 
+                           min="0" 
+                           max="100" 
+                           value="50" 
+                           step="0.5" 
+                           aria-label="Drag to compare before and after images">
+                </div>
+            </div>
+
+            <!-- AUTO-BOOTSTRAP LOADER: Tự động kích hoạt JavaScript ngay cả khi khách vào màn khác trước rồi mới chuyển sang Home -->
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciLz4=" 
+                 alt="" 
+                 class="rr-ba-bootstrap"
+                 style="display:none!important;position:absolute!important;width:0!important;height:0!important;opacity:0!important;pointer-events:none!important;"
+                 onload="(function(el){try{if(window._rrBaLoaded){if(window._rrBaInit)window._rrBaInit();}else{var w=el.closest('.rr-ba-wrapper')||el.parentElement;var s=w?w.querySelector('script.rr-ba-script'):null;if(s){window._rrBaLoaded=true;var n=document.createElement('script');n.textContent=s.textContent;document.head.appendChild(n);}}}catch(e){}})(this);"
+                 onerror="this.onload&&this.onload();" />
+
+            <!-- JAVASCRIPT ĐIỀU KHIỂN TRƯỢT MƯỢT MÀ -->
+            <script class="rr-ba-script">
+                (function () {
+                    window._rrBaLoaded = true;
+                    function getLimits(canvas, root) {
+                        const beforeBadge = root.querySelector('.rr-ba-badge-before');
+                        const afterBadge = root.querySelector('.rr-ba-badge-after');
+                        const rect = canvas.getBoundingClientRect();
+                        let minP = 14;
+                        let maxP = 86;
+
+                        if (rect && rect.width > 0) {
+                            if (beforeBadge) {
+                                const bRect = beforeBadge.getBoundingClientRect();
+                                const minPx = (bRect.right - rect.left) + 28;
+                                minP = Math.max((minPx / rect.width) * 100, 10);
+                            }
+                            if (afterBadge) {
+                                const aRect = afterBadge.getBoundingClientRect();
+                                const maxPx = (aRect.left - rect.left) - 28;
+                                maxP = Math.min((maxPx / rect.width) * 100, 90);
+                            }
+                        }
+                        return { min: minP, max: maxP };
+                    }
+
+                    function updateSliderPosition(percent) {
+                        const root = document.getElementById('rrBaComparison');
+                        if (!root) return;
+                        const canvas = root.querySelector('.rr-ba-canvas');
+                        if (!canvas) return;
+                        const limits = getLimits(canvas, root);
+                        const clamped = Math.min(Math.max(percent, limits.min), limits.max);
+                        root.style.setProperty('--rr-ba-pos', clamped + '%');
+                        const rangeInput = root.querySelector('.rr-ba-range');
+                        if (rangeInput) rangeInput.value = clamped;
+                        const hintTag = root.querySelector('.rr-ba-hint');
+                        if (hintTag) hintTag.classList.add('is-hidden');
+                    }
+
+                    let rafId = null;
+                    function setSliderPos(canvas, root, clientX) {
+                        if (!canvas || !root) return;
+                        if (rafId) cancelAnimationFrame(rafId);
+                        rafId = requestAnimationFrame(function () {
+                            const rect = canvas.getBoundingClientRect();
+                            if (!rect || rect.width <= 0) return;
+                            const offset = clientX - rect.left;
+                            const percent = (offset / rect.width) * 100;
+                            const limits = getLimits(canvas, root);
+                            const clamped = Math.min(Math.max(percent, limits.min), limits.max);
+                            root.style.setProperty('--rr-ba-pos', clamped + '%');
+
+                            const rangeInput = root.querySelector('.rr-ba-range');
+                            if (rangeInput) rangeInput.value = clamped;
+
+                            const hintTag = root.querySelector('.rr-ba-hint');
+                            if (hintTag) hintTag.classList.add('is-hidden');
+                        });
+                    }
+
+                    function setActiveState(canvas, root, on) {
+                        if (!canvas) return;
+                        const handle = root ? root.querySelector('.rr-ba-handle') : null;
+                        if (on) {
+                            canvas.classList.add('is-active', 'is-dragging', 'is-focused');
+                            if (handle) handle.classList.add('is-active');
+                        } else {
+                            canvas.classList.remove('is-active', 'is-dragging', 'is-focused');
+                            if (handle) handle.classList.remove('is-active');
+                        }
+                    }
+
+                    let activeCanvas = null;
+                    let activeRoot = null;
+                    let isDragging = false;
+                    let currentPointerId = null;
+
+                    function resetDrag() {
+                        if (isDragging && activeCanvas && currentPointerId !== null) {
+                            try {
+                                if (activeCanvas.releasePointerCapture) {
+                                    activeCanvas.releasePointerCapture(currentPointerId);
+                                }
+                            } catch (e) {}
+                        }
+                        if (activeCanvas && activeRoot) {
+                            setActiveState(activeCanvas, activeRoot, false);
+                            const rangeInput = activeRoot.querySelector('.rr-ba-range');
+                            if (rangeInput) {
+                                try { rangeInput.blur(); } catch (e) {}
+                            }
+                        }
+                        isDragging = false;
+                        currentPointerId = null;
+                        activeCanvas = null;
+                        activeRoot = null;
+                    }
+
+                    if (!window._rrBaDemoDelegationAttached) {
+                        window._rrBaDemoDelegationAttached = true;
+
+                        document.addEventListener('pointerdown', function (e) {
+                            const canvas = e.target.closest('.rr-ba-canvas');
+                            if (!canvas) return;
+                            const root = canvas.closest('.rr-ba-wrapper') || canvas.parentElement;
+                            if (!root) return;
+
+                            isDragging = true;
+                            activeCanvas = canvas;
+                            activeRoot = root;
+                            currentPointerId = e.pointerId;
+
+                            setActiveState(canvas, root, true);
+
+                            try {
+                                if (typeof e.pointerId === 'number' && canvas.setPointerCapture) {
+                                    canvas.setPointerCapture(e.pointerId);
+                                }
+                            } catch (err) {}
+
+                            if (typeof e.clientX === 'number') {
+                                setSliderPos(canvas, root, e.clientX);
+                            }
+                        }, { passive: true });
+
+                        document.addEventListener('pointermove', function (e) {
+                            if (!isDragging || !activeCanvas || !activeRoot) return;
+                            if (typeof e.clientX === 'number') {
+                                setSliderPos(activeCanvas, activeRoot, e.clientX);
+                            }
+                        }, { passive: true });
+
+                        document.addEventListener('pointerup', resetDrag, { passive: true });
+                        document.addEventListener('pointercancel', resetDrag, { passive: true });
+                        document.addEventListener('lostpointercapture', resetDrag);
+                        window.addEventListener('pointerup', resetDrag, { passive: true });
+                        window.addEventListener('mouseup', resetDrag, { passive: true });
+                        window.addEventListener('touchend', resetDrag, { passive: true });
+
+                        window.addEventListener('blur', resetDrag);
+                        document.addEventListener('visibilitychange', function () {
+                            if (document.hidden) resetDrag();
+                        });
+                        window.addEventListener('pagehide', resetDrag);
+                        window.addEventListener('pageshow', resetDrag);
+
+                        document.addEventListener('input', function (e) {
+                            const range = e.target.closest('.rr-ba-range');
+                            if (!range) return;
+                            const root = range.closest('.rr-ba-wrapper');
+                            const canvas = root ? root.querySelector('.rr-ba-canvas') : null;
+                            if (!root || !canvas) return;
+
+                            const val = parseFloat(range.value);
+                            const limits = getLimits(canvas, root);
+                            const clamped = Math.min(Math.max(val, limits.min), limits.max);
+                            root.style.setProperty('--rr-ba-pos', clamped + '%');
+                            range.value = clamped;
+
+                            const hint = root.querySelector('.rr-ba-hint');
+                            if (hint) hint.classList.add('is-hidden');
+                        });
+
+                        document.addEventListener('focusin', function (e) {
+                            const range = e.target.closest('.rr-ba-range');
+                            if (!range) return;
+                            const root = range.closest('.rr-ba-wrapper');
+                            const canvas = root ? root.querySelector('.rr-ba-canvas') : null;
+                            if (canvas && root) setActiveState(canvas, root, true);
+                        });
+
+                        document.addEventListener('focusout', function (e) {
+                            const range = e.target.closest('.rr-ba-range');
+                            if (!range) return;
+                            const root = range.closest('.rr-ba-wrapper');
+                            const canvas = root ? root.querySelector('.rr-ba-canvas') : null;
+                            if (canvas && root) setActiveState(canvas, root, false);
+                        });
+                    }
+
+                    window._setBaSliderPosition = updateSliderPosition;
+                })();
+            </script>
+        </div>
+        <!-- KẾT THÚC: SECTION SO SÁNH TRƯỚC VÀ SAU -->
+
+    </div>
+
+    <!-- EXPORT CODE / EMBED SECTION -->
+    <section class="export-section">
+        <div class="export-card">
+            <div class="export-header">
+                <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F0821F" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    Ready-to-Use Embed Code (Shopify Custom Liquid / WordPress / Landing Page)
+                </h3>
+                <button class="btn-copy" id="btn-copy-code" onclick="copySnippetCode()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy Full Code</span>
+                </button>
+            </div>
+            <pre class="code-preview" id="raw-snippet-code">
+&lt;!-- RUFFROVER™ BEFORE & AFTER COMPARISON SLIDER SECTION --&gt;
+&lt;div class="rr-ba-wrapper" id="rrBaComparison"&gt;
+  &lt;style&gt;
+    .rr-ba-wrapper, .rr-ba-wrapper * { box-sizing: border-box !important; margin: 0 !important; padding: 0 !important; }
+    .rr-ba-wrapper {
+      --rr-ba-primary: #F0821F;
+      --rr-ba-primary-rgb: 240, 130, 31;
+      --rr-ba-pos: 50%;
+      --rr-ba-radius: 18px;
+      --rr-ba-aspect: 4 / 3;
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
+      width: 100% !important;
+      height: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      position: relative !important;
+      line-height: 0 !important;
+      font-size: 0 !important;
+    }
+    .rr-ba-wrapper script,
+    .rr-ba-wrapper style {
+      display: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      height: 0 !important;
+      width: 0 !important;
+    }
+    .rr-ba-wrapper .rr-ba-card {
+      background: #FFFFFF !important;
+      border-radius: var(--rr-ba-radius) !important;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.08) !important;
+      border: 1px solid #E2E8F0 !important;
+      overflow: hidden !important;
+      width: 100% !important;
+      height: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      line-height: normal !important;
+      font-size: 14px !important;
+    }
+    .rr-ba-wrapper .rr-ba-canvas {
+      position: relative !important;
+      width: 100% !important;
+      height: 100% !important;
+      aspect-ratio: var(--rr-ba-aspect) !important;
+      max-height: none !important;
+      overflow: hidden !important;
+      user-select: none !important;
+      touch-action: pan-y !important;
+      cursor: ew-resize !important;
+      background: #0F172A !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .rr-ba-wrapper .rr-ba-layer { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; pointer-events: none !important; }
+    .rr-ba-wrapper .rr-ba-img { display: block !important; width: 100% !important; height: 100% !important; max-width: none !important; object-fit: cover !important; object-position: center 15% !important; }
+    .rr-ba-wrapper .rr-ba-layer-before .rr-ba-img { position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; transform: translateX(-7%) !important; }
+    .rr-ba-wrapper .rr-ba-layer-after .rr-ba-img { position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; transform: translateX(7%) !important; }
+    .rr-ba-wrapper .rr-ba-layer-after { z-index: 1 !important; }
+    .rr-ba-wrapper .rr-ba-layer-before {
+      z-index: 2 !important;
+      clip-path: inset(0 calc(100% - var(--rr-ba-pos)) 0 0) !important;
+      -webkit-clip-path: inset(0 calc(100% - var(--rr-ba-pos)) 0 0) !important;
+    }
+    .rr-ba-wrapper .rr-ba-badge {
+      position: absolute !important;
+      top: 16px !important;
+      z-index: 4 !important;
+      background: var(--rr-ba-primary) !important;
+      color: #FFFFFF !important;
+      font-size: 13.5px !important;
+      font-weight: 800 !important;
+      padding: 6px 16px !important;
+      border-radius: 6px !important;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
+      pointer-events: none !important;
+    }
+    .rr-ba-wrapper .rr-ba-badge-before { left: 16px !important; }
+    .rr-ba-wrapper .rr-ba-badge-after { right: 16px !important; }
+    .rr-ba-wrapper .rr-ba-divider {
+      position: absolute !important;
+      top: 0 !important;
+      bottom: 0 !important;
+      left: var(--rr-ba-pos) !important;
+      width: 3px !important;
+      background: #FFFFFF !important;
+      transform: translateX(-50%) !important;
+      z-index: 5 !important;
+      pointer-events: none !important;
+      box-shadow: 0 0 10px rgba(0,0,0,0.35) !important;
+      transition: box-shadow 0.2s ease !important;
+    }
+    .rr-ba-wrapper .rr-ba-canvas.is-dragging .rr-ba-divider {
+      box-shadow: 0 0 14px var(--rr-ba-primary) !important;
+    }
+    .rr-ba-wrapper .rr-ba-handle {
+      position: absolute !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      width: 50px !important;
+      height: 50px !important;
+      border-radius: 50% !important;
+      background: rgba(255, 255, 255, 0.95) !important;
+      border: 3px solid #FFFFFF !important;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.35) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: ew-resize !important;
+      color: #1E293B !important;
+      transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease !important;
+    }
+    .rr-ba-wrapper .rr-ba-canvas:hover .rr-ba-handle,
+    .rr-ba-wrapper .rr-ba-handle:hover {
+      transform: translate(-50%, -50%) scale(1.08) !important;
+      border-color: var(--rr-ba-primary) !important;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.45), 0 0 0 2px rgba(var(--rr-ba-primary-rgb), 0.35) !important;
+    }
+    .rr-ba-wrapper .rr-ba-canvas.is-active .rr-ba-handle,
+    .rr-ba-wrapper .rr-ba-canvas.is-dragging .rr-ba-handle,
+    .rr-ba-wrapper .rr-ba-canvas.is-focused .rr-ba-handle,
+    .rr-ba-wrapper .rr-ba-handle.is-active,
+    .rr-ba-wrapper .rr-ba-handle:active,
+    .rr-ba-wrapper .rr-ba-canvas:has(.rr-ba-range:focus-visible) .rr-ba-handle {
+      transform: translate(-50%, -50%) scale(1.15) !important;
+      background: var(--rr-ba-primary) !important;
+      border-color: #FFFFFF !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 0 0 6px rgba(var(--rr-ba-primary-rgb), 0.45), 0 8px 32px rgba(var(--rr-ba-primary-rgb), 0.7) !important;
+      outline: none !important;
+    }
+    .rr-ba-wrapper .rr-ba-arrows { display: flex !important; align-items: center !important; gap: 5px !important; color: inherit !important; transition: color 0.2s ease !important; }
+    .rr-ba-wrapper .rr-ba-arrows svg { width: 14px !important; height: 14px !important; fill: currentColor !important; display: block !important; flex-shrink: 0 !important; }
+    .rr-ba-wrapper .rr-ba-canvas.is-active .rr-ba-arrows svg,
+    .rr-ba-wrapper .rr-ba-canvas.is-dragging .rr-ba-arrows svg,
+    .rr-ba-wrapper .rr-ba-canvas.is-focused .rr-ba-arrows svg,
+    .rr-ba-wrapper .rr-ba-handle.is-active .rr-ba-arrows svg,
+    .rr-ba-wrapper .rr-ba-handle:active .rr-ba-arrows svg,
+    .rr-ba-wrapper .rr-ba-canvas:has(.rr-ba-range:focus-visible) .rr-ba-arrows svg { fill: #FFFFFF !important; }
+    .rr-ba-wrapper .rr-ba-arrows-line { width: 1.5px !important; height: 15px !important; background: #cbd5e1 !important; border-radius: 2px !important; }
+    .rr-ba-wrapper .rr-ba-canvas.is-active .rr-ba-arrows-line,
+    .rr-ba-wrapper .rr-ba-canvas.is-dragging .rr-ba-arrows-line,
+    .rr-ba-wrapper .rr-ba-canvas.is-focused .rr-ba-arrows-line,
+    .rr-ba-wrapper .rr-ba-handle.is-active .rr-ba-arrows-line,
+    .rr-ba-wrapper .rr-ba-handle:active .rr-ba-arrows-line,
+    .rr-ba-wrapper .rr-ba-canvas:has(.rr-ba-range:focus-visible) .rr-ba-arrows-line {
+      background: rgba(255, 255, 255, 0.75) !important;
+    }
+    .rr-ba-wrapper .rr-ba-canvas.is-active .rr-ba-divider,
+    .rr-ba-wrapper .rr-ba-canvas.is-dragging .rr-ba-divider,
+    .rr-ba-wrapper .rr-ba-canvas.is-focused .rr-ba-divider { box-shadow: 0 0 16px var(--rr-ba-primary) !important; }
+    .rr-ba-wrapper .rr-ba-hint {
+      position: absolute !important;
+      bottom: 16px !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      z-index: 6 !important;
+      background: rgba(15, 23, 42, 0.75) !important;
+      color: #FFFFFF !important;
+      font-size: 11.5px !important;
+      font-weight: 700 !important;
+      padding: 5px 13px !important;
+      border-radius: 999px !important;
+      pointer-events: none !important;
+      transition: opacity 0.3s ease !important;
+    }
+    .rr-ba-wrapper .rr-ba-hint.is-hidden { opacity: 0 !important; }
+    .rr-ba-wrapper .rr-ba-range { 
+      position: absolute !important; 
+      inset: 0 !important; 
+      width: 100% !important; 
+      height: 100% !important; 
+      opacity: 0 !important; 
+      cursor: ew-resize !important; 
+      z-index: 10 !important;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      background: transparent !important;
+      -webkit-appearance: none !important;
+      appearance: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+    .rr-ba-wrapper .rr-ba-range:focus { outline: none !important; box-shadow: none !important; }
+  &lt;/style&gt;
+
+  &lt;div class="rr-ba-card"&gt;
+    &lt;div class="rr-ba-canvas" id="rrBaCanvas" onpointerdown="if(!window._rrBaLoaded){try{var w=this.closest('.rr-ba-wrapper')||this.parentElement;var s=w?w.querySelector('script.rr-ba-script'):null;if(s){window._rrBaLoaded=true;var n=document.createElement('script');n.textContent=s.textContent;document.head.appendChild(n);}}catch(e){}}"&gt;
+      &lt;div class="rr-ba-layer rr-ba-layer-after"&gt;
+        &lt;img class="rr-ba-img" src="https://res.cloudinary.com/x9bj9p2l/image/upload/v1792037622/Jen__2.webp" alt="After" loading="lazy" decoding="async" width="823" height="823"&gt;
+      &lt;/div&gt;
+      &lt;div class="rr-ba-layer rr-ba-layer-before"&gt;
+        &lt;img class="rr-ba-img" src="https://res.cloudinary.com/x9bj9p2l/image/upload/v1792036752/Muddy_Retriever_Reveals_Slipped_Car_Cover.png" alt="Before" loading="lazy" decoding="async" width="1254" height="1254"&gt;
+      &lt;/div&gt;
+      &lt;div class="rr-ba-badge rr-ba-badge-before"&gt;Before&lt;/div&gt;
+      &lt;div class="rr-ba-badge rr-ba-badge-after"&gt;After&lt;/div&gt;
+      &lt;div class="rr-ba-divider"&gt;
+        &lt;div class="rr-ba-handle"&gt;
+          &lt;div class="rr-ba-arrows"&gt;
+            &lt;svg viewBox="0 0 24 24"&gt;&lt;path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/&gt;&lt;/svg&gt;
+            &lt;span class="rr-ba-arrows-line"&gt;&lt;/span&gt;
+            &lt;svg viewBox="0 0 24 24"&gt;&lt;path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/&gt;&lt;/svg&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="rr-ba-hint"&gt;👈 Drag to compare 👉&lt;/div&gt;
+      &lt;input type="range" class="rr-ba-range" min="0" max="100" value="50"&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- AUTO-BOOTSTRAP LOADER: Tự kích hoạt JavaScript ngay cả khi vào màn khác trước rồi mới về Home qua AJAX --&gt;
+  &lt;img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciLz4=" 
+       alt="" 
+       class="rr-ba-bootstrap"
+       style="display:none!important;position:absolute!important;width:0!important;height:0!important;opacity:0!important;pointer-events:none!important;"
+       onload="(function(el){try{if(window._rrBaLoaded){if(window._rrBaInit)window._rrBaInit();}else{var w=el.closest('.rr-ba-wrapper')||el.parentElement;var s=w?w.querySelector('script.rr-ba-script'):null;if(s){window._rrBaLoaded=true;var n=document.createElement('script');n.textContent=s.textContent;document.head.appendChild(n);}}}catch(e){}})(this);"
+       onerror="this.onload&amp;&amp;this.onload();" /&gt;
+
+  &lt;script class="rr-ba-script"&gt;
+    (function () {
+      window._rrBaLoaded = true;
+      function getLimits(canvas, root) {
+        var beforeBadge = root.querySelector('.rr-ba-badge-before');
+        var afterBadge = root.querySelector('.rr-ba-badge-after');
+        var rect = canvas.getBoundingClientRect();
+        var minP = 14;
+        var maxP = 86;
+
+        if (rect && rect.width > 0) {
+          if (beforeBadge) {
+            var bRect = beforeBadge.getBoundingClientRect();
+            var minPx = (bRect.right - rect.left) + 28;
+            minP = Math.max((minPx / rect.width) * 100, 10);
+          }
+          if (afterBadge) {
+            var aRect = afterBadge.getBoundingClientRect();
+            var maxPx = (aRect.left - rect.left) - 28;
+            maxP = Math.min((maxPx / rect.width) * 100, 90);
+          }
+        }
+        return { min: minP, max: maxP };
+      }
+
+      var rafId = null;
+      function setSliderPos(canvas, root, clientX) {
+        if (!canvas || !root) return;
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(function () {
+          var rect = canvas.getBoundingClientRect();
+          if (!rect || rect.width <= 0) return;
+          var offset = clientX - rect.left;
+          var percent = (offset / rect.width) * 100;
+          var limits = getLimits(canvas, root);
+          var clamped = Math.min(Math.max(percent, limits.min), limits.max);
+          root.style.setProperty('--rr-ba-pos', clamped + '%');
+
+          var range = root.querySelector('.rr-ba-range');
+          if (range) range.value = clamped;
+
+          var hint = root.querySelector('.rr-ba-hint');
+          if (hint) hint.classList.add('is-hidden');
+        });
+      }
+
+      function setActiveState(canvas, root, on) {
+        if (!canvas) return;
+        var handle = root ? root.querySelector('.rr-ba-handle') : null;
+        if (on) {
+          canvas.classList.add('is-active', 'is-dragging', 'is-focused');
+          if (handle) handle.classList.add('is-active');
+        } else {
+          canvas.classList.remove('is-active', 'is-dragging', 'is-focused');
+          if (handle) handle.classList.remove('is-active');
+        }
+      }
+
+      var activeCanvas = null;
+      var activeRoot = null;
+      var isDragging = false;
+      var currentPointerId = null;
+
+      function resetDrag() {
+        if (isDragging && activeCanvas && currentPointerId !== null) {
+          try {
+            if (activeCanvas.releasePointerCapture) {
+              activeCanvas.releasePointerCapture(currentPointerId);
+            }
+          } catch (e) { }
+        }
+        if (activeCanvas && activeRoot) {
+          setActiveState(activeCanvas, activeRoot, false);
+          var range = activeRoot.querySelector('.rr-ba-range');
+          if (range) {
+            try { range.blur(); } catch (e) { }
+          }
+        }
+        isDragging = false;
+        currentPointerId = null;
+        activeCanvas = null;
+        activeRoot = null;
+      }
+
+      if (!window._rrBaGlobalDelegationAttached) {
+        window._rrBaGlobalDelegationAttached = true;
+
+        document.addEventListener('pointerdown', function (e) {
+          var canvas = e.target.closest('.rr-ba-canvas');
+          if (!canvas) return;
+          var root = canvas.closest('.rr-ba-wrapper') || canvas.parentElement;
+          if (!root) return;
+
+          isDragging = true;
+          activeCanvas = canvas;
+          activeRoot = root;
+          currentPointerId = e.pointerId;
+
+          setActiveState(canvas, root, true);
+
+          try {
+            if (typeof e.pointerId === 'number' && canvas.setPointerCapture) {
+              canvas.setPointerCapture(e.pointerId);
+            }
+          } catch (err) { }
+
+          if (typeof e.clientX === 'number') {
+            setSliderPos(canvas, root, e.clientX);
+          }
+        }, { passive: true });
+
+        document.addEventListener('pointermove', function (e) {
+          if (!isDragging || !activeCanvas || !activeRoot) return;
+          if (typeof e.clientX === 'number') {
+            setSliderPos(activeCanvas, activeRoot, e.clientX);
+          }
+        }, { passive: true });
+
+        document.addEventListener('pointerup', resetDrag, { passive: true });
+        document.addEventListener('pointercancel', resetDrag, { passive: true });
+        document.addEventListener('lostpointercapture', resetDrag);
+        window.addEventListener('pointerup', resetDrag, { passive: true });
+        window.addEventListener('mouseup', resetDrag, { passive: true });
+        window.addEventListener('touchend', resetDrag, { passive: true });
+
+        window.addEventListener('blur', resetDrag);
+        document.addEventListener('visibilitychange', function () {
+          if (document.hidden) resetDrag();
+        });
+        window.addEventListener('pagehide', resetDrag);
+        window.addEventListener('pageshow', resetDrag);
+
+        document.addEventListener('input', function (e) {
+          var range = e.target.closest('.rr-ba-range');
+          if (!range) return;
+          var root = range.closest('.rr-ba-wrapper');
+          var canvas = root ? root.querySelector('.rr-ba-canvas') : null;
+          if (!root || !canvas) return;
+
+          var val = parseFloat(range.value);
+          var limits = getLimits(canvas, root);
+          var clamped = Math.min(Math.max(val, limits.min), limits.max);
+          root.style.setProperty('--rr-ba-pos', clamped + '%');
+          range.value = clamped;
+
+          var hint = root.querySelector('.rr-ba-hint');
+          if (hint) hint.classList.add('is-hidden');
+        });
+
+        document.addEventListener('focusin', function (e) {
+          var range = e.target.closest('.rr-ba-range');
+          if (!range) return;
+          var root = range.closest('.rr-ba-wrapper');
+          var canvas = root ? root.querySelector('.rr-ba-canvas') : null;
+          if (canvas && root) setActiveState(canvas, root, true);
+        });
+
+        document.addEventListener('focusout', function (e) {
+          var range = e.target.closest('.rr-ba-range');
+          if (!range) return;
+          var root = range.closest('.rr-ba-wrapper');
+          var canvas = root ? root.querySelector('.rr-ba-canvas') : null;
+          if (canvas && root) setActiveState(canvas, root, false);
+        });
+      }
+
+      function initAllSliders() {
+        resetDrag();
+        var allWrappers = document.querySelectorAll('.rr-ba-wrapper');
+        allWrappers.forEach(function (root) {
+          var pos = root.style.getPropertyValue('--rr-ba-pos') || '50%';
+          var range = root.querySelector('.rr-ba-range');
+          if (range && (!range.value || range.value === '50')) {
+            range.value = parseFloat(pos) || 50;
+          }
+        });
+      }
+
+      window._rrBaInit = initAllSliders;
+      initAllSliders();
+
+      window.addEventListener('pageshow', initAllSliders);
+      window.addEventListener('popstate', initAllSliders);
+      document.addEventListener('DOMContentLoaded', initAllSliders);
+      document.addEventListener('turbo:load', initAllSliders);
+      document.addEventListener('turbolinks:load', initAllSliders);
+      document.addEventListener('shopify:section:load', initAllSliders);
+      document.addEventListener('pagefly:section:load', initAllSliders);
+    })();
+  &lt;/script&gt;
+&lt;/div&gt;
+            </pre>
+        </div>
+    </section>
+
+    <!-- DEMO PAGE SCRIPT -->
+    <script>
+        function hexToRgb(hex) {
+            let c = hex.replace('#', '');
+            if (c.length === 3) c = c.split('').map(x => x + x).join('');
+            const num = parseInt(c, 16);
+            return `${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}`;
+        }
+
+        // Tùy chỉnh Aspect Ratio (Tỉ lệ khung hình)
+        function setAspectRatio(ratio, btnEl) {
+            const root = document.getElementById('rrBaComparison');
+            const showcase = document.querySelector('.showcase-area');
+            const codeEl = document.getElementById('raw-snippet-code');
+            if (!root) return;
+
+            let maxW = '960px';
+            let maxH = '540px';
+
+            if (ratio === '16 / 9') {
+                maxW = '960px';
+                maxH = '540px';
+            } else if (ratio === '3 / 2') {
+                maxW = '820px';
+                maxH = '546px';
+            } else if (ratio === '4 / 3') {
+                maxW = '720px';
+                maxH = '540px';
+            } else if (ratio === '1 / 1') {
+                maxW = '540px';
+                maxH = '540px';
+            }
+
+            // Cập nhật CSS variables & inline important styles
+            root.style.setProperty('--rr-ba-aspect', ratio);
+            root.style.setProperty('--rr-ba-max-width', maxW);
+            root.style.setProperty('max-width', maxW, 'important');
+
+            if (showcase) {
+                showcase.style.maxWidth = maxW;
+            }
+
+            const canvas = root.querySelector('.rr-ba-canvas');
+            if (canvas) {
+                canvas.style.setProperty('aspect-ratio', ratio, 'important');
+                canvas.style.setProperty('max-height', 'none', 'important');
+            }
+
+            // Cập nhật trạng thái active cho nút bấm
+            if (btnEl) {
+                btnEl.parentElement.querySelectorAll('.btn-ctrl').forEach(b => b.classList.remove('active'));
+                btnEl.classList.add('active');
+            }
+
+            // Tự động đồng bộ vào khối code preview xuất mã
+            if (codeEl) {
+                let codeText = codeEl.innerHTML;
+                codeText = codeText.replace(/--rr-ba-aspect:\s*[^;]+;/, '--rr-ba-aspect: ' + ratio + ';');
+                codeEl.innerHTML = codeText;
+            }
+        }
+
+        // Điều khiển vị trí trượt thủ công từ nút demo
+        function setSliderPosition(pos) {
+            stopAutoPlay();
+            if (window._setBaSliderPosition) {
+                window._setBaSliderPosition(pos);
+            }
+            document.querySelectorAll('[id^="btn-pos-"]').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById('btn-pos-' + Math.round(pos));
+            if (activeBtn) activeBtn.classList.add('active');
+        }
+
+        // Đổi màu thương hiệu nhanh
+        function setThemeColor(color, btnEl) {
+            const root = document.getElementById('rrBaComparison');
+            if (root) {
+                root.style.setProperty('--rr-ba-primary', color);
+                root.style.setProperty('--rr-ba-primary-rgb', hexToRgb(color));
+            }
+            if (btnEl) {
+                btnEl.parentElement.querySelectorAll('.btn-ctrl').forEach(b => b.classList.remove('active'));
+                btnEl.classList.add('active');
+            }
+        }
+
+        // Chế độ tự động chạy thử (Auto-play demonstration)
+        let autoPlayTimer = null;
+        let autoPlayAngle = 0;
+        let isAutoPlaying = false;
+
+        function toggleAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            } else {
+                startAutoPlay();
+            }
+        }
+
+        function startAutoPlay() {
+            isAutoPlaying = true;
+            const btn = document.getElementById('btn-auto-toggle');
+            if (btn) {
+                btn.innerText = '⏸ Pause Auto Demo';
+                btn.style.background = '#F0821F';
+            }
+            autoPlayTimer = setInterval(() => {
+                autoPlayAngle += 0.04;
+                const pos = 50 + Math.sin(autoPlayAngle) * 30;
+                if (window._setBaSliderPosition) {
+                    window._setBaSliderPosition(pos);
+                }
+            }, 25);
+        }
+
+        function stopAutoPlay() {
+            if (autoPlayTimer) {
+                clearInterval(autoPlayTimer);
+                autoPlayTimer = null;
+            }
+            isAutoPlaying = false;
+            const btn = document.getElementById('btn-auto-toggle');
+            if (btn) {
+                btn.innerText = '▶ Play Auto Demo';
+                btn.style.background = '#21262D';
+            }
+        }
+
+        // Copy snippet code to clipboard
+        function copySnippetCode() {
+            const codeEl = document.getElementById('raw-snippet-code');
+            const btn = document.getElementById('btn-copy-code');
+            if (!codeEl || !btn) return;
+
+            const text = codeEl.innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHtml = btn.innerHTML;
+                btn.classList.add('copied');
+                btn.innerHTML = '<span>✅ Copied to Clipboard!</span>';
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = originalHtml;
+                }, 2200);
+            }).catch(err => {
+                alert('Could not copy automatically. Please select the text and press Ctrl+C.');
+            });
+        }
+    </script>
+</body>
+</html>

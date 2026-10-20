@@ -1,0 +1,718 @@
+<!-- ==========================================================================
+     RUFFROVER™ - BEFORE & AFTER COMPARISON SLIDER COMPONENT
+     Định dạng: Standalone HTML / CSS / JS (Dùng cho Shopify Custom Liquid / Landing Page)
+     Tương thích: Shopify, PageFly, GemPages, Shogun, WordPress, Webflow
+     Đặc điểm:
+     - Toàn bộ class sử dụng prefix riêng biệt: "rr-ba-*" chống xung đột CSS 100%
+     - Tự động reset box-sizing và bảo vệ layout bằng scoped rules
+     - Hỗ trợ vuốt chạm cảm ứng mượt mà trên Mobile & kéo chuột trên Desktop
+     ========================================================================== -->
+
+<div class="rr-ba-wrapper" id="rrBaComparison">
+  <style>
+    /* =========================================================
+       RESET & SCOPED STYLES - KHÔNG ẢNH HƯỞNG TỚI THEME TOÀN SHOP
+       ========================================================= */
+    .rr-ba-wrapper,
+    .rr-ba-wrapper *,
+    .rr-ba-wrapper *::before,
+    .rr-ba-wrapper *::after {
+      box-sizing: border-box !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* Outer Wrapper Container - Triệt tiêu 100% margin và padding bên ngoài */
+    .rr-ba-wrapper {
+      --rr-ba-primary: #F0821F;
+      /* Màu thương hiệu cam nổi bật */
+      --rr-ba-primary-rgb: 240, 130, 31;
+      --rr-ba-pos: 50%;
+      /* Vị trí trượt mặc định (50%) */
+      --rr-ba-radius: 18px;
+      /* Bo góc khung */
+      --rr-ba-aspect: 4 / 3;
+      /* Tỉ lệ mặc định: 4:3 (Tối ưu giữ trọn vẹn điểm chính của ảnh). Tùy chọn: 1/1, 3/2, 16/9 */
+
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+      width: 100% !important;
+      max-width: 960px !important;
+      /* Chiều rộng tối đa (16:9 = 960px, 3:2 = 820px, 4:3 = 720px, 1:1 = 540px) */
+      margin: 0 auto !important;
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+      padding: 0 !important;
+      position: relative !important;
+      color: #1e293b !important;
+      -webkit-font-smoothing: antialiased !important;
+      content-visibility: auto !important;
+      contain-intrinsic-size: 0 500px !important;
+    }
+
+    /* Header Section (Tiêu đề) */
+    .rr-ba-wrapper .rr-ba-header {
+      text-align: center !important;
+      margin-top: 0 !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      margin-bottom: 20px !important;
+      padding: 0 10px !important;
+    }
+
+    .rr-ba-wrapper .rr-ba-tag {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      background: rgba(var(--rr-ba-primary-rgb), 0.12) !important;
+      color: var(--rr-ba-primary) !important;
+      padding: 5px 14px !important;
+      border-radius: 999px !important;
+      font-size: 13px !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.04em !important;
+      text-transform: uppercase !important;
+      margin-bottom: 8px !important;
+      line-height: 1.3 !important;
+    }
+
+    .rr-ba-wrapper .rr-ba-title {
+      font-size: clamp(22px, 3.2vw, 32px) !important;
+      font-weight: 900 !important;
+      color: #0f172a !important;
+      letter-spacing: -0.02em !important;
+      line-height: 1.25 !important;
+      margin-bottom: 8px !important;
+    }
+
+    .rr-ba-wrapper .rr-ba-subtitle {
+      font-size: 14.5px !important;
+      color: #64748b !important;
+      max-width: 580px !important;
+      margin: 0 auto !important;
+      line-height: 1.55 !important;
+    }
+
+    /* Outer Table / Slider Card */
+    .rr-ba-wrapper .rr-ba-card {
+      background: #ffffff !important;
+      border-radius: var(--rr-ba-radius) !important;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08), 0 2px 10px rgba(0, 0, 0, 0.03) !important;
+      border: 1px solid #e2e8f0 !important;
+      overflow: hidden !important;
+      position: relative !important;
+      width: 100% !important;
+      height: 100% !important;
+      margin: 0 auto !important;
+      padding: 0 !important;
+    }
+
+    /* Comparison Canvas (Khung hình ảnh so sánh - Không giới hạn max-height để khớp 100% tỉ lệ 4:3) */
+    .rr-ba-wrapper .rr-ba-canvas {
+      position: relative !important;
+      width: 100% !important;
+      height: 100% !important;
+      aspect-ratio: var(--rr-ba-aspect) !important;
+      max-height: none !important;
+      overflow: hidden !important;
+      user-select: none !important;
+      -webkit-user-select: none !important;
+      touch-action: pan-y !important;
+      cursor: ew-resize !important;
+      background-color: #0f172a !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .rr-ba-wrapper script,
+    .rr-ba-wrapper style {
+      display: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      height: 0 !important;
+      width: 0 !important;
+    }
+
+    /* Image Layers */
+    .rr-ba-wrapper .rr-ba-layer {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      pointer-events: none !important;
+    }
+
+    .rr-ba-wrapper .rr-ba-img {
+      display: block !important;
+      width: 100% !important;
+      height: 100% !important;
+      max-width: none !important;
+      object-fit: cover !important;
+      object-position: center 15% !important;
+      pointer-events: none !important;
+    }
+
+    /* Dịch chuyển nhẹ ảnh Before sang trái & After sang phải KHÔNG làm phóng to (giữ nguyên 100% kích thước gốc) */
+    .rr-ba-wrapper .rr-ba-layer-before .rr-ba-img {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      transform: translateX(-7%) !important;
+    }
+
+    .rr-ba-wrapper .rr-ba-layer-after .rr-ba-img {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      transform: translateX(7%) !important;
+    }
+
+    /* AFTER Layer (Nằm dưới cùng, hiển thị 100%) */
+    .rr-ba-wrapper .rr-ba-layer-after {
+      z-index: 1 !important;
+    }
+
+    /* BEFORE Layer (Nằm trên, cắt theo % trượt) */
+    .rr-ba-wrapper .rr-ba-layer-before {
+      z-index: 2 !important;
+      clip-path: inset(0 calc(100% - var(--rr-ba-pos)) 0 0) !important;
+      -webkit-clip-path: inset(0 calc(100% - var(--rr-ba-pos)) 0 0) !important;
+      will-change: clip-path !important;
+    }
+
+    /* Badges "Before" & "After" */
+    .rr-ba-wrapper .rr-ba-badge {
+      position: absolute !important;
+      top: 16px !important;
+      z-index: 4 !important;
+      background: var(--rr-ba-primary) !important;
+      color: #ffffff !important;
+      font-size: 13.5px !important;
+      font-weight: 800 !important;
+      padding: 6px 16px !important;
+      border-radius: 6px !important;
+      letter-spacing: 0.02em !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+      pointer-events: none !important;
+      text-transform: capitalize !important;
+      line-height: 1.2 !important;
+    }
+
+    .rr-ba-wrapper .rr-ba-badge-before {
+      left: 16px !important;
+    }
+
+    .rr-ba-wrapper .rr-ba-badge-after {
+      right: 16px !important;
+    }
+
+    /* Vertical Divider Line (Đường vạch chia dọc) */
+    .rr-ba-wrapper .rr-ba-divider {
+      position: absolute !important;
+      top: 0 !important;
+      bottom: 0 !important;
+      left: var(--rr-ba-pos) !important;
+      width: 3px !important;
+      background: #ffffff !important;
+      transform: translateX(-50%) !important;
+      z-index: 5 !important;
+      pointer-events: none !important;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.35) !important;
+      transition: box-shadow 0.2s ease !important;
+    }
+
+    .rr-ba-wrapper .rr-ba-canvas.is-dragging .rr-ba-divider {
+      box-shadow: 0 0 14px var(--rr-ba-primary) !important;
+    }
+
+    /* Center Circular Handle Knob (Nút tròn điều khiển) */
+    .rr-ba-wrapper .rr-ba-handle {
+      position: absolute !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      width: 50px !important;
+      height: 50px !important;
+      border-radius: 50% !important;
+      background: rgba(255, 255, 255, 0.95) !important;
+      border: 3px solid #ffffff !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.08) !important;
+      backdrop-filter: blur(8px) !important;
+      -webkit-backdrop-filter: blur(8px) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: ew-resize !important;
+      pointer-events: auto !important;
+      color: #1e293b !important;
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease !important;
+      outline: none !important;
+      user-select: none !important;
+      -webkit-user-select: none !important;
+    }
+
+    /* Hover nút tròn: viền cam sáng */
+    .rr-ba-wrapper .rr-ba-canvas:hover .rr-ba-handle,
+    .rr-ba-wrapper .rr-ba-handle:hover {
+      transform: translate(-50%, -50%) scale(1.08) !important;
+      border-color: var(--rr-ba-primary) !important;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45), 0 0 0 2px rgba(var(--rr-ba-primary-rgb), 0.35) !important;
+    }
+
+    /* KHI ẤN (ACTIVE), HOẶC ĐANG KÉO (DRAGGING), HOẶC FOCUS:
+       BẬT MÀU CAM THƯƠNG HIỆU RỰC RỠ + MŨI TÊN TRẮNG + QUẦNG SÁNG NHƯ DEMO.
+       KHI NHẢ RA (POINTER UP / UNFOCUS) THÌ LẬP TỨC TẮT VÀ VỀ MÀU TRẮNG BAN ĐẦU! */
+    .rr-ba-wrapper .rr-ba-canvas.is-active .rr-ba-handle,
+    .rr-ba-wrapper .rr-ba-canvas.is-dragging .rr-ba-handle,
+    .rr-ba-wrapper .rr-ba-canvas.is-focused .rr-ba-handle,
+    .rr-ba-wrapper .rr-ba-handle.is-active,
+    .rr-ba-wrapper .rr-ba-handle:active,
+    .rr-ba-wrapper .rr-ba-canvas:has(.rr-ba-range:focus-visible) .rr-ba-handle {
+      transform: translate(-50%, -50%) scale(1.15) !important;
+      background: var(--rr-ba-primary) !important;
+      /* Chuyển sang nền màu cam thương hiệu */
+      border-color: #ffffff !important;
+      /* Viền trắng tương phản sắc nét */
+      color: #ffffff !important;
+      /* Mũi tên đổi thành màu trắng */
+      box-shadow: 0 0 0 6px rgba(var(--rr-ba-primary-rgb), 0.45), 0 8px 32px rgba(var(--rr-ba-primary-rgb), 0.7) !important;
+      outline: none !important;
+    }
+
+    /* Arrows inside handle knob (< | >) */
+    .rr-ba-wrapper .rr-ba-arrows {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 5px !important;
+      color: inherit !important;
+      transition: color 0.2s ease !important;
+      pointer-events: none !important;
+    }
+
+    .rr-ba-wrapper .rr-ba-arrows svg {
+      width: 14px !important;
+      height: 14px !important;
+      min-width: 14px !important;
+      max-width: 14px !important;
+      min-height: 14px !important;
+      max-height: 14px !important;
+      fill: currentColor !important;
+      display: block !important;
+      flex-shrink: 0 !important;
+      transition: fill 0.2s ease !important;
+    }
+
+    .rr-ba-wrapper .rr-ba-canvas.is-active .rr-ba-arrows svg,
+    .rr-ba-wrapper .rr-ba-canvas.is-dragging .rr-ba-arrows svg,
+    .rr-ba-wrapper .rr-ba-canvas.is-focused .rr-ba-arrows svg,
+    .rr-ba-wrapper .rr-ba-handle.is-active .rr-ba-arrows svg,
+    .rr-ba-wrapper .rr-ba-handle:active .rr-ba-arrows svg,
+    .rr-ba-wrapper .rr-ba-canvas:has(.rr-ba-range:focus-visible) .rr-ba-arrows svg {
+      fill: #ffffff !important;
+    }
+
+    .rr-ba-wrapper .rr-ba-arrows-line {
+      width: 1.5px !important;
+      height: 15px !important;
+      background: #cbd5e1 !important;
+      border-radius: 2px !important;
+      transition: background 0.2s ease !important;
+    }
+
+    .rr-ba-wrapper .rr-ba-canvas.is-active .rr-ba-arrows-line,
+    .rr-ba-wrapper .rr-ba-canvas.is-dragging .rr-ba-arrows-line,
+    .rr-ba-wrapper .rr-ba-canvas.is-focused .rr-ba-arrows-line,
+    .rr-ba-wrapper .rr-ba-handle.is-active .rr-ba-arrows-line,
+    .rr-ba-wrapper .rr-ba-handle:active .rr-ba-arrows-line,
+    .rr-ba-wrapper .rr-ba-canvas:has(.rr-ba-range:focus-visible) .rr-ba-arrows-line {
+      background: rgba(255, 255, 255, 0.75) !important;
+    }
+
+    /* Vạch phân cách phát sáng khi Dragging/Active */
+    .rr-ba-wrapper .rr-ba-canvas.is-active .rr-ba-divider,
+    .rr-ba-wrapper .rr-ba-canvas.is-dragging .rr-ba-divider,
+    .rr-ba-wrapper .rr-ba-canvas.is-focused .rr-ba-divider {
+      box-shadow: 0 0 16px var(--rr-ba-primary) !important;
+    }
+
+    /* Guide Hint Tag ("👈 Drag to compare 👉") */
+    .rr-ba-wrapper .rr-ba-hint {
+      position: absolute !important;
+      bottom: 16px !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      z-index: 6 !important;
+      background: rgba(15, 23, 42, 0.75) !important;
+      backdrop-filter: blur(6px) !important;
+      -webkit-backdrop-filter: blur(6px) !important;
+      color: #ffffff !important;
+      font-size: 11.5px !important;
+      font-weight: 700 !important;
+      padding: 5px 13px !important;
+      border-radius: 999px !important;
+      pointer-events: none !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+      transition: opacity 0.35s ease, transform 0.35s ease !important;
+      letter-spacing: 0.02em !important;
+      white-space: nowrap !important;
+    }
+
+    .rr-ba-wrapper .rr-ba-hint.is-hidden {
+      opacity: 0 !important;
+      transform: translateX(-50%) translateY(8px) !important;
+    }
+
+    /* Hidden Accessibility Range Input - Triệt tiêu 100% outline/border mặc định của theme */
+    .rr-ba-wrapper .rr-ba-range {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      opacity: 0 !important;
+      cursor: ew-resize !important;
+      z-index: 10 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      background: transparent !important;
+      -webkit-appearance: none !important;
+      appearance: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+
+    .rr-ba-wrapper .rr-ba-range:focus,
+    .rr-ba-wrapper .rr-ba-range:focus-visible,
+    .rr-ba-wrapper .rr-ba-range:active {
+      outline: none !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
+
+    .rr-ba-wrapper .rr-ba-range::-webkit-slider-thumb {
+      -webkit-appearance: none !important;
+      appearance: none !important;
+      width: 50px !important;
+      height: 50px !important;
+      opacity: 0 !important;
+      cursor: ew-resize !important;
+    }
+
+    .rr-ba-wrapper .rr-ba-range::-moz-range-thumb {
+      width: 50px !important;
+      height: 50px !important;
+      opacity: 0 !important;
+      cursor: ew-resize !important;
+      border: none !important;
+    }
+
+    /* Mobile Responsive Adjustments */
+    @media (max-width: 600px) {
+      .rr-ba-wrapper {
+        padding: 0 !important;
+      }
+
+      .rr-ba-wrapper .rr-ba-badge {
+        font-size: 12px !important;
+        padding: 4px 12px !important;
+        top: 10px !important;
+      }
+
+      .rr-ba-wrapper .rr-ba-badge-before {
+        left: 10px !important;
+      }
+
+      .rr-ba-wrapper .rr-ba-badge-after {
+        right: 10px !important;
+      }
+
+      .rr-ba-wrapper .rr-ba-handle {
+        width: 42px !important;
+        height: 42px !important;
+      }
+    }
+  </style>
+
+  <!-- SECTION HEADER -->
+  <div class="rr-ba-header">
+    <div class="rr-ba-tag">⭐ Real Results</div>
+    <h2 class="rr-ba-title">See The Difference</h2>
+    <p class="rr-ba-subtitle">Drag the slider to compare before and after using our protective pet cover.</p>
+  </div>
+
+  <!-- SLIDER CARD -->
+  <div class="rr-ba-card">
+    <div class="rr-ba-canvas" id="rrBaCanvas" onpointerdown="if(!window._rrBaLoaded){try{var w=this.closest('.rr-ba-wrapper')||this.parentElement;var s=w?w.querySelector('script.rr-ba-script'):null;if(s){window._rrBaLoaded=true;var n=document.createElement('script');n.textContent=s.textContent;document.head.appendChild(n);}}catch(e){}}">
+
+      <!-- AFTER Image (Layer 1 - Bottom) -->
+      <div class="rr-ba-layer rr-ba-layer-after">
+        <img class="rr-ba-img"
+             src="https://res.cloudinary.com/x9bj9p2l/image/upload/v1792037622/Jen__2.webp" 
+             alt="After - Clean car interior, protected and comfortable dog" 
+             loading="lazy"
+             decoding="async"
+             width="823"
+             height="823">
+      </div>
+
+      <!-- BEFORE Image (Layer 2 - Clipped on top) -->
+      <div class="rr-ba-layer rr-ba-layer-before">
+        <img class="rr-ba-img"
+             src="https://res.cloudinary.com/x9bj9p2l/image/upload/v1792036752/Muddy_Retriever_Reveals_Slipped_Car_Cover.png" 
+             alt="Before - Muddy paws and slipped car cover" 
+             loading="lazy"
+             decoding="async"
+             width="1254"
+             height="1254">
+      </div>
+
+      <!-- Before & After Badges -->
+      <div class="rr-ba-badge rr-ba-badge-before">Before</div>
+      <div class="rr-ba-badge rr-ba-badge-after">After</div>
+
+      <!-- Vertical Divider & Knob Handle -->
+      <div class="rr-ba-divider">
+        <div class="rr-ba-handle" aria-hidden="true">
+          <div class="rr-ba-arrows">
+            <svg viewBox="0 0 24 24">
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+            </svg>
+            <span class="rr-ba-arrows-line"></span>
+            <svg viewBox="0 0 24 24">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Guide Pill -->
+      <div class="rr-ba-hint" id="rrBaHint">👈 Drag to compare 👉</div>
+
+      <!-- Accessible Range Input for Keyboard / Screen Readers -->
+      <input type="range" class="rr-ba-range" id="rrBaRange" min="0" max="100" value="50" step="0.5"
+        aria-label="Drag to compare before and after images">
+    </div>
+  </div>
+
+  <!-- AUTO-BOOTSTRAP LOADER: Tự động kích hoạt JavaScript ngay cả khi khách vào màn khác trước rồi mới chuyển sang Home (SPA / Shopify Turbo / AJAX innerHTML) -->
+  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciLz4=" 
+       alt="" 
+       class="rr-ba-bootstrap"
+       style="display:none!important;position:absolute!important;width:0!important;height:0!important;opacity:0!important;pointer-events:none!important;"
+       onload="(function(el){try{if(window._rrBaLoaded){if(window._rrBaInit)window._rrBaInit();}else{var w=el.closest('.rr-ba-wrapper')||el.parentElement;var s=w?w.querySelector('script.rr-ba-script'):null;if(s){window._rrBaLoaded=true;var n=document.createElement('script');n.textContent=s.textContent;document.head.appendChild(n);}}}catch(e){}})(this);"
+       onerror="this.onload&&this.onload();" />
+
+  <!-- SCRIPT KÉO THẢ BẢO VỆ ĐA NỀN TẢNG (CHỐNG LỖI ĐỔI TRANG / CHUYỂN TAB / SPA / SHOPIFY TURBO) -->
+  <script class="rr-ba-script">
+    (function () {
+      window._rrBaLoaded = true;
+      // 1. Tính toán giới hạn trượt: chặn trước nhãn Before & After
+      function getLimits(canvas, root) {
+        var beforeBadge = root.querySelector('.rr-ba-badge-before');
+        var afterBadge = root.querySelector('.rr-ba-badge-after');
+        var rect = canvas.getBoundingClientRect();
+        var minP = 14;
+        var maxP = 86;
+
+        if (rect && rect.width > 0) {
+          if (beforeBadge) {
+            var bRect = beforeBadge.getBoundingClientRect();
+            var minPx = (bRect.right - rect.left) + 28;
+            minP = Math.max((minPx / rect.width) * 100, 10);
+          }
+          if (afterBadge) {
+            var aRect = afterBadge.getBoundingClientRect();
+            var maxPx = (aRect.left - rect.left) - 28;
+            maxP = Math.min((maxPx / rect.width) * 100, 90);
+          }
+        }
+        return { min: minP, max: maxP };
+      }
+
+      // 2. Cập nhật vị trí thanh trượt (Tối ưu 60-120fps qua requestAnimationFrame, tránh giật lag main thread)
+      var rafId = null;
+      function setSliderPos(canvas, root, clientX) {
+        if (!canvas || !root) return;
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(function () {
+          var rect = canvas.getBoundingClientRect();
+          if (!rect || rect.width <= 0) return;
+          var offset = clientX - rect.left;
+          var percent = (offset / rect.width) * 100;
+          var limits = getLimits(canvas, root);
+          var clamped = Math.min(Math.max(percent, limits.min), limits.max);
+          root.style.setProperty('--rr-ba-pos', clamped + '%');
+
+          var range = root.querySelector('.rr-ba-range');
+          if (range) range.value = clamped;
+
+          var hint = root.querySelector('.rr-ba-hint');
+          if (hint) hint.classList.add('is-hidden');
+        });
+      }
+
+      // 3. Bật/tắt hiệu ứng focus cam nổi bật
+      function setActiveState(canvas, root, on) {
+        if (!canvas) return;
+        var handle = root ? root.querySelector('.rr-ba-handle') : null;
+        if (on) {
+          canvas.classList.add('is-active', 'is-dragging', 'is-focused');
+          if (handle) handle.classList.add('is-active');
+        } else {
+          canvas.classList.remove('is-active', 'is-dragging', 'is-focused');
+          if (handle) handle.classList.remove('is-active');
+        }
+      }
+
+      // Biến trạng thái phiên kéo hiện tại
+      var activeCanvas = null;
+      var activeRoot = null;
+      var isDragging = false;
+      var currentPointerId = null;
+
+      function resetDrag() {
+        if (isDragging && activeCanvas && currentPointerId !== null) {
+          try {
+            if (activeCanvas.releasePointerCapture) {
+              activeCanvas.releasePointerCapture(currentPointerId);
+            }
+          } catch (e) { }
+        }
+        if (activeCanvas && activeRoot) {
+          setActiveState(activeCanvas, activeRoot, false);
+          var range = activeRoot.querySelector('.rr-ba-range');
+          if (range) {
+            try { range.blur(); } catch (e) { }
+          }
+        }
+        isDragging = false;
+        currentPointerId = null;
+        activeCanvas = null;
+        activeRoot = null;
+      }
+
+      // 4. CƠ CHẾ EVENT DELEGATION TRÊN DOCUMENT:
+      // Giữ sự kiện luôn sống 100% ngay cả khi đổi trang SPA (Shopify Dawn, Turbo, PageFly) hoặc quay lại từ bfcache
+      if (!window._rrBaGlobalDelegationAttached) {
+        window._rrBaGlobalDelegationAttached = true;
+
+        // Bắt đầu kéo (Passive listener giúp cuộn trang siêu mượt)
+        document.addEventListener('pointerdown', function (e) {
+          var canvas = e.target.closest('.rr-ba-canvas');
+          if (!canvas) return;
+          var root = canvas.closest('.rr-ba-wrapper') || canvas.parentElement;
+          if (!root) return;
+
+          isDragging = true;
+          activeCanvas = canvas;
+          activeRoot = root;
+          currentPointerId = e.pointerId;
+
+          setActiveState(canvas, root, true);
+
+          try {
+            if (typeof e.pointerId === 'number' && canvas.setPointerCapture) {
+              canvas.setPointerCapture(e.pointerId);
+            }
+          } catch (err) { }
+
+          if (typeof e.clientX === 'number') {
+            setSliderPos(canvas, root, e.clientX);
+          }
+        }, { passive: true });
+
+        // Di chuyển con trỏ / chạm vuốt (Passive listener)
+        document.addEventListener('pointermove', function (e) {
+          if (!isDragging || !activeCanvas || !activeRoot) return;
+          if (typeof e.clientX === 'number') {
+            setSliderPos(activeCanvas, activeRoot, e.clientX);
+          }
+        }, { passive: true });
+
+        // Kết thúc kéo
+        document.addEventListener('pointerup', resetDrag, { passive: true });
+        document.addEventListener('pointercancel', resetDrag, { passive: true });
+        document.addEventListener('lostpointercapture', resetDrag);
+        window.addEventListener('pointerup', resetDrag, { passive: true });
+        window.addEventListener('mouseup', resetDrag, { passive: true });
+        window.addEventListener('touchend', resetDrag, { passive: true });
+
+        // Reset an toàn khi đổi tab hoặc chuyển trang
+        window.addEventListener('blur', resetDrag);
+        document.addEventListener('visibilitychange', function () {
+          if (document.hidden) resetDrag();
+        });
+        window.addEventListener('pagehide', resetDrag);
+        window.addEventListener('pageshow', resetDrag);
+
+        // Hỗ trợ kéo bằng phím Tab / Range input cho Accessibility
+        document.addEventListener('input', function (e) {
+          var range = e.target.closest('.rr-ba-range');
+          if (!range) return;
+          var root = range.closest('.rr-ba-wrapper');
+          var canvas = root ? root.querySelector('.rr-ba-canvas') : null;
+          if (!root || !canvas) return;
+
+          var val = parseFloat(range.value);
+          var limits = getLimits(canvas, root);
+          var clamped = Math.min(Math.max(val, limits.min), limits.max);
+          root.style.setProperty('--rr-ba-pos', clamped + '%');
+          range.value = clamped;
+
+          var hint = root.querySelector('.rr-ba-hint');
+          if (hint) hint.classList.add('is-hidden');
+        });
+
+        document.addEventListener('focusin', function (e) {
+          var range = e.target.closest('.rr-ba-range');
+          if (!range) return;
+          var root = range.closest('.rr-ba-wrapper');
+          var canvas = root ? root.querySelector('.rr-ba-canvas') : null;
+          if (canvas && root) setActiveState(canvas, root, true);
+        });
+
+        document.addEventListener('focusout', function (e) {
+          var range = e.target.closest('.rr-ba-range');
+          if (!range) return;
+          var root = range.closest('.rr-ba-wrapper');
+          var canvas = root ? root.querySelector('.rr-ba-canvas') : null;
+          if (canvas && root) setActiveState(canvas, root, false);
+        });
+      }
+
+      // Hàm khởi tạo vị trí ban đầu an toàn
+      function initAllSliders() {
+        resetDrag();
+        var allWrappers = document.querySelectorAll('.rr-ba-wrapper');
+        allWrappers.forEach(function (root) {
+          var pos = root.style.getPropertyValue('--rr-ba-pos') || '50%';
+          var range = root.querySelector('.rr-ba-range');
+          if (range && (!range.value || range.value === '50')) {
+            range.value = parseFloat(pos) || 50;
+          }
+        });
+      }
+
+      window._rrBaInit = initAllSliders;
+      initAllSliders();
+
+      // Tái kích hoạt tự động trên tất cả sự kiện nạp trang của Shopify / Turbo / SPA
+      window.addEventListener('pageshow', initAllSliders);
+      window.addEventListener('popstate', initAllSliders);
+      document.addEventListener('DOMContentLoaded', initAllSliders);
+      document.addEventListener('turbo:load', initAllSliders);
+      document.addEventListener('turbolinks:load', initAllSliders);
+      document.addEventListener('shopify:section:load', initAllSliders);
+      document.addEventListener('pagefly:section:load', initAllSliders);
+    })();
+  </script>
+</div>
